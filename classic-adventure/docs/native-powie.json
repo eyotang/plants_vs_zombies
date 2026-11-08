@@ -1,0 +1,57 @@
+{
+  "status": "PARTIAL_NATIVE_POWIE_RENDER_PORT",
+  "repository": "ruslan831/PlantsVsZombies-decompilation",
+  "commit": "325b2229a7225d73870bb69322eefcda3a45bf8d",
+  "sourceHashes": {
+    "Plant.cpp": "9596bc875c4ccf4eb3e6eded4ebb503eed6a3a5afe2df6b3a53dbb31c417d43d",
+    "TodParticle.cpp": "b5728ece04275ad8c77cd9bc4a6e8f3c67ffa6c7cb9897fa6eedd6939bc28f88",
+    "TodParticle.h": "5f5592322e079b15ec5de0646cba3b812c133b2417d2752bef1c59671384a6b6",
+    "Definition.cpp": "83c9ecb229fe5529a502220372de6e9bc0326fdf7ea73eecba510878c2180acc"
+  },
+  "assets": {
+    "powie-cloud.png": {
+      "source": "SexyAppFramework/particles/ExplosionCloud.png",
+      "blob": "ca8614041043d2a324aa6ca835173e6a2b5f18d1",
+      "sha256": "00354dd8579ced7b5a6a18ebc12c9a96f44956d6538f27c9b04124560aca53e5",
+      "bytes": 2798,
+      "logicalSize": [
+        80,
+        80
+      ],
+      "rgbaBytes": 25600
+    },
+    "powie-word.png": {
+      "source": "SexyAppFramework/DebugVS2005/particles/ExplosionPowie.png",
+      "blob": "702f8e4028c13c59b2b763e203fa0f6a50fdae90",
+      "sha256": "6a406fc6f2db3d03ec597eb98c6b1453c28561db8ab9dd794a9cd22be15fc346",
+      "bytes": 3453,
+      "logicalSize": [
+        200,
+        200
+      ],
+      "rgbaBytes": 160000
+    }
+  },
+  "wordVariant": "The main repository PNG is localized; the same fixed commit also bundles the classic English POWIE image in DebugVS2005. This port uses that verified original English image, with no pixel editing.",
+  "compiledAudit": {
+    "file": "reference/explosion/Powie.xml.compiled",
+    "blob": "30598a8e1bdefec40ccd749e8d30ecc5ce4dcfed",
+    "sha256": "fb86e1fef0fc0bdd82fe6d18b782e5f149ed74d02abc18911a4979712735b648",
+    "decoded": "reference/explosion/compiled-tracks.json",
+    "result": "All2635 decompressed bytes consumed using the pinned Definition.cpp field layout. Its XML float-track parser is a stub, so the compiled node times independently confirm0.4 friction,0.6 scale,0.7 particle alpha and0.8 system alpha hold nodes."
+  },
+  "implemented": [
+    "Two circle cloud emitters: rate150/s, cap14 each, lifetime40–60ticks; source radius, launch speed, friction-before-motion, tint, scale, opacity and spin units.",
+    "Word emitter holds one unscaled200px source image for50ticks; total source system lifetime200ticks.",
+    "29 preallocated transient sprites per burst; visibility follows source spawn cadence. No per-frame sprite creation or extra ticker. Existing scene cleanup destroys all sprites and unloads the two shared textures.",
+    "Cherry events use native grid plant center and record their logical birth tick. Exploding bowling nuts use their continuous model foot minus38px for the native center bridge. No damage, costs, seeds, cooldowns or gameplay RNG changes.",
+    "Lazy native-resolution texture planning for selected bombs, bowling and drops/possible vase contents; no addition to first-level combat assets.",
+    "Native events use a separate deterministic visual RNG, unaffected by render frequency; repeated or backwards render ages cannot integrate motion twice."
+  ],
+  "limits": [
+    "JavaScript double arithmetic and the independent visual RNG do not reproduce native float32 rounding or the original global random stream. This is not a pixel-for-pixel native-engine proof.",
+    "Other explosion families (potato, doom, jack, vehicle debris) retain their previous fallback and require their own assets/configuration.",
+    "Eight-burst benchmark measures synchronous desktop CPU/update/render submission only, not GPU completion, physical mobile RAM/FPS/power or full-battle acceptance.",
+    "Ten normal-play regressions and old-port snapshot mismatches remain separate release gates."
+  ]
+}

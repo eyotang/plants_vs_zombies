@@ -1,0 +1,29 @@
+{
+  "status": "VERIFIED_SOURCE_PREPARATION_ONLY_NOT_IMPLEMENTED",
+  "repository": "ruslan831/PlantsVsZombies-decompilation",
+  "commit": "325b2229a7225d73870bb69322eefcda3a45bf8d",
+  "files": [
+    {
+      "path": "SexyAppFramework/particles/Powie.xml",
+      "bytes": 1646,
+      "blob": "7168426c34f709ba51aa0c3063b42d0b068e2fe2",
+      "sha256": "7ef16df73573da222d4a28cba934e54e60027c6d832efc059afbb0be49f88432"
+    },
+    {
+      "path": "SexyAppFramework/particles/ExplosionPowie.png",
+      "bytes": 3902,
+      "blob": "b75f83aba114e6e3d8d24baf231581f08ae4ef9e",
+      "sha256": "f6f12cb4a5096432d9bdf188b42d19c6e2f1bfa8d776948266a6436e0ae92e6e"
+    },
+    {
+      "path": "SexyAppFramework/particles/ExplosionCloud.png",
+      "bytes": 2798,
+      "blob": "ca8614041043d2a324aa6ca835173e6a2b5f18d1",
+      "sha256": "00354dd8579ced7b5a6a18ebc12c9a96f44956d6538f27c9b04124560aca53e5"
+    }
+  ],
+  "location": "classic-adventure/docs/reference/explosion",
+  "runtimeAssetsAdded": false,
+  "observedProblem": "Generic yellow circles in Scene.event(explode) do not match native Powie clouds and word. Desktop and responsive controlled screenshots show that incomplete effect.",
+  "next": "Port Powie.xml emitter behavior with bounded transient sprites and trace its native event positions; verify CPU, resources and desktop/mobile frames before using assets at runtime."
+}

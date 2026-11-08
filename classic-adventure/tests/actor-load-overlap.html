@@ -1,0 +1,15 @@
+<!doctype html><html lang="zh-CN"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>庭院加载等待检查</title><style>body{margin:0;background:#25291d;color:#fff1c2;font:14px system-ui}#host{width:min(100vw,800px);aspect-ratio:4/3}pre{white-space:pre-wrap}button{min-height:44px;padding:8px}</style><button id="release" disabled>释放战斗资源</button><div id="host"></div><pre id="result">准备中</pre>
+<script type="module">
+import{Game}from'../src/game/model';import{Scene}from'../src/rendering/scene';
+const g=new Game(1,23),scene=new Scene(),result=document.querySelector('#result'),release=document.querySelector('#release'),marks=[];let start=0;g.tutorial='off';g.start();g.select('peashooter');if(!g.plant(0,2))throw Error('未能合法种植首株射手');g.waveIn=100000;
+const count=n=>1+(n.children??[]).reduce((sum,c)=>sum+count(c),0);
+try{await scene.init(document.querySelector('#host'));await scene.prepareBoard(g,()=>{});scene.setLevel(g);
+ for(const[label,owner,key]of [['combat',scene,'prepareTextures'],['plants',scene.plantMotion,'prepare'],['zombies',scene.actorMotion,'prepare'],['pea-heads',scene.peaArt,'prepare']]){
+  const original=owner[key].bind(owner);owner[key]=async(...args)=>{marks.push({label,phase:'start',ms:performance.now()-start});await new Promise(r=>setTimeout(r,500));try{return await original(...args)}finally{marks.push({label,phase:'end',ms:performance.now()-start})}};
+ }
+ start=performance.now();await scene.prepareActors(g,()=>{});const loadMs=performance.now()-start;scene.render(g,0,1);scene.app.render();scene.app.stop();release.disabled=false;
+ const resources=performance.getEntriesByType('resource').filter(r=>r.name.includes('/assets/runtime/')).map(r=>({file:r.name.split('/assets/runtime/')[1],duration:r.duration,encodedBytes:r.encodedBodySize}));
+ result.textContent=JSON.stringify({status:'READY',scope:'桌面Safari受控加载；四组资源各额外等待500ms，用来测串行等待，非真实网络或iPhone测速',simulatedDelayMsPerFamily:500,loadMs,marks:marks.map(m=>[m.label,m.phase,Math.round(m.ms)]),resourceCount:resources.length,encodedBytes:resources.reduce((n,r)=>n+r.encodedBytes,0),actors:scene.actors.size,displayObjects:count(scene.world),canvas:[scene.app.canvas.width,scene.app.canvas.height]});
+ release.onclick=async()=>{try{await scene.release();result.textContent=JSON.stringify({status:'RELEASED',actors:scene.actors.size,displayObjects:count(scene.world)});release.disabled=true;}catch(e){result.textContent='FAIL '+e.stack}};
+}catch(e){result.textContent='FAIL '+e.stack}
+</script>

@@ -1,0 +1,23 @@
+<!doctype html><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>经典窝瓜落地验证</title>
+<style>body{margin:0;background:#172719;color:#fff1c2;font:14px system-ui}header{padding:8px;display:flex;gap:8px;align-items:center;flex-wrap:wrap}button{min-height:44px;padding:8px}#host{width:min(100vw,800px);height:min(75vw,600px);margin:auto}pre{white-space:pre-wrap;margin:8px}</style>
+<header><button id="fall">推进至伤害前</button><button id="impact">下落一步</button><b id="status">加载中</b></header><div id="host"></div><pre id="result"></pre>
+<script type="module">
+import {Game} from '../src/game/model';import {Scene} from '../src/rendering/scene';
+const g=new Game(9,1),scene=new Scene(),status=document.querySelector('#status'),result=document.querySelector('#result');
+try{
+ for(const k of g.config.seeds.slice(0,6))g.chooseSeed(k);g.start();g.select('sunflower');if(!g.plant(0,4))throw new Error('未能合法启动战斗');
+ const p=g.plants[0];Object.assign(p,{kind:'squash',column:6,row:0,health:300,squash:{remaining:30,x:678,target:900}});
+ const z=g.spawnZombie('football',0,612.9331595117114,0);z.armor=1320;z.speed=0;z.frozenIn=10000;p.squash.target=z.id;
+ await scene.init(document.querySelector('#host'));await scene.prepareBoard(g,()=>{});scene.setLevel(g);await scene.prepareActors(g,()=>{});scene.app.stop();
+ function draw(){scene.render(g,0,1);scene.app.render();scene.app.stop();const actor=scene.actors.get(`p${p.id}`),rig=actor.nativeRig;
+  if(actor.root.x!==638||rig.root.x!==0||rig.root.y!==0||rig.root.scale.x!==1)throw new Error('窝瓜绘制未使用原生根位置');
+  const remaining=p.squash.remaining,y=remaining>10?-32:88-remaining*12;
+  if(actor.root.y!==y||((remaining>=6)!==(z.health>0)))throw new Error('窝瓜轨迹或命中时间不一致');
+  status.textContent='PASS';result.textContent=JSON.stringify({remaining,root:[actor.root.x,actor.root.y],health:z.health,armor:z.armor,kills:g.kills,canvas:[scene.app.canvas.width,scene.app.canvas.height],maxFPS:scene.app.ticker.maxFPS},null,2);
+ }
+ function advance(n){try{for(let i=0;i<n;i++){scene.captureMovement();g.step();for(const e of g.drainEvents())scene.event(e)}draw()}catch(e){status.textContent='FAIL';result.textContent=e.stack}}
+ document.querySelector('#fall').onclick=()=>{if(p.squash.remaining===30)advance(24);document.querySelector('#impact').focus()};
+ document.querySelector('#impact').onclick=()=>{if(p.squash.remaining===6)advance(1)};
+ draw();document.querySelector('#fall').focus();
+}catch(e){status.textContent='FAIL';result.textContent=e.stack}
+</script>

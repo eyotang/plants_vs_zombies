@@ -1,0 +1,15 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>顶部卡槽图片对照</title><link rel="icon" href="/icons/icon-16.png"></head><body>
+<main class="page in-battle"><section class="game-frame"><div id="battle-hud"><div class="seed-bank"><strong id="sun-total">150</strong><div id="seed-cards"><button class="seed-card"><img src="/assets/runtime/hd4/original/seed-packet.webp" alt="种子包"></button></div></div></div></section></main>
+<aside style="position:fixed;z-index:10000;left:10px;top:180px;background:#fff;color:#111;font:12px monospace;padding:8px;max-width:90vw"><button id="compare">切换为原图对照</button><div id="metrics"></div></aside>
+<script type="module">
+import '../src/campaign.css';import '../src/style.css';import '../src/ui.css';import '../src/mobile.css';import '../src/hud-skin.css';import '../src/interaction.css';import '../src/widescreen.css';import '../src/mobile-battle.css';import '../src/display-hd.css';import '../src/pickers.css';import '../src/version-switch.css';
+const frame=document.querySelector('.game-frame'),bank=document.querySelector('.seed-bank'),sun=document.querySelector('#sun-total'),button=document.querySelector('#compare'),metrics=document.querySelector('#metrics');
+let direct=false;
+function measure(){
+ const rect=bank.getBoundingClientRect(),style=getComputedStyle(bank);
+ const data={mode:direct?'direct-url':'production',viewport:[innerWidth,innerHeight],dpr:devicePixelRatio,bank:{x:rect.x,y:rect.y,width:rect.width,height:rect.height},source:style.borderImageSource,borderImageWidth:style.borderImageWidth,sunFont:getComputedStyle(sun).fontSize};
+ metrics.replaceChildren(...JSON.stringify(data,null,2).split('\n').map(textContent=>Object.assign(document.createElement('div'),{textContent})));document.title=data.mode+' 顶部卡槽对照';
+}
+button.onclick=()=>{direct=!direct;if(direct){const hd=matchMedia('(resolution > 1dppx), (min-width:1600px)').matches;frame.style.setProperty('--hd-original-seedbank',`url('/assets/runtime/${hd?'hd4/':''}original/seedbank.webp')`);}else frame.style.removeProperty('--hd-original-seedbank');button.textContent=direct?'恢复正式样式':'切换为原图对照';measure();};
+addEventListener('load',measure,{once:true});addEventListener('resize',measure);
+</script></body></html>

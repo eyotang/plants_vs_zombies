@@ -1,0 +1,17 @@
+<!doctype html><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>经典窝瓜动作检查</title>
+<style>body{margin:0;background:#172719;color:#fff1c2;font:14px system-ui}header{padding:8px;display:flex;gap:8px;align-items:center;flex-wrap:wrap}button{padding:10px;min-height:44px}#host{width:min(100vw,800px);height:min(75vw,600px);margin:auto}pre{white-space:pre-wrap;margin:10px;font-size:12px}</style>
+<header><b>窝瓜：查看 → 起跳 → 下落 → 压扁</b><button id="advance" disabled>下一阶段</button><button id="narrow" disabled>切换390宽画布</button><span id="status">加载中</span></header><div id="host"></div><pre id="result"></pre>
+<script type="module">
+import {Scene} from '../src/rendering/scene';import {Game} from '../src/game/model';import {squashClip,squashTicks} from '../src/rendering/squash-motion';
+const scene=new Scene(),game=new Game(9,1),host=document.querySelector('#host'),status=document.querySelector('#status'),result=document.querySelector('#result');
+await scene.init(host);scene.app.stop();game.seeds=game.config.seeds.slice(0,6);game.start();game.select('sunflower');if(!game.plant(0,4))throw new Error('启动失败');
+// Controlled pose/impact fixture, not a normal-input complete-run strategy.
+const plant=game.plants[0];plant.kind='squash';plant.column=3;plant.row=2;
+const giant=game.spawnZombie('gargantuar',2,390,0);giant.frozenIn=1000;let stage=0,narrow=false,resizePreserved=true;
+const counts=[80,45,25,25,5,5,50,50];
+function step(count){for(let i=0;i<count;i++){scene.captureMovement();game.step();for(const event of game.drainEvents())scene.event(event);}}
+async function draw(){await scene.prepareActors(game,()=>{});scene.render(game,0,0);scene.app.render();const actor=scene.actors.get('p'+plant.id),s=plant.squash,expected=s?squashClip(s,320):'squash';const pass=resizePreserved&&(!game.plants.includes(plant)||actor.clip===expected&&actor.nativeRig.lastLoop===false);status.textContent=pass?'PASS 动作与计时一致':'FAIL';result.textContent=JSON.stringify({scope:'受控场景，非完整通关或真实手机',ticks:game.ticks,remaining:s?.remaining,restIn:s?.restIn,expectedClip:expected,actualClip:actor?.clip,clipTicks:s?squashTicks(s):null,actualClipTicks:actor?.nativeRig.lastTicks,loop:actor?.nativeRig.lastLoop,giantHealth:giant.health,root:actor?[actor.root.x,actor.root.y]:null,canvas:[scene.app.canvas.width,scene.app.canvas.height],maxFPS:scene.app.ticker.maxFPS,resizePreserved},null,2);}
+await scene.prepareBoard(game,()=>{});scene.setLevel(game);step(1);await draw();for(const button of document.querySelectorAll('button'))button.disabled=false;
+document.querySelector('#advance').onclick=async()=>{step(counts[stage++]);await draw();if(stage>=counts.length)document.querySelector('#advance').disabled=true;};
+document.querySelector('#narrow').onclick=async()=>{const before=JSON.stringify(game.snapshot());narrow=!narrow;host.style.width=narrow?'390px':'';host.style.height=narrow?'292.5px':'';await new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)));resizePreserved=before===JSON.stringify(game.snapshot());await draw();};
+</script>

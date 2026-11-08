@@ -1,0 +1,34 @@
+{
+  "status": "PARTIAL_NATIVE_CATAPULT_PORT",
+  "source": {
+    "repository": "ruslan831/PlantsVsZombies-decompilation",
+    "commit": "325b2229a7225d73870bb69322eefcda3a45bf8d",
+    "hashes": {
+      "Zombie.cpp": "72495be0215d603ea807fb1dbab4fd85eb5ce7bd5ad58e207c9742d15958a78f",
+      "Board.cpp": "c9751fd512f8ef0cbaab017c1a8fde36d495ddbbe838cefd1cb84716eb145387",
+      "Projectile.cpp": "564019234fc90d342b30fdedf4770161c790a2568f867b756e886ea9feb7185b"
+    },
+    "functions": [
+      "Zombie::FindCatapultTarget",
+      "Zombie::UpdateZombieCatapult",
+      "Zombie::ZombieCatapultFire",
+      "Board::AddProjectile",
+      "Projectile::Draw"
+    ]
+  },
+  "implemented": [
+    "Mapped ground catapults stop at raw object X<=650, corresponding to model center680.",
+    "Target distance compares integer raw zombie X against plant top-left+100, including equality.",
+    "Basketball float origin is (raw zombie X+113,native ground Y-44); AddProjectile truncates origins to integers, but velocity uses the original float origins.",
+    "Target is plant grid top-left without flowerpot draw offset; missing target still releases at integer(raw zombie X-300),Y0.",
+    "Native horizontal range is max(40,floatOriginX-targetX-20); vx=-range/120,vz=(targetY-floatOriginY)/120-7. End fields preserve the actual120-step physical endpoint after origin truncation.",
+    "Existing physical lob renderer already centers the31px image at native projectile top-left+15.5 and draws at source scale1.1."
+  ],
+  "limits": [
+    "Unsupported mini/water/airborne/special body bridges retain the old catapult behavior.",
+    "Full native target priority (flying plants), spike exclusion and potted-spike behavior still need mapping.",
+    "Final-ball movement timing, chilled animation cycles, vehicle crushing, sound cue and original float32/update ordering remain incomplete.",
+    "This is not a claim that the observed boss defeat was caused or solved by catapult origins.",
+    "Desktop emulation does not establish physical-phone CPU/GPU/RAM, touch or loading acceptance."
+  ]
+}

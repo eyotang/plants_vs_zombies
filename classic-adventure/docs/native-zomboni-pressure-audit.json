@@ -1,0 +1,41 @@
+{
+  "status": "SOURCE_MODEL_MISMATCH_CONFIRMED_NOT_IMPLEMENTED",
+  "reference": {
+    "repository": "ruslan831/PlantsVsZombies-decompilation",
+    "commit": "325b2229a7225d73870bb69322eefcda3a45bf8d",
+    "Zombie.cppSHA256": "72495be0215d603ea807fb1dbab4fd85eb5ce7bd5ad58e207c9742d15958a78f",
+    "Plant.cppSHA256": "9596bc875c4ccf4eb3e6eded4ebb503eed6a3a5afe2df6b3a53dbb31c417d43d",
+    "functions": [
+      "Zombie::CheckForZombieStep",
+      "Zombie::CheckSquish",
+      "Zombie::CanTargetPlant",
+      "Zombie::SquishAllInSquare",
+      "Plant::Squish"
+    ],
+    "lines": {
+      "zomboniAttackRect": [
+        387,
+        395
+      ],
+      "sharedDriveOver": [
+        4134,
+        4140
+      ],
+      "plantExclusions": [
+        6282,
+        6294
+      ],
+      "squareCrush": [
+        6389,
+        6410
+      ],
+      "squishSpecialHandling": [
+        2338,
+        2361
+      ]
+    }
+  },
+  "native": "Zomboni and catapult share raw attack rectangle10,-13,133,140 and native CheckSquish. Drive-over selects an eligible >=20px overlap cell, then Plant::Squish immediately fires awake explosives and preserves active squash.",
+  "current": "updateZomboni still uses abs(cellX-z.x)<55 and directly sets health0; native contact/pressure helper is currently restricted to catapult. Spike/tire behavior and old unmapped variants need separate controls.",
+  "next": "Build red-capable actual updateZomboni fixtures before changing code; reuse shared pressure behavior and retain explicit spike/tire controls. No implementation or pass claim from this source audit."
+}

@@ -1,0 +1,23 @@
+<!doctype html><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>经典投篮时钟验证</title>
+<style>body{margin:0;background:#172719;color:#fff1c2;font:14px system-ui}header{padding:8px;display:flex;gap:8px;align-items:center;flex-wrap:wrap}button{min-height:44px;padding:8px}#host{width:min(100vw,800px);height:min(75vw,600px);margin:auto}pre{white-space:pre-wrap;margin:8px}</style>
+<header><button data-tick="73">投球前</button><button data-tick="74">释放篮球</button><button data-tick="135">最后一球结束</button><button data-tick="268">慢速动作结束</button><b id="status">加载中</b></header><div id="host"></div><pre id="result"></pre>
+<script type="module">
+import {Game} from '../src/game/model';import {Scene} from '../src/rendering/scene';
+const g=new Game(49,23),scene=new Scene(),status=document.querySelector('#status'),result=document.querySelector('#result'),fired=[null,null],seen=new Set();
+try{
+ for(const k of ['sunflower','cabbagepult','flowerpot','kernelpult','wallnut','umbrella'])g.chooseSeed(k);g.start();g.select('sunflower');if(!g.plant(0,4))throw new Error('未能合法启动战斗');
+ const p=g.plants.at(-1);Object.assign(p,{column:0,row:1,actionIn:100000});g.plants.push({...p,id:9000,row:3});
+ const cars=[g.spawnZombie('catapult',1,650,0),g.spawnZombie('catapult',3,650,0)];for(const [i,z] of cars.entries()){z.speed=.25;z.catapult.ammo=1;z.chillIn=i?10000:0;}
+ await scene.init(document.querySelector('#host'));await scene.prepareBoard(g,()=>{});scene.setLevel(g);await scene.prepareActors(g,()=>{});scene.app.stop();
+ function tick(){scene.captureMovement();g.step();g.drainEvents();for(const p of g.peas)if(p.lob?.kind==='basketball'&&!seen.has(p.id)){seen.add(p.id);fired[p.row===1?0:1]??=g.ticks;}}
+ tick();
+ function draw(){scene.render(g,0,1);scene.app.render();scene.app.stop();const data=cars.map((z,i)=>{
+  const state=z.catapult,actor=scene.actors.get(`z${z.id}`),rig=actor.nativeRig,end=i?268:135,shot=i?147:74;
+  if(state.phase!==(g.ticks>=end?'walk':'shoot')||state.ammo!==(g.ticks>=end?0:1)||Math.abs(z.x-(650-Math.max(0,g.ticks-end+1)*(i?.1:.25)))>1e-7||fired[i]!==(g.ticks>=shot?shot:null))throw new Error('投篮阶段、发射时间或行驶距离错误');
+  if(state.phase==='shoot'&&Math.abs(rig.lastTicks-state.animTime*310)>1e-7)throw new Error('动作未使用模型中的原生动画时钟');
+  return {phase:state.phase,ammo:state.ammo,counter:state.remaining,time:state.animTime,x:z.x,rigTicks:state.phase==='shoot'?rig.lastTicks:null};
+ });status.textContent='PASS';result.textContent=JSON.stringify({tick:g.ticks,fired,normal:data[0],chilled:data[1],canvas:[scene.app.canvas.width,scene.app.canvas.height],maxFPS:scene.app.ticker.maxFPS});}
+ for(const b of document.querySelectorAll('button'))b.onclick=()=>{try{while(g.ticks<Number(b.dataset.tick))tick();draw()}catch(e){status.textContent='FAIL';result.textContent=e.stack}};
+ draw();document.querySelector('button').focus();
+}catch(e){status.textContent='FAIL';result.textContent=e.stack}
+</script>

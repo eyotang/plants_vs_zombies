@@ -1,0 +1,47 @@
+{
+  "status": "PARTIAL_NATIVE_AWAKE_SPECIAL_CHEW_PROTECTION",
+  "source": {
+    "repository": "ruslan831/PlantsVsZombies-decompilation",
+    "commit": "325b2229a7225d73870bb69322eefcda3a45bf8d",
+    "Zombie.cppSHA256": "72495be0215d603ea807fb1dbab4fd85eb5ce7bd5ad58e207c9742d15958a78f",
+    "functions": [
+      "Zombie::EatPlant",
+      "Zombie::CanTargetPlant",
+      "Plant::PlantInitialize"
+    ],
+    "lines": {
+      "eatProtection": [
+        6981,
+        6997
+      ],
+      "driveOverExclusions": [
+        6282,
+        6294
+      ],
+      "originalFuse": [
+        298,
+        305
+      ]
+    }
+  },
+  "implemented": [
+    "Chewers still select the plant and stop moving, but cannot damage cherry bombs, jalapenos, awake ice/doom mushrooms or squash during its look/pre-launch phase.",
+    "Sleeping ice/doom mushrooms remain edible; ordinary plants and a pot exposed by airborne squash retain bite damage.",
+    "100-tick original fuses,1800 damage, existing projectile/vehicle/giant attack paths and all costs/cooldowns remain unchanged.",
+    "Straight kind/state checks in the existing food branch add no collections, images, display objects, saved fields or loops."
+  ],
+  "tests": {
+    "new": 4,
+    "beforeFixFailed": 3,
+    "beforeFixPositiveSleepingControlPassed": 1,
+    "targetedTotal": 46,
+    "targetedPassed": 46,
+    "fixtureCorrection": "An initial assertion expected airborne squash to leave zombies without food. The fixture includes an edible pot, so the corrected positive assertion verifies the pot takes damage while the squash stays intact. Corrected test was rerun against the old bite block and again failed in3 cases.",
+    "existingUnitCorrection": "airborne-plant ground-look squash expected296 after a normal bite; source EatPlant instead protects that look state. Expectation is now300; vehicle, giant, bungee and airborne controls unchanged."
+  },
+  "limits": [
+    "Armed-mine contact/explosion geometry, newly planted pot/lily invulnerability, blover contact triggering and unrepresented native plant states remain separate pending work.",
+    "Hypnosis and other special attack paths retain their earlier port; this is not a full EatPlant or CanTargetPlant reconstruction.",
+    "Browser fixture is controlled actual Game/Scene, not legal full-run or physical-phone CPU/RAM acceptance."
+  ]
+}

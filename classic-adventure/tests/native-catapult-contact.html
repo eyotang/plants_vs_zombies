@@ -1,0 +1,19 @@
+<!doctype html><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>经典整格碾压验证</title>
+<style>body{margin:0;background:#172719;color:#fff1c2;font:14px system-ui}header{padding:8px;display:flex;gap:8px;align-items:center}button{min-height:44px;padding:8px}#host{width:min(100vw,800px);height:min(75vw,600px);margin:auto}pre{white-space:pre-wrap;margin:8px}</style>
+<header><button id="step">接触一步</button><b id="status">加载中</b></header><div id="host"></div><pre id="result"></pre>
+<script type="module">
+import {Game} from '../src/game/model';import {Scene} from '../src/rendering/scene';
+const g=new Game(49,23),scene=new Scene(),status=document.querySelector('#status'),result=document.querySelector('#result');let steps=0,explosions=0;
+try{
+ for(const k of ['sunflower','cherrybomb','flowerpot','kernelpult','wallnut','umbrella'])g.chooseSeed(k);g.start();g.select('sunflower');if(!g.plant(0,4))throw new Error('未能合法启动战斗');
+ const bomb=g.plants.at(-1),pot=g.plants.find(p=>p.kind==='flowerpot'&&p.column===0&&p.row===2);Object.assign(bomb,{kind:'cherrybomb',column:4,row:2,actionIn:1000});pot.column=4;
+ const z=g.spawnZombie('catapult',2,430,0);z.speed=0;z.catapult.ammo=0;
+ await scene.init(document.querySelector('#host'));await scene.prepareBoard(g,()=>{});scene.setLevel(g);await scene.prepareActors(g,()=>{});scene.app.stop();
+ function draw(){scene.render(g,0,1);scene.app.render();scene.app.stop();
+  if(bomb.health!==(steps?0:300)||pot.health!==(steps?0:300)||z.health!==(steps?-950:850)||explosions!==steps||g.kills!==steps)throw new Error('整格接触或受压爆炸结果不一致');
+  status.textContent='PASS';result.textContent=JSON.stringify({steps,bomb:bomb.health,pot:pot.health,vehicle:z.health,explosions,kills:g.kills,canvas:[scene.app.canvas.width,scene.app.canvas.height],maxFPS:scene.app.ticker.maxFPS},null,2);
+ }
+ document.querySelector('#step').onclick=()=>{try{if(steps)return;scene.captureMovement();g.step();steps++;for(const e of g.drainEvents()){if(e.kind==='explode')explosions++;scene.event(e)}draw()}catch(e){status.textContent='FAIL';result.textContent=e.stack}};
+ draw();document.querySelector('#step').focus();
+}catch(e){status.textContent='FAIL';result.textContent=e.stack}
+</script>

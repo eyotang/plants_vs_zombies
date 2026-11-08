@@ -1,42 +1,12 @@
 <!doctype html>
-<html lang="zh-CN">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>后院守卫战 · 阳光旧时光</title><meta name="description" content="轻量、离线可玩的经典草坪塔防：六种植物、五路防线、冒险与无尽生存。">
-  <link rel="stylesheet" href="styles.css" />
-</head>
-<body>
-  <main class="app">
-    <header class="topbar">
-      <div class="brand"><span class="brand-leaf">☘</span><div><b>后院守卫战</b><small>SUNSHINE · A BACKYARD STORY</small></div></div>
-      <div class="resource"><span class="sun-icon">☀</span><strong id="sunCount">150</strong></div>
-      <div class="wave-box"><div class="wave-copy"><span id="waveLabel">第 1 / 5 波</span><small id="enemyLabel">准备迎敌</small></div><div class="progress"><i id="progressBar"></i></div></div>
-      <button id="soundBtn" class="sound-btn" aria-pressed="true">音效 开</button><button id="pauseBtn" class="icon-btn" aria-label="暂停">Ⅱ</button>
-    </header>
-
-    <section class="game-shell">
-      <aside class="seed-bank" id="seedBank"></aside>
-      <div class="stage-wrap">
-        <canvas id="game" width="1440" height="810" aria-label="后院守卫战游戏区域"></canvas>
-        <div class="tip" id="tip">选择植物，然后点击草坪种植</div>
-        <div class="overlay show" id="startOverlay">
-          <div class="panel hero-panel">
-            <span class="eyebrow">阳 光 · 旧 时 光</span>
-            <div class="hero-sun">☀</div><h1>后院守卫战</h1><h3>那年夏天，草坪还在。</h3>
-            <p>熟悉的阳光，摇摆的向日葵。<br>种下你的第一道防线，守住这个小小的后院。</p>
-            <div class="quick-rules"><span>☀ 点击收集阳光</span><span>🌱 先选卡牌再种植</span><span>⚒ 铲子可移除植物</span></div>
-            <div class="modes"><button data-mode="adventure" class="active">经典冒险<small>五波进攻 · 渐入佳境</small></button><button data-mode="endless">无尽生存<small>持续升级 · 挑战极限</small></button></div><button class="primary" id="startBtn">开始守卫 →</button><small class="hero-note">原创致敬作品 · 无需下载 · 随时开玩</small>
-          </div>
-        </div>
-        <div class="overlay" id="endOverlay">
-          <div class="panel end-panel"><div class="end-icon" id="endIcon">🏆</div><h2 id="endTitle">守卫成功</h2><p id="endText"></p><button class="primary" id="restartBtn">再来一局</button></div>
-        </div>
-        <div class="pause-card" id="pauseCard"><b>游戏已暂停</b><span>点击右上角继续</span></div>
-      </div>
-    </section>
-    <footer><span>操作：点击卡牌 → 点击草坪</span><span><kbd>1–6</kbd> 选卡 · <kbd>空格</kbd> 暂停 · <kbd>S</kbd> 铲子 · <kbd>Esc</kbd> 取消</span><button id="shovelBtn" class="shovel">⚒ 铲子</button></footer>
-  </main>
-  <script src="game.js"></script>
-</body>
-</html>
+<html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="description" content="植物大战僵尸本地经典版，打开即玩，无需账号。"><title>植物大战僵尸 · 本地经典版</title><link rel="preload" as="image" href="assets/classic/starter.webp"><link rel="preload" as="image" href="assets/classic/background.jpg"><link rel="stylesheet" href="styles.css?v=classic-2.1"></head>
+<body><main class="game" id="app"><section class="viewport" id="viewport">
+<canvas id="game" width="800" height="600" aria-label="五行九列草坪，选择植物后点击种植"></canvas><canvas id="foreground" width="800" height="87" aria-hidden="true"></canvas>
+<div class="hud" id="hud" hidden><div class="sunbox"><span class="sun-label" role="img" aria-label="阳光"></span><strong id="sunCount">150</strong></div><div class="seedbank" id="seedBank"></div><button class="tool" id="shovelBtn" title="铲子：移除植物（S）" aria-label="铲子：移除植物" aria-pressed="false"><img src="assets/classic/shovel.svg" alt=""><span class="tool-key">S</span></button><div class="top-controls"><button id="soundBtn" aria-pressed="true">声音：开</button><button id="pauseBtn">菜单 / 暂停</button></div></div>
+<div class="wave" id="waveHud" hidden><b id="waveLabel"></b><div class="meter"><i id="progressBar"></i></div><small id="enemyLabel"></small></div>
+<div class="toast" id="tip" role="status"></div><div class="announcement" id="announcement"></div>
+<section class="menu" id="startOverlay"><div class="title"><span>本地经典版</span><h1><em>植物</em><small>大战</small><b>僵尸</b></h1><p>种下向日葵，守住你的前院。</p></div><div class="gravestone"><button class="adventure" data-mode="campaign" disabled>经典挑战<span>参考项目 · 五种关卡</span></button><button data-mode="endless" disabled>无尽生存<span>越来越多的僵尸，能守多久？</span></button><button id="helpBtn">玩法说明</button><div class="loading" id="loading">正在准备草坪…</div></div><div class="menu-footer">个人学习 · 非商业致敬作品 · 无需登录</div></section>
+<section class="veil" id="pauseOverlay" hidden><div class="stone-panel"><h2>休息一下</h2><p>草坪已暂停，僵尸也在等你。</p><button id="resumeBtn">继续游戏</button><button id="pauseShopBtn">道具商店</button><button id="restartBtn">重新开始</button><button id="homeBtn">返回主菜单</button></div></section>
+<section class="veil" id="endOverlay" hidden><div class="stone-panel"><h2 id="endTitle"></h2><p id="endText"></p><button id="nextLevelBtn" hidden>下一关 →</button><button id="againBtn">再来一次</button><button id="endHomeBtn">返回主菜单</button></div></section>
+<section class="veil" id="helpOverlay" hidden><div class="stone-panel help"><h2>草坪生存指南</h2><p>① 点顶部植物卡，再点草坪种下植物。<br>② 点落下的阳光收集资源，先种向日葵。<br>③ 同一行的射手会自动攻击前方僵尸。<br>④ 坚果拖住僵尸，寒冰减速，樱桃炸毁周围三路。<br>⑤ 每行割草机只能救场一次。</p><p class="keys">1–8 选卡 · S 铲子 · Esc 取消 · 空格暂停</p><button id="closeHelpBtn">明白了</button></div></section>
+<section class="veil" id="shopOverlay" role="dialog" aria-modal="true" aria-labelledby="shopTitle" hidden><div class="stone-panel shop-panel"><div class="shop-heading"><h2 id="shopTitle">后院小铺</h2><span class="coin-balance">金币 <b id="coinCount">0</b></span></div><p class="shop-intro">击退僵尸 +5 金币 · 守住一波 +25 金币</p><div class="shop-item"><img src="assets/classic/sun-collector.svg" alt="木座金属阳光收集器"><div><h3>阳光收集器</h3><p>自动收集落下的阳光。<br>永久道具，购买后每局都可使用。</p><span id="collectorUnlock">到达第 3 关或第 3 波解锁</span></div></div><button id="buyCollectorBtn">150 金币 · 购买</button><button id="toggleCollectorBtn" hidden aria-pressed="true">自动收集：开</button><p id="shopStatus" role="status"></p><button class="shop-close" id="closeShopBtn">返回草坪</button></div></section><section class="veil" id="campaignOverlay" role="dialog" aria-modal="true" aria-labelledby="campaignTitle" hidden><div class="stone-panel campaign-panel"><h2 id="campaignTitle">冒险之旅</h2><p>守住前院，走进夜晚，再挑战传送带与坚果保龄球。</p><div id="campaignLevels"></div><button id="campaignCloseBtn">返回</button></div></section><section class="veil" id="loadoutOverlay" role="dialog" aria-modal="true" aria-labelledby="loadoutTitle" hidden><div class="stone-panel loadout-panel"><h2 id="loadoutTitle">选择你的植物</h2><p id="loadoutHint"></p><div class="loadout-count"><strong id="chosenCount">已选 0 / 8</strong><button id="recommendBtn">推荐阵容</button></div><div id="plantChoices"></div><div class="loadout-actions"><button id="cancelLoadoutBtn">返回</button><button id="confirmLoadoutBtn">开始守卫 →</button></div></div></section></section><div class="orientation-note"><span>横屏游玩，草坪和卡牌更清楚</span><button id="landscapeBtn">横屏全屏 ↗</button></div><footer><span id="footerText">经典草坪，熟悉的老朋友。</span><span>1–8 选卡 · S 铲子 · 空格暂停 · F 全屏</span><button id="shopBtn">商店 · 0 金币</button><button id="completeBtn">完整冒险</button><button id="fullscreenBtn">全屏 ↗</button></footer></main><script src="classic-assets.js?v=classic-2"></script><script src="sound-engine.js?v=classic-2"></script><script src="campaign-data.js?v=classic-2"></script><script src="game.js?v=classic-5"></script></body></html>

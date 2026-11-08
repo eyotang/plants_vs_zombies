@@ -1,0 +1,45 @@
+{
+  "status": "PUBLISHED_VERIFIED",
+  "target": "iPhone / Safari",
+  "physicalIPhoneTested": false,
+  "changes": [
+    "Uncached scoped release.json provides current worker independently of cached HTML",
+    "15 second bounded background discovery; single flight and 60 second foreground cooldown; no interval",
+    "Reuse exact-scope registration and never re-register obsolete HTML worker over a waiting update",
+    "Explicit activation; offline cached launch and saved progress preserved"
+  ],
+  "tests": {
+    "total": 642,
+    "passed": 642,
+    "failed": 0,
+    "log": "output/弱网更新-全量测试.log"
+  },
+  "safariDesktopFixture": {
+    "productionPwaCode": true,
+    "navigationDelayMs": 4500,
+    "releaseDiscoveryDelayMs": 4000,
+    "cachedPage": "A",
+    "discoveredWorker": "sw-8c09ed02537f44af.js",
+    "explicitUpdatePage": "B",
+    "progressBeforeUpdate": 2,
+    "progressAfterUpdate": 2,
+    "server503RestartProgress": 3,
+    "testCacheCleaned": true,
+    "evidence": [
+      "output/弱网更新-Safari旧页发现.txt",
+      "output/弱网更新-Safari离线保留进度.txt",
+      "output/弱网更新-浏览器服务器.log"
+    ]
+  },
+  "limits": [
+    "Desktop Safari validation is not an iPhone performance measurement",
+    "Legacy clients without the discovery code require one fresh page load before future independent discovery is available",
+    "HTTP 503 simulation does not represent physical radio or complete OS network disconnection"
+  ],
+  "publication": {
+    "worker": "sw-f553353f1d4193c0.js",
+    "publicUrl": "https://plants-vs-zombies.apps.workbuddy.host/?sharecode=FR6B3XZMIS",
+    "independentHttpChecks": 11,
+    "report": "output/弱网更新-发布核对.json"
+  }
+}

@@ -1,0 +1,24 @@
+<!doctype html><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>经典清场植物保护验证</title>
+<style>body{margin:0;background:#172719;color:#fff1c2;font:14px system-ui}header{padding:8px;display:flex;gap:6px;flex-wrap:wrap}button{min-height:44px;padding:8px}#host{width:min(100vw,800px);height:min(75vw,600px);margin:auto}pre{white-space:pre-wrap;margin:8px}</style>
+<header><button id="before">推进到99步</button><button id="fire">推进到100步</button><button id="peak">推进20步</button><button id="release">回收资源</button><b id="status">加载中</b></header><div id="host"></div><pre id="result"></pre>
+<script type="module">
+import{Game}from'../src/game/model';import{Scene}from'../src/rendering/scene';import{cellX}from'../src/game/config';
+const g=new Game(49,23),scene=new Scene(),status=document.querySelector('#status'),result=document.querySelector('#result');let steps=0,explosions=0;
+try{
+ for(const k of ['sunflower','cherrybomb','flowerpot','kernelpult','wallnut','umbrella'])g.chooseSeed(k);g.start();g.select('sunflower');if(!g.plant(0,4))throw Error('未合法启动');
+ // Controlled fixture funds one legal bomb; enemies exercise the actual chew path.
+ g.sun=150;g.select('cherrybomb');if(!g.plant(1,2))throw Error('未合法种下炸弹');const bomb=g.plants.find(p=>p.kind==='cherrybomb'),pot=g.plants.find(p=>p.kind==='flowerpot'&&p.column===1&&p.row===2);
+ const enemies=[0,5,10].map(dx=>{const z=g.spawnZombie('normal',2,cellX(1)-20+dx,0);z.speed=0;z.biteIn=1;return z;});g.drainEvents();
+ await scene.init(document.querySelector('#host'));await scene.prepareBoard(g,()=>{});scene.setLevel(g);await scene.prepareActors(g,()=>{});scene.app.stop();
+ function frame(n){for(let i=0;i<n;i++){scene.captureMovement();g.step();steps++;for(const e of g.drainEvents()){if(e.kind==='explode')explosions++;scene.event(e)}}}
+ function draw(){scene.render(g,0,1);scene.app.render();scene.app.stop();const effects=scene.effects.filter(e=>e.powie);
+  if(bomb.health!==(steps<100?300:0)||pot.health!==300||explosions!==(steps<100?0:1)||g.plants.includes(bomb)!==(steps<100)||enemies.some(z=>z.health!==(steps<100?270:-1530)))throw Error('炸弹、花盆或伤害不一致');
+  if(steps===99&&(!enemies.every(z=>z.eating)||bomb.actionIn!==1))throw Error('99步保护或倒计时错误');
+  if(steps>=100&&(effects.length!==1||effects[0].node.children.length!==29))throw Error('未复用经典Powie效果');
+  status.textContent='PASS';result.textContent=JSON.stringify({steps,bombHealth:bomb.health,fuse:bomb.actionIn,potHealth:pot.health,enemies:enemies.map(z=>({health:z.health,eating:z.eating,x:z.x})),explosions,powieEffects:effects.length,powieSprites:effects[0]?.node.children.length??0,canvas:[scene.app.canvas.width,scene.app.canvas.height],maxFPS:scene.app.ticker.maxFPS});
+ }
+ const safe=fn=>()=>{try{fn();draw()}catch(e){status.textContent='FAIL';result.textContent=e.stack}};
+ document.querySelector('#before').onclick=safe(()=>{if(steps<99)frame(99-steps)});document.querySelector('#fire').onclick=safe(()=>{if(steps<100)frame(100-steps)});document.querySelector('#peak').onclick=safe(()=>{if(steps===100)frame(20)});
+ document.querySelector('#release').onclick=async()=>{try{await scene.release();const data={phase:'released',actors:scene.actors.size,effects:scene.effects.length,textures:Object.keys(scene.textures).length};if(data.actors||data.effects||data.textures)throw Error('战斗资源未释放');status.textContent='PASS';result.textContent=JSON.stringify(data)}catch(e){status.textContent='FAIL';result.textContent=e.stack}};draw();
+}catch(e){status.textContent='FAIL';result.textContent=e.stack}
+</script>

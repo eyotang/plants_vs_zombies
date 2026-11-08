@@ -1,0 +1,89 @@
+{
+  "status": "Partial native Gravebuster lifecycle port; full-game acceptance remains open",
+  "referenceRepository": "https://github.com/ruslan831/PlantsVsZombies-decompilation/tree/325b2229a7225d73870bb69322eefcda3a45bf8d",
+  "source": {
+    "commit": "325b2229a7225d73870bb69322eefcda3a45bf8d",
+    "Plant.cpp": "9596bc875c4ccf4eb3e6eded4ebb503eed6a3a5afe2df6b3a53dbb31c417d43d",
+    "Gravebuster.reanim": "ad8e60b474dc05ead34efb505e68d807a1be269a8e9480d95eb578942e9d935c"
+  },
+  "equations": {
+    "landing": "7 native frames at per-plant initial rate10–15; next abilities update observes completed animation",
+    "eating": "400 updates after landing; body rate12fps over28 frames",
+    "framePosition": "normalizedTime*(frameCount-1), clamped next frame; normal source loop does not interpolate last→first",
+    "blend": "10-update linear transform/alpha blend from held landing pose",
+    "height": "gridY-40+(400-countdown)*30/400 during eating"
+  },
+  "compatibility": [
+    "Old saves without gravebuster state continue eating from existing actionIn",
+    "New save snapshots preserve phase, rate and ticks",
+    "Imitater morph initializes landing instead of skipping directly to eating",
+    "Cursor and squished cached poses do not get the live sink offset"
+  ],
+  "cost": {
+    "newImageFiles": 0,
+    "newAudioFiles": 0,
+    "newActionMetadataBytes": 49260,
+    "existingNonCodeAssetsUnchanged": true
+  },
+  "validation": {
+    "total": 548,
+    "passed": 548,
+    "failed": 0,
+    "log": "output/墓碑吞噬者-全量测试.log",
+    "additionalTargetedLog": "output/墓碑吞噬者-专项测试.log",
+    "imitaterInitializationVerified": true
+  },
+  "limits": [
+    "Not native-game pixel goldens",
+    "Static render-submission timing excludes GPU completion and game logic; not process RAM or physical iPhone performance",
+    "Source grave-clearing loot is not ported",
+    "Native floating point accumulation and exact random sequence have not been compared against a running original engine",
+    "Remaining full-game animation, projectile and touch/phone acceptance gaps remain open"
+  ],
+  "evidence": "../../output/墓碑吞噬者-优化验证.json",
+  "feedback": {
+    "sourceDefinitions": [
+      "GraveBuster.xml",
+      "GraveBusterDie.xml",
+      "TodParticle.cpp",
+      "TodFoley.cpp",
+      "TodFoley.h"
+    ],
+    "assets": "gravebuster-feedback-assets.json",
+    "chew": {
+      "spawnPerSecond": 20,
+      "systemTicks": 400,
+      "particleTicks": [
+        40,
+        50
+      ],
+      "spriteSlots": 10,
+      "row": 0,
+      "frames": 8,
+      "centerY": "0→30 over399 intervals"
+    },
+    "clear": {
+      "initialParticles": 20,
+      "systemTicks": 500,
+      "particleTicks": [
+        30,
+        40
+      ],
+      "spriteSlots": 20,
+      "row": 1,
+      "frames": 8
+    },
+    "sound": {
+      "sample": "gravebuster-chomp.mp3",
+      "nativeFlags": 4,
+      "meaning": "mute on pause; not loop or one-at-a-time"
+    },
+    "evidence": "../../output/清墓反馈-优化验证.json"
+  },
+  "latestValidation": {
+    "total": 553,
+    "passed": 553,
+    "failed": 0,
+    "log": "output/清墓反馈-全量测试.log"
+  }
+}

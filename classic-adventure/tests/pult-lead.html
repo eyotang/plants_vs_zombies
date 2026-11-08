@@ -1,0 +1,18 @@
+<!doctype html><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>经典投掷预判检查</title>
+<style>body{margin:0;background:#172719;color:#fff1c2;font:14px system-ui}header{padding:8px;display:flex;gap:8px;align-items:center;flex-wrap:wrap}button{padding:10px;min-height:44px}#host{width:min(100vw,800px);height:min(75vw,600px);margin:auto}pre{white-space:pre-wrap;margin:10px;font-size:12px}</style>
+<header><b>冰冻 · 黄油 · 反向 · 减速</b><button id="advance" disabled>推进30步</button><span id="status">加载中</span><output id="metrics"></output></header><div id="host"></div><pre id="result"></pre>
+<script type="module">
+import {Scene} from '../src/rendering/scene';import {Game} from '../src/game/model';
+// Controlled render fixtures, not a complete-run player or human difficulty test.
+const scene=new Scene(),game=new Game(49,1),host=document.querySelector('#host'),status=document.querySelector('#status'),result=document.querySelector('#result');
+await scene.init(host);scene.app.stop();game.seeds=['sunflower','flowerpot','cabbagepult','kernelpult','melonpult','wintermelon'];game.start();game.sun=9999;game.select('sunflower');if(!game.plant(0,4))throw new Error('启动场景失败');game.plants=game.plants.filter(p=>p.column===0&&p.row===4);
+const kinds=['cabbagepult','kernelpult','melonpult','wintermelon'],states=[{frozenIn:500},{butterIn:500},{backwards:true},{chillIn:500}],expected=[620,620,640,612];
+for(let row=0;row<4;row++){
+ const base={column:1,row,health:300,born:0,shotAt:-100};game.plants.push({...base,id:500+row*2,kind:'flowerpot',actionIn:0},{...base,id:501+row*2,kind:kinds[row],actionIn:row===3?1000:1,...(row===3?{winterLaunchIn:2}:{})});
+ const z=game.spawnZombie('normal',row,650,0);Object.assign(z,{speed:.4,...states[row]});
+}
+await scene.prepareBoard(game,()=>{});scene.setLevel(game);let launches=[];
+function step(count){for(let i=0;i<count;i++){scene.captureMovement();game.step();for(const event of game.drainEvents())scene.event(event);if(!launches.length&&game.peas.length===4)launches=game.peas.map(p=>({kind:p.lob.kind,row:p.row,endX:p.lob.endX,expected:expected[p.row]}));}}
+async function draw(){await scene.prepareActors(game,()=>{});scene.render(game,0,1);scene.app.render();const pass=launches.length===4&&launches.every(p=>p.endX===p.expected);status.textContent=pass?'PASS 预判一致':'FAIL';document.querySelector('#metrics').textContent=JSON.stringify({tick:game.ticks,viewport:[innerWidth,innerHeight],host:[host.clientWidth,host.clientHeight],canvas:[scene.app.canvas.width,scene.app.canvas.height],fpsCap:scene.app.ticker.maxFPS});result.textContent=JSON.stringify({scope:'受控渲染场景，非真实手机或完整通关',ticks:game.ticks,launches,projectiles:game.peas.map(p=>({row:p.row,x:p.x,y:p.y})),canvas:[scene.app.canvas.width,scene.app.canvas.height],maxFPS:scene.app.ticker.maxFPS},null,2);}
+document.querySelector('#advance').onclick=async()=>{step(30);await draw()};try{step(1);await draw();document.querySelector('#advance').disabled=false}catch(e){status.textContent='FAIL';result.textContent=e.stack}
+</script>

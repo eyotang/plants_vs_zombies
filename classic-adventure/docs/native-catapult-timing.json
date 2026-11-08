@@ -1,0 +1,45 @@
+{
+  "status": "PARTIAL_NATIVE_CATAPULT_CLOCK_PORT",
+  "source": {
+    "repository": "ruslan831/PlantsVsZombies-decompilation",
+    "commit": "325b2229a7225d73870bb69322eefcda3a45bf8d",
+    "hashes": {
+      "Zombie.cpp": "72495be0215d603ea807fb1dbab4fd85eb5ce7bd5ad58e207c9742d15958a78f",
+      "Reanimator.cpp": "04c95039b7a8a79c354a75037792f84db4b9a522c6fa42ee34d8e4c45aa44da3"
+    },
+    "functions": [
+      "Zombie::Update",
+      "Zombie::UpdateZombieCatapult",
+      "Zombie::UpdateZombieWalking",
+      "Zombie::ApplyAnimRate",
+      "Zombie::UpdateReanim",
+      "Reanimation::Update",
+      "Reanimation::ShouldTriggerTimedEvent",
+      "Reanimation::GetFrameTime"
+    ],
+    "shootMetadataSHA256": "b7592732f141a0c2591adf7fa8e6880def0b2031a39eeb7971106c6db6003edb"
+  },
+  "implemented": [
+    "New mapped attacks retain float32 mAnimTime and mLastFrameTime. Source increment is float32(.01*rate/32), not31; actions inspect the previous reanimation update before the next increment.",
+    "Timed event uses native last>0 and last<=float32(.545)<current. Constant normal/chilled attacks release at relative73/146 ticks and end at134/267 ticks after entering shoot.",
+    "Chill applies0.5 to animation rate and0.4 to driving; the300-tick phase countdown decrements independently of chill and continues while walking.",
+    "After its final shot animation the vehicle immediately walks in the same logic step instead of idling until the300-tick reload interval ends.",
+    "Renderer samples the persisted normalized shoot clock as310 legacy pose ticks, corresponding to32 source poses with once-and-hold interpolation across31 intervals. Post-attack walk rate uses source6fps; initial walk remains5.5fps.",
+    "Pre-clock saved attacks retain old70/129-tick thresholds until they enter a new native attack; snapshots containing normalized clocks restore those exact fields."
+  ],
+  "testFixtureCorrection": "The potted-spike contact test previously started a new attack then manually overwrote only its remaining counter to force release. It now advances that real attack until the shot is emitted; target and impact expectations are unchanged.",
+  "resourceImpact": {
+    "newImages": 0,
+    "newTextures": 0,
+    "newDisplayObjects": 0,
+    "extraTickers": 0,
+    "persistentScalarsPerCatapult": 2,
+    "note": "No current full-battle or physical-device CPU measurement for this exact candidate."
+  },
+  "remaining": [
+    "Visible stock basketball tracks are not yet hidden progressively as ammo depletes.",
+    "Other walking/idle pose clocks and blends still use the legacy rendering bridge; full native animation parity is unproven.",
+    "Unsupported mini/water/airborne bridges keep prior attack behavior; complete native update ordering remains incomplete.",
+    "Full play, source golden oracle replacement and physical-device resource/loading checks remain release gates."
+  ]
+}

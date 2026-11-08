@@ -1,0 +1,58 @@
+{
+  "status": "PARTIAL_NATIVE_PEA_BODY_HEAD_PORT",
+  "source": {
+    "repository": "https://github.com/ruslan831/PlantsVsZombies-decompilation",
+    "commit": "325b2229a7225d73870bb69322eefcda3a45bf8d",
+    "sha256": {
+      "Plant.cpp": "9596bc875c4ccf4eb3e6eded4ebb503eed6a3a5afe2df6b3a53dbb31c417d43d",
+      "Projectile.cpp": "564019234fc90d342b30fdedf4770161c790a2568f867b756e886ea9feb7185b",
+      "Reanimator.cpp": "04c95039b7a8a79c354a75037792f84db4b9a522c6fa42ee34d8e4c45aa44da3",
+      "Reanimator.h": "17425116a14a02fc0db71731d95a7ed9949773393c981276a093a333ffc7edb0"
+    },
+    "geometry": "pea-geometry-source.json",
+    "art": "pea-art-source.json"
+  },
+  "implemented": [
+    "Five pea families use separate authoritative body and head animation clocks; Split Pea retains both heads and the shared shooting counter.",
+    "Acquisition precedes native windup; committed shots survive target loss. Normal first emission34 updates, Repeater25, Gatling32/49/65/82.",
+    "20-update frozen pose blends, source loop-count persistence and float32 accumulated animation clocks. C++ arithmetic oracle checked through100000 updates.",
+    "Body stem attachment and integer head offsets drive native projectile top-left origins, bridged by14 pixels to existing image-center model coordinates. Pot offset5 pixels; gatling and rear mouths retain their own X offsets.",
+    "Native pea raw X accumulates float32 velocity; roof shadow checks previous ground plane after collision, then updates to the next ground plane.",
+    "Selected/retained/imitater pea families lazily load metadata; existing large image atlases are reused. One six-frame blink atlas adds5872 encoded bytes and18000 decoded RGBA bytes.",
+    "New state survives pause and JSON restore; older saves get deterministic idle-state migration while retaining their next launch deadline.",
+    "Renderer allocates plant part sprites once and reuses them across body/head blends; clearing the battle releases pea metadata, blink textures and actors."
+  ],
+  "validation": {
+    "tests": "output/射手联动-新增专项.log",
+    "clockReference": "tools/pea-clock-reference.cpp and tests/helpers/pea-clock-reference.json",
+    "browserFixture": "tests/pea-body-head.html",
+    "desktopSafari": {
+      "plants": 40,
+      "parts": 616,
+      "frames": 100,
+      "meanSubmitMs": 1.23,
+      "p95SubmitMs": 3,
+      "replacedPlantParts": 0,
+      "releasedActors": 0,
+      "releasedDisplayObjects": 1
+    },
+    "desktopChrome": {
+      "plants": 40,
+      "parts": 616,
+      "frames": 100,
+      "meanSubmitMs": 0.73,
+      "p95SubmitMs": 1.2,
+      "replacedPlantParts": 0,
+      "releasedActors": 0,
+      "releasedDisplayObjects": 1
+    },
+    "scope": "Controlled desktop browser scene, rule-step and draw submission timing only. Not physical iPhone, real-time frame rate, GPU completion, thermal/battery behavior or process-memory acceptance."
+  },
+  "remaining": [
+    "Five-family horizontal target rectangles and ordinary/snow horizontal water/special/mini collision now follow native-pea-range.json. Complete vertical/phase parity and boss/portal cases remain unverified.",
+    "Threepeater and other projectile-family animation/origin ports.",
+    "Full source RNG sequence and old-save original head pose recovery.",
+    "Cursor/preview/squished cache phase equivalence and full-scene pixel goldens.",
+    "Physical iPhone Safari loading, audio activation, touch, long-play thermal, battery and process memory acceptance."
+  ]
+}

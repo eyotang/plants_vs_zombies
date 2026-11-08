@@ -1,0 +1,36 @@
+<!doctype html><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>经典冒险场景验证</title><style>body{margin:0;background:#172719;color:#fff1c2;font:14px system-ui}header{padding:8px;display:flex;gap:10px;align-items:center;flex-wrap:wrap}button,select{padding:8px}#host{width:min(100vw,800px);height:min(75vw,600px);margin:auto}pre{white-space:pre-wrap;font-size:12px;margin:8px}</style><header><select id="level"><option value="9">白天 1–9</option><option value="18">夜晚 2–8</option><option value="29">泳池 3–9</option><option value="39">迷雾 4–9</option><option value="49">屋顶 5–9</option><option value="50">僵王 5–10</option></select><button id="load">加载场景</button><button id="stress">测量300帧</button><span id="status">准备中</span></header><div id="host"></div><pre id="result"></pre><pre id="measurement"></pre><script type="module">
+import {Scene} from '../src/rendering/scene';import {Game} from '../src/game/model';import {PLANTS,cellX} from '../src/game/config';
+const host=document.querySelector('#host'),result=document.querySelector('#result'),status=document.querySelector('#status');let scene=new Scene(),game;await scene.init(host);
+async function load(){try{status.textContent='加载中';game=new Game(Number(document.querySelector('#level').value),123456);const decks={18:['puffshroom','sunshroom','fumeshroom','gravebuster','hypnoshroom','doomshroom'],29:['lilypad','squash','threepeater','tanglekelp','torchwood','tallnut'],39:['seashroom','cactus','blover','splitpea','starfruit','pumpkin'],49:['cabbagepult','flowerpot','kernelpult','coffeebean','umbrella','melonpult']};game.seeds=decks[game.level]??game.config.seeds.slice(0,6);game.start();
+// Controlled render fixture: fund one legal placement so Game starts real combat.
+if(!game.hasConveyor){game.sun=10000;const starter=game.seeds[0],row=['lilypad','tanglekelp','seashroom'].includes(starter)?2:game.config.rows.at(-1);game.select(starter);if(!game.plant(0,row))throw new Error('压力场景未能启动真实战斗');}
+
+for(const [i,kind] of game.seeds.entries()){const row=['lilypad','tanglekelp','seashroom'].includes(kind)?2+i%2:game.config.rows[i%game.config.rows.length],column=1+Math.floor(i/game.config.rows.length);if(game.waterRow(row)&&kind!=='lilypad')game.plants.push({id:500+i,kind:'lilypad',row,column,health:300,born:0,actionIn:100,shotAt:-100});if(game.config.environment==='roof'&&kind!=='flowerpot')game.plants.push({id:600+i,kind:'flowerpot',row,column,health:300,born:0,actionIn:100,shotAt:-100});game.plants.push({id:700+i,kind,row,column,health:PLANTS[kind].health,born:0,actionIn:100,shotAt:-100});}
+const kinds=[...new Set(game.waves.flat())];for(const [i,kind] of kinds.slice(0,10).entries())game.spawnZombie(kind,game.config.rows[i%game.config.rows.length],500+Math.floor(i/game.config.rows.length)*110,0);
+if(game.boss)for(let i=0;i<1800&&game.phase==='playing';i++)game.step();await scene.prepareBoard(game,()=>{});scene.setLevel(game);await scene.prepareActors(game,()=>{});scene.render(game,0,1);scene.app.render();scene.app.stop();status.textContent='PASS 场景已渲染';result.textContent=JSON.stringify({level:game.level,viewport:[innerWidth,innerHeight],scene:game.config.environment,plants:game.seeds,zombies:kinds,canvas:[scene.app.canvas.width,scene.app.canvas.height],maxFPS:scene.app.ticker.maxFPS},null,2);
+}catch(error){status.textContent='FAIL';result.textContent=error.stack}}
+document.querySelector('#load').onclick=load;
+document.querySelector('#stress').onclick=async()=>{
+ try{
+  for(let i=game.zombies.length;i<100;i++)game.spawnZombie(i%3?'normal':'bucket',game.config.rows[i%game.config.rows.length],520+i%8*24,0);
+  await scene.prepareActors(game,()=>{});
+  const positions=new Map(game.zombies.map(z=>[z.id,z.x]));
+  let shots=0,impacts=0,physicalLobSteps=0,peakProjectiles=0;
+  const start=performance.now();
+  for(let i=0;i<300;i++){
+   for(let j=0;j<3;j++){
+    scene.captureMovement();game.step();
+    for(const event of game.drainEvents()){if(event.kind==='shoot')shots++;if(event.kind==='hit')impacts++;scene.event(event);}
+    if(game.peas.some(p=>p.lob?.flight))physicalLobSteps++;
+    peakProjectiles=Math.max(peakProjectiles,game.peas.length);
+   }
+   scene.render(game,33.33,1);scene.app.render();
+  }
+  const ms=(performance.now()-start)/300;
+  const zombieTravel=game.zombies.reduce((sum,z)=>sum+Math.abs(z.x-(positions.get(z.id)??z.x)),0);
+  if(!shots||!impacts||!zombieTravel||game.level===49&&!physicalLobSteps)throw new Error('压力检查未覆盖实际射击、命中和移动');
+  status.textContent='PASS 真实战斗测量完成';
+  document.querySelector('#measurement').textContent=JSON.stringify({scope:'本机同步CPU循环耗时；不是实时帧率、GPU耗时或真机电量测量',cpuMillisecondsPerFrame:ms,viewport:[innerWidth,innerHeight],frames:300,logicSteps:900,shots,impacts,physicalLobSteps,peakProjectiles,zombieTravel,canvas:[scene.app.canvas.width,scene.app.canvas.height]},null,2);
+ }catch(error){status.textContent='FAIL';document.querySelector('#measurement').textContent=error.stack;}
+};const initialLevel=new URLSearchParams(location.search).get('level');if([...document.querySelector('#level').options].some(o=>o.value===initialLevel))document.querySelector('#level').value=initialLevel;await load();
+</script>

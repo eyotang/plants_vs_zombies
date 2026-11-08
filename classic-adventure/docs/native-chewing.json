@@ -1,0 +1,51 @@
+{
+  "status": "PARTIAL_NATIVE_CHEW_CONTACT_PORT",
+  "source": {
+    "repository": "ruslan831/PlantsVsZombies-decompilation",
+    "commit": "325b2229a7225d73870bb69322eefcda3a45bf8d",
+    "sha256": {
+      "Board.cpp": "c9751fd512f8ef0cbaab017c1a8fde36d495ddbbe838cefd1cb84716eb145387",
+      "Plant.cpp": "9596bc875c4ccf4eb3e6eded4ebb503eed6a3a5afe2df6b3a53dbb31c417d43d",
+      "Zombie.cpp": "72495be0215d603ea807fb1dbab4fd85eb5ce7bd5ad58e207c9742d15958a78f",
+      "Projectile.cpp": "564019234fc90d342b30fdedf4770161c790a2568f867b756e886ea9feb7185b"
+    },
+    "functions": [
+      "Zombie::FindPlantTarget",
+      "Zombie::GetZombieAttackRect",
+      "Zombie::CanTargetPlant",
+      "Zombie::UpdateLadder",
+      "Plant::GetPlantRect",
+      "Board::GetRectOverlap",
+      "Projectile::Draw"
+    ]
+  },
+  "implemented": [
+    "The ordinary chew path uses native integer object X and attack rectangles for already mapped ground families. At least 20 horizontal pixels of attack/plant overlap are required. Other unmapped states retain the legacy distance bridge.",
+    "Plant rectangles are shared by chewing and basketball: ordinary width 60, tallnut 80, pumpkin 60 with zero source X offset, cob cannon 140.",
+    "Default attack offset/width is (50,20); jack/newspaper/yeti (20,50); ladder (10,50). Reverse facing maps offset to 120-offset-width. Existing special giant/vehicle attack update paths remain separate.",
+    "Potted spikes are valid chew targets for mapped ground enemies. Contact is checked before searching supporting pots to avoid a scan for distant spikes.",
+    "Ladder placement starts without moving the zombie or setting eating=true. Completion finds a current live wall at the attack rectangle before adding the ladder and detaching its shield; vanished targets leave the carried ladder intact.",
+    "Physical lob visuals use source scale cabbage=1, kernel=.95, butter=.8, melon=1, wintermelon=1, basketball=1.1. Existing textures and display objects are reused."
+  ],
+  "verification": [
+    "864 controlled full-step native chew cases across six enemies, four plant rectangles, two directions and eighteen X positions.",
+    "Pumpkin protection, unsupported/supported ground spikes, and ladder target survival/removal controls.",
+    "Desktop and 390x844 viewport native Chrome: overlap 19 keeps health 4000 and zombie-walk; overlap 20 causes health 3996 and zombie-eat. Controlled diagnostics are not normal-play clearance."
+  ],
+  "testFixtureChanges": [
+    "Chew/armor/hypnosis/garlic/airborne positive controls now place normal ground enemies at an explicit native contact position, rather than the old +20/+30 foot-anchor distance. Damage, health, cooldowns, pause and armor assertions are retained.",
+    "The pole post-vault and tallnut tests wait for bounded actual contact instead of assuming eating starts at an arbitrary earlier tick. Native pole jumping/bonk timing itself remains unported.",
+    "No player strategy, wave, random seed, price or cooldown was altered. Three old upstream-port golden snapshot assertions remain unchanged and fail after this intentional native-rule correction."
+  ],
+  "corrections": [
+    "The older lob rendering code incorrectly scaled cabbage to .8 while leaving kernel/butter at 1. Projectile::Draw in the pinned source specifies 1, .95 and .8 respectively.",
+    "The initial scale test failed because its new helper export did not exist; that import failure is not claimed as reproduction of the old visible scale error. Chew and ladder failures were observed through actual Game.step before their fixes."
+  ],
+  "remaining": [
+    "Ordinary pea/star/homing collision, source muzzle transforms and corresponding draw anchors still require a coherent port.",
+    "Native per-cell top-plant iteration priority and ladder climbing/height states are not fully represented by the current global food priority and existing-ladder exclusion.",
+    "Water, mini, rising, vault/bonk and other special movement/altitude/attack states still use previous approximations.",
+    "Current normal-play failures and three old-port snapshot mismatches must be resolved or justified with independent source evidence before release.",
+    "Current CPU/GPU/total-memory and real iOS/Android behavior have not been remeasured in this revision."
+  ]
+}

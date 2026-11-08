@@ -1,0 +1,26 @@
+<!doctype html><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>经典音效检查</title>
+<style>body{background:#20311f;color:#fff0c8;font:16px/1.6 system-ui;max-width:800px;margin:30px auto;padding:16px}button{padding:12px 20px;font:inherit}pre{white-space:pre-wrap;overflow-wrap:anywhere}</style>
+<h1>经典射击与命中音效检查</h1><p>测试页面，仅供核对浏览器中的真实解码、播放与缓冲复用。</p><button id="run">播放并检查五段音效</button><pre id="result">等待点击</pre><details><summary>测量详情</summary><pre id="measurements"></pre></details>
+<script type="module">
+import {GameAudio} from '../src/platform/audio';import {Game} from '../src/game/model';
+const Native=window.AudioContext,stats={contexts:0,gains:0,ended:0,played:[]};let pending=[];
+class Measured extends Native{
+ constructor(...args){super(...args);stats.contexts++;}
+ createGain(){stats.gains++;return super.createGain();}
+ createBufferSource(){const source=super.createBufferSource(),start=source.start.bind(source);
+  source.start=(...args)=>{stats.played.push({frames:source.buffer.length,rate:source.buffer.sampleRate,channels:source.buffer.numberOfChannels,duration:source.buffer.duration});pending.push(new Promise(resolve=>source.addEventListener('ended',()=>{stats.ended++;resolve();},{once:true})));return start(...args);};return source;
+ }
+}
+window.AudioContext=Measured;
+document.querySelector('#run').onclick=async()=>{
+ const result=document.querySelector('#result');document.querySelector('#run').disabled=true;result.textContent='正在解码…';const originalRandom=Math.random;
+ try{
+  const game=new Game(1,1),audio=new GameAudio('/');await audio.unlock(game);
+  for(const [kind,value] of [['shoot',0],['shoot',.999],['hit',0],['hit',.5],['hit',.999]]){Math.random=()=>value;audio.play(kind);await Promise.all(pending);}
+  Math.random=originalRandom;await Promise.all(pending);
+  const before=performance.getEntriesByType('resource').filter(e=>e.name.endsWith('.mp3')).length;await audio.unlock(game);const after=performance.getEntriesByType('resource').filter(e=>e.name.endsWith('.mp3')).length;
+  if(stats.played.length!==5||stats.ended!==5||stats.contexts!==1||stats.gains!==2||before!==after)throw new Error('音效播放或缓冲复用检查失败 '+JSON.stringify({...stats,before,after}));
+  result.textContent='PASS · 五段经典音效均已播放，重复使用没有额外下载。';document.querySelector('#measurements').textContent=JSON.stringify({...stats,repeatUnlockExtraRequests:after-before},null,2);
+ }catch(error){result.textContent='FAIL\n'+error.stack;}finally{Math.random=originalRandom;}
+};
+</script>

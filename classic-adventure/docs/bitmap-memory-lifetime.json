@@ -1,0 +1,84 @@
+{
+  "status": "VERIFIED_LOCAL_READY_TO_PUBLISH",
+  "causeEvidence": [
+    "The old development diagnostic kept every historical TextureSource in a strong Set.",
+    "Installed Pixi8.14.0 TextureSource.destroy nulls resource, but source.options.resource still references the original image. A retained diagnostic source can therefore retain its decoded bitmap.",
+    "Production-mode controlled Chrome page: strong-observer scenario reached426MB tab memory; after clearing only diagnostic references and requesting GC the observed tab value later reached211MB; weak-observer scenario showed220MB after the same12 switches. These are sampled contextual readings, not a benchmark or a device-memory guarantee."
+  ],
+  "change": [
+    "Assets-loaded ImageBitmap ownership is registered once per shared TextureSource using a WeakSet.",
+    "At source destruction the decoded bitmap is explicitly closed. Atlas-view destruction, pause and GPU unload do not close a still-live shared bitmap.",
+    "All four render image load paths register ownership, including image-success/metadata-failure atlas cleanup. Fallback images and environments without ImageBitmap retain previous behavior.",
+    "The diagnostic observer now defaults to WeakRef; strong mode remains as a retained-object stress control."
+  ],
+  "reference": {
+    "spec": "https://html.spec.whatwg.org/multipage/imagebitmap-and-animations.html#dom-imagebitmap-close",
+    "installedPixiVersion": "8.14.0",
+    "files": {
+      "TextureSource.mjs": "8487a106dfc356382859c50a6ec176799002a392f70f22075db78f0da1ec95e2",
+      "loadTextures.mjs": "8f20c4b19f52e0f677c221fce2a77c9f1e35161a65bcd0babb39aeccb7680b5b"
+    }
+  },
+  "changedRuntimeFiles": [
+    "classic-adventure/src/rendering/bitmap-lifetime.ts",
+    "classic-adventure/src/rendering/boss.ts",
+    "classic-adventure/src/rendering/load-atlas.ts",
+    "classic-adventure/src/rendering/scene.ts"
+  ],
+  "tests": {
+    "total": 576,
+    "passed": 576,
+    "failed": 0,
+    "redCapableLog": "output/总内存-位图释放修正前.log",
+    "lifetimeLog": "output/总内存-位图生命周期复验.log",
+    "fullLog": "output/总内存-全量测试.log"
+  },
+  "productionModeBrowserFixtures": {
+    "Chrome": {
+      "observer": "strong",
+      "observations": 490,
+      "heapUsedBytes": 55357715,
+      "controlledFailure": true,
+      "peakImages": 3,
+      "activeImages": 0,
+      "imageRequests": 490,
+      "currentSources": 19,
+      "staleSources": 0,
+      "currentActors": 8,
+      "baselineRGBA": 12434920,
+      "currentRGBA": 12434920,
+      "retainedBitmapRGBA": 0,
+      "closedBitmaps": 471,
+      "releasedSources": 0,
+      "releasedActors": 0,
+      "releasedStale": 0
+    },
+    "Safari": {
+      "observer": "strong",
+      "observations": 490,
+      "controlledFailure": true,
+      "peakImages": 3,
+      "activeImages": 0,
+      "imageRequests": 490,
+      "currentSources": 19,
+      "staleSources": 0,
+      "currentActors": 8,
+      "baselineRGBA": 12434920,
+      "currentRGBA": 12434920,
+      "retainedBitmapRGBA": 0,
+      "closedBitmaps": 471,
+      "releasedSources": 0,
+      "releasedActors": 0,
+      "releasedStale": 0
+    },
+    "buildScope": "Vite production-mode/minified bundle of real Scene/Game diagnostic, separately built outside dist with identical published runtime assets; not the public main-entry HTML.",
+    "scope": "Injected failure, retry,12 switches through all scenery/boss, release and revisit, while deliberately retaining490 source objects. Both browsers close471 destroyed bitmaps with0 retained decoded RGBA,0 stale sources,3 active image loads maximum; revisit returns to12434920-byte owned one-copy RGBA baseline."
+  },
+  "assetsAdded": 0,
+  "gameplaySourceChanged": false,
+  "remaining": [
+    "Total process/GPU memory, allocation peaks, real-time performance and long-play behavior are not proven by bitmap-byte or JS-heap counts.",
+    "Active browser extensions, a29.9MB warmup frame, caching and garbage-collection timing affected Chrome readings; another active profiler prevented taking a new heap profile, and was not stopped.",
+    "Physical iPhone Safari memory, loading, touch, sound activation, thermal/battery and full1:1 fidelity acceptance remain outstanding."
+  ]
+}

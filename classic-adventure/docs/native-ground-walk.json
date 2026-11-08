@@ -1,0 +1,95 @@
+{
+  "status": "PARTIAL_NATIVE_GROUND_WALK_PORT_RELEASE_GATE_PASSED",
+  "source": "zombie-ground-source.json",
+  "implemented": [
+    "Original47-pose anim_walk _ground samples drive instantaneous motion for dry-lane normal/cone/bucket/door walkers. Other families,swimming and walking variants retain prior paths.",
+    "Source frameStart44 is included in float32 GetFrameTime rounding. Rate,velocity,mini scaling,clock wrap and raw X position match independent C++ through100000updates.",
+    "Authoritative walkTime is saved per zombie; immobility/pause holds it. Eating drops the walking clock and next walking begins at zero. Legacy missing clock starts deterministically at first movement; lost original phase is not recovered.",
+    "Scene shares the captured previous/current walk clock with position interpolation. ActorRig accepts normalized native frameCount-minus-one timing with a matching cache key. No images/textures/tickers/dependencies added."
+  ],
+  "verification": {
+    "newTests": 6,
+    "newPassed": 6,
+    "ruleSubsetPassed": 34,
+    "fullTests": 616,
+    "passed": 616,
+    "failed": 0,
+    "fullLog": "output/脚步回归-全量测试.log",
+    "failures": [],
+    "fixture": "tests/ground-walk.html",
+    "desktopSafariAndChrome": {
+      "actors": 8,
+      "steps": 1000,
+      "parts": 160,
+      "replacedParts": 0,
+      "positionAndPoseInterpolation": true,
+      "savedPhaseRetained": true,
+      "releaseActors": 0,
+      "releasePool": 0
+    },
+    "safariNarrowCanvas": [
+      390,
+      293
+    ],
+    "typescriptPassed": true,
+    "productionBuildPassed": true,
+    "previousFailedCheckpoint": {
+      "passed": 604,
+      "failed": 12,
+      "log": "output/脚步轨迹-全量测试.log"
+    }
+  },
+  "existingTestCorrections": [
+    "attributes.test.ts replaces ordinary walker uniform ten-second means and fixed0.4 ratio with independent source C++ results at rawX770. Flag/pole unported expectations remain.",
+    "game.test.ts snow impact transition now checks C++ float displacement0.0931396484375 at the second sample,retaining1000chill and doubled chew interval assertions."
+  ],
+  "strategyAudit": {
+    "helpersChanged": true,
+    "gameHealthPricesWavesChanged": false,
+    "runtimeUnchangedSinceBrowserVerifiedCheckpoint": true,
+    "normalCommandsOnly": true,
+    "changes": {
+      "late-adventure.ts": [
+        "4–3 builds five early sun producers so Cactus is affordable before the balloon passes.",
+        "4–4/4–9 preserve100sun as balloons reach500px,clear them together at350px,budget Lily Pad plus chosen plant,and balance sea mushrooms across both water rows.",
+        "Vase active-enemy opening interval400→100updates; enemy cap and card-expiry rules unchanged."
+      ],
+      "roof-adventure.ts": [
+        "4–6/4–8 build six early producers before further economy investment; defensive seed prices remain unchanged.",
+        "4–7 first Fume placement advances to column4 instead of2,using its existing short range earlier."
+      ],
+      "scenes-play.ts": [
+        "2–8 may build a second producer column with six-producer initial target; further investment remains conditional.",
+        "3–2 establishes one water-lane Repeater each before land upgrades."
+      ],
+      "finite-survival.ts": [
+        "Normal roof selects Winter Melon in place of unused Blover,and upgrades actual existing melon columns. Other survival loadouts/upgrade policy remain unchanged."
+      ]
+    },
+    "evidence": [
+      "output/脚步回归-仙人掌经济对照.jsonl",
+      "output/脚步回归-大喷菇布阵对照.jsonl",
+      "output/脚步回归-水路覆盖和底座资金对照.jsonl",
+      "output/脚步回归-防线建成前经济投入对照.jsonl",
+      "output/脚步回归-墓碑和泳池防线对照.jsonl",
+      "output/脚步回归-屋顶寒冰升级对照.jsonl",
+      "output/脚步回归-夜晚经济后排对照.jsonl",
+      "output/脚步回归-砸罐最终操作复检.log",
+      "output/脚步回归-全量测试.log"
+    ],
+    "unappliedExperiments": "Right-to-left vase ordering,underfoot instant placement,Jack priority and early grave clearing did not consistently preserve both seed wins; not applied."
+  },
+  "remaining": [
+    "Automated normal-command wins establish reachability for their fixed seeds,not full original difficulty/strategy or every RNG sequence parity.",
+    "Port anim_walk2 and source variant selection,spawn phase,walk/eat blends and special-state clock/update order coherently.",
+    "Extend ground tracks to remaining families and swimming; whole-game pixel/audio/RNG fidelity remains unproven.",
+    "Physical iPhone Safari loading/touch/audio/frame pacing/thermal/battery/total CPU-GPU-process memory."
+  ],
+  "publication": {
+    "status": "PUBLISHED_VERIFIED",
+    "release": "cfba1613840a9740",
+    "report": "output/脚步回归-发布核对.json",
+    "tests": 616,
+    "physicalIPhoneTested": false
+  }
+}

@@ -1,0 +1,18 @@
+<!doctype html><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>碾压音效检查</title>
+<style>body{font:16px system-ui;background:#25291d;color:white;padding:16px}button{font:inherit;padding:12px}pre{white-space:pre-wrap}</style>
+<button id="run">播放并检查两段碾压声</button><pre id="result">等待点击</pre>
+<script type="module">
+import {Game} from '../src/game/model';import {GameAudio} from '../src/platform/audio';
+const Native=window.AudioContext;let played=0,ended=0,pending=[];
+class Measured extends Native{createBufferSource(){const source=super.createBufferSource(),start=source.start.bind(source);source.start=(...args)=>{played++;pending.push(new Promise(resolve=>source.addEventListener('ended',()=>{ended++;resolve()},{once:true})));return start(...args)};return source}}
+window.AudioContext=Measured;
+document.querySelector('#run').onclick=async()=>{
+ const result=document.querySelector('#result'),random=Math.random;document.querySelector('#run').disabled=true;result.textContent='解码与播放中';
+ try{const game=new Game(49,23),audio=new GameAudio('/');await audio.unlock(game);
+  const buffers=['squish','squish2'].map(k=>audio.buffers.get(k));if(buffers.some(b=>!b||b.duration<=0))throw Error('解码失败');
+  for(const value of [0,.999]){Math.random=()=>value;audio.play('squish');await Promise.all(pending)}Math.random=random;
+  const requests=performance.getEntriesByType('resource').filter(e=>e.name.endsWith('.mp3')).length;await audio.unlock(game);if(requests!==performance.getEntriesByType('resource').filter(e=>e.name.endsWith('.mp3')).length||played!==2||ended!==2||audio.voices!==0)throw Error('复用或声部释放失败');
+  result.textContent=JSON.stringify({status:'PASS',played,ended,voices:audio.voices,context:audio.context.state,buffers:buffers.map(b=>({duration:b.duration,rate:b.sampleRate,channels:b.numberOfChannels})),repeatedUnlockRequests:0});
+ }catch(e){result.textContent='FAIL '+e.stack}finally{Math.random=random}
+};
+</script>

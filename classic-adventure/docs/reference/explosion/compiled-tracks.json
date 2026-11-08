@@ -1,0 +1,507 @@
+[
+  {
+    "Image": "IMAGE_EXPLOSIONCLOUD",
+    "ImageRow": 0,
+    "ImageCol": 0,
+    "ImageFrames": 1,
+    "Animated": 0,
+    "ParticleFlags": 1,
+    "EmitterType": 1,
+    "Name": "PowieSmallClouds",
+    "SystemDuration": [
+      [
+        0.0,
+        200.0,
+        200.0,
+        1,
+        1
+      ]
+    ],
+    "OnDuration": "",
+    "CrossFadeDuration": [],
+    "SpawnRate": [
+      [
+        0.0,
+        150.0,
+        150.0,
+        1,
+        1
+      ]
+    ],
+    "SpawnMinActive": [],
+    "SpawnMaxActive": [],
+    "SpawnMaxLaunched": [
+      [
+        0.0,
+        14.0,
+        14.0,
+        1,
+        1
+      ]
+    ],
+    "EmitterRadius": [
+      [
+        0.0,
+        10.0,
+        50.0,
+        1,
+        1
+      ]
+    ],
+    "EmitterOffsetX": [],
+    "EmitterOffsetY": [],
+    "EmitterBoxX": [],
+    "EmitterBoxY": [],
+    "EmitterPath": [],
+    "EmitterSkewX": [],
+    "EmitterSkewY": [],
+    "ParticleDuration": [
+      [
+        0.0,
+        40.0,
+        60.0,
+        1,
+        1
+      ]
+    ],
+    "SystemRed": [],
+    "SystemGreen": [],
+    "SystemBlue": [],
+    "SystemAlpha": [
+      [
+        0.7999999523162842,
+        1.0,
+        1.0,
+        1,
+        1
+      ],
+      [
+        1.0,
+        0.0,
+        0.0,
+        1,
+        1
+      ]
+    ],
+    "SystemBrightness": [],
+    "LaunchSpeed": [
+      [
+        0.0,
+        2000.0,
+        2500.0,
+        1,
+        1
+      ]
+    ],
+    "LaunchAngle": [],
+    "Field": [
+      {
+        "FieldType": 1,
+        "x": [
+          [
+            0.3999999761581421,
+            0.15000000596046448,
+            0.15000000596046448,
+            1,
+            1
+          ],
+          [
+            1.0,
+            1.0,
+            1.0,
+            1,
+            1
+          ]
+        ],
+        "y": [
+          [
+            0.3999999761581421,
+            0.18000000715255737,
+            0.18000000715255737,
+            1,
+            1
+          ],
+          [
+            1.0,
+            1.0,
+            1.0,
+            1,
+            1
+          ]
+        ]
+      }
+    ],
+    "SystemField": [],
+    "ParticleRed": [
+      [
+        0.0,
+        1.0,
+        1.0,
+        1,
+        1
+      ]
+    ],
+    "ParticleGreen": [
+      [
+        0.0,
+        0.699999988079071,
+        0.699999988079071,
+        1,
+        1
+      ],
+      [
+        1.0,
+        0.0,
+        0.0,
+        1,
+        1
+      ]
+    ],
+    "ParticleBlue": [
+      [
+        0.0,
+        0.0,
+        0.0,
+        1,
+        1
+      ]
+    ],
+    "ParticleAlpha": [
+      [
+        0.699999988079071,
+        1.0,
+        1.0,
+        1,
+        1
+      ],
+      [
+        1.0,
+        0.0,
+        0.0,
+        1,
+        1
+      ]
+    ],
+    "ParticleBrightness": [],
+    "ParticleSpinAngle": [],
+    "ParticleSpinSpeed": [
+      [
+        0.0,
+        -200.0,
+        200.0,
+        1,
+        1
+      ]
+    ],
+    "ParticleScale": [
+      [
+        0.5999999642372131,
+        0.5,
+        0.5,
+        1,
+        1
+      ],
+      [
+        1.0,
+        0.0,
+        0.0,
+        1,
+        1
+      ]
+    ],
+    "ParticleStretch": [],
+    "CollisionReflect": [],
+    "CollisionSpin": [],
+    "ClipTop": [],
+    "ClipBottom": [],
+    "ClipLeft": [],
+    "ClipRight": [],
+    "AnimationRate": []
+  },
+  {
+    "Image": "IMAGE_EXPLOSIONCLOUD",
+    "ImageRow": 0,
+    "ImageCol": 0,
+    "ImageFrames": 1,
+    "Animated": 0,
+    "ParticleFlags": 1,
+    "EmitterType": 1,
+    "Name": "PowieBigClouds",
+    "SystemDuration": [
+      [
+        0.0,
+        200.0,
+        200.0,
+        1,
+        1
+      ]
+    ],
+    "OnDuration": "",
+    "CrossFadeDuration": [],
+    "SpawnRate": [
+      [
+        0.0,
+        150.0,
+        150.0,
+        1,
+        1
+      ]
+    ],
+    "SpawnMinActive": [],
+    "SpawnMaxActive": [],
+    "SpawnMaxLaunched": [
+      [
+        0.0,
+        14.0,
+        14.0,
+        1,
+        1
+      ]
+    ],
+    "EmitterRadius": [
+      [
+        0.0,
+        10.0,
+        50.0,
+        1,
+        1
+      ]
+    ],
+    "EmitterOffsetX": [],
+    "EmitterOffsetY": [],
+    "EmitterBoxX": [],
+    "EmitterBoxY": [],
+    "EmitterPath": [],
+    "EmitterSkewX": [],
+    "EmitterSkewY": [],
+    "ParticleDuration": [
+      [
+        0.0,
+        40.0,
+        60.0,
+        1,
+        1
+      ]
+    ],
+    "SystemRed": [],
+    "SystemGreen": [],
+    "SystemBlue": [],
+    "SystemAlpha": [
+      [
+        0.7999999523162842,
+        1.0,
+        1.0,
+        1,
+        1
+      ],
+      [
+        1.0,
+        0.0,
+        0.0,
+        1,
+        1
+      ]
+    ],
+    "SystemBrightness": [],
+    "LaunchSpeed": [
+      [
+        0.0,
+        500.0,
+        1200.0,
+        1,
+        1
+      ]
+    ],
+    "LaunchAngle": [],
+    "Field": [
+      {
+        "FieldType": 1,
+        "x": [
+          [
+            0.3999999761581421,
+            0.11999999731779099,
+            0.11999999731779099,
+            1,
+            1
+          ],
+          [
+            1.0,
+            1.0,
+            1.0,
+            1,
+            1
+          ]
+        ],
+        "y": [
+          [
+            0.3999999761581421,
+            0.18000000715255737,
+            0.18000000715255737,
+            1,
+            1
+          ],
+          [
+            1.0,
+            1.0,
+            1.0,
+            1,
+            1
+          ]
+        ]
+      }
+    ],
+    "SystemField": [],
+    "ParticleRed": [
+      [
+        0.0,
+        1.0,
+        1.0,
+        1,
+        1
+      ]
+    ],
+    "ParticleGreen": [
+      [
+        0.0,
+        0.8999999761581421,
+        0.8999999761581421,
+        1,
+        1
+      ],
+      [
+        1.0,
+        0.4000000059604645,
+        0.4000000059604645,
+        1,
+        1
+      ]
+    ],
+    "ParticleBlue": [
+      [
+        0.0,
+        0.0,
+        0.0,
+        1,
+        1
+      ]
+    ],
+    "ParticleAlpha": [
+      [
+        0.699999988079071,
+        1.0,
+        1.0,
+        1,
+        1
+      ],
+      [
+        1.0,
+        0.0,
+        0.0,
+        1,
+        1
+      ]
+    ],
+    "ParticleBrightness": [],
+    "ParticleSpinAngle": [],
+    "ParticleSpinSpeed": [
+      [
+        0.0,
+        -200.0,
+        200.0,
+        1,
+        1
+      ]
+    ],
+    "ParticleScale": [
+      [
+        0.5999999642372131,
+        1.2000000476837158,
+        1.600000023841858,
+        1,
+        1
+      ],
+      [
+        1.0,
+        0.0,
+        0.0,
+        1,
+        1
+      ]
+    ],
+    "ParticleStretch": [],
+    "CollisionReflect": [],
+    "CollisionSpin": [],
+    "ClipTop": [],
+    "ClipBottom": [],
+    "ClipLeft": [],
+    "ClipRight": [],
+    "AnimationRate": []
+  },
+  {
+    "Image": "IMAGE_EXPLOSIONPOWIE",
+    "ImageRow": 0,
+    "ImageCol": 0,
+    "ImageFrames": 1,
+    "Animated": 0,
+    "ParticleFlags": 0,
+    "EmitterType": 1,
+    "Name": "PowieWord",
+    "SystemDuration": [
+      [
+        0.0,
+        50.0,
+        50.0,
+        1,
+        1
+      ]
+    ],
+    "OnDuration": "",
+    "CrossFadeDuration": [],
+    "SpawnRate": [],
+    "SpawnMinActive": [
+      [
+        0.0,
+        1.0,
+        1.0,
+        1,
+        1
+      ]
+    ],
+    "SpawnMaxActive": [],
+    "SpawnMaxLaunched": [],
+    "EmitterRadius": [],
+    "EmitterOffsetX": [],
+    "EmitterOffsetY": [],
+    "EmitterBoxX": [],
+    "EmitterBoxY": [],
+    "EmitterPath": [],
+    "EmitterSkewX": [],
+    "EmitterSkewY": [],
+    "ParticleDuration": [],
+    "SystemRed": [],
+    "SystemGreen": [],
+    "SystemBlue": [],
+    "SystemAlpha": [],
+    "SystemBrightness": [],
+    "LaunchSpeed": [],
+    "LaunchAngle": [],
+    "Field": [],
+    "SystemField": [],
+    "ParticleRed": [],
+    "ParticleGreen": [],
+    "ParticleBlue": [],
+    "ParticleAlpha": [],
+    "ParticleBrightness": [],
+    "ParticleSpinAngle": [],
+    "ParticleSpinSpeed": [],
+    "ParticleScale": [],
+    "ParticleStretch": [],
+    "CollisionReflect": [],
+    "CollisionSpin": [],
+    "ClipTop": [],
+    "ClipBottom": [],
+    "ClipLeft": [],
+    "ClipRight": [],
+    "AnimationRate": []
+  }
+]

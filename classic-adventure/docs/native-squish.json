@@ -1,0 +1,26 @@
+{
+  "reference": {
+    "repository": "https://github.com/ruslan831/PlantsVsZombies-decompilation",
+    "commit": "325b2229a7225d73870bb69322eefcda3a45bf8d",
+    "files": {
+      "Plant.cpp": "9596bc875c4ccf4eb3e6eded4ebb503eed6a3a5afe2df6b3a53dbb31c417d43d",
+      "ReanimationLawn.cpp": "30bb7e2ac3bdae3a7e8f142bea80e53a7e2352b9ba960d764657824fa544aab2",
+      "TodFoley.cpp": "43632c83c3873313b3e37509e594ef092420741ffb15e24a02e35ade1642a954"
+    }
+  },
+  "implemented": [
+    "Shared ordinary crush lifetime: initial500, visible at0, removed at-1; pauses and JSON saves preserve it; older saves default to an empty residue list.",
+    "Vehicles, sleds, giants and boss pressure call shared squish handling; awake explosives trigger rather than flatten, active squash survives, spikes keep separate drive-over behavior.",
+    "Static native cache poses with source bounds, quarter height, sunflower time0.15, mine/coffee scales and offsets, hidden kernel butter and waterline. Reused original atlases; no independent animation loop.",
+    "One lazy rendered texture per currently present crushed species; expiry and scene release destroy these textures and display objects.",
+    "Two source FOLEY_SQUISH variants, 27359 encoded bytes, conditionally loaded for pressure enemies. Existing voice count and quiet combat bus retained."
+  ],
+  "limits": [
+    "Not complete native-game equivalence; previous unmapped geometry, special animation, particle and imitater-filter differences remain.",
+    "Six-species controlled Scene fixture, not a full level or all plant visual golden-reference comparison. Geometry and cache rules are checked against source; screenshots are not native-game pixel goldens.",
+    "Desktop Safari iframe844x390 is not a physical iPhone, touch, thermal, battery, sustained FPS or browser-process RAM test.",
+    "Raw timings use quantized performance.now on 100 static frames and measure JS/render submission only, without a matched before/after baseline. They do not establish a performance improvement.",
+    "384000 bytes is the six cached bitmaps RGBA estimate, not process memory; full scene atlases and browser overhead remain. Chrome tab UI reported254MB for the controlled late-roof fixture, a browser estimate with no isolated baseline.",
+    "The pressure collision shapes and special damage outside this patch retain prior implementations; porting Squish is not a claim all pressure behavior is exact."
+  ]
+}

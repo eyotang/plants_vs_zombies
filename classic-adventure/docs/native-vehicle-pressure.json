@@ -1,0 +1,77 @@
+{
+  "status": "PARTIAL_NATIVE_ZOMBONI_AND_CATAPULT_PRESSURE_PORT",
+  "supersedesSourceAudit": "docs/native-zomboni-pressure-audit.json",
+  "source": {
+    "repository": "ruslan831/PlantsVsZombies-decompilation",
+    "commit": "325b2229a7225d73870bb69322eefcda3a45bf8d",
+    "Zombie.cppSHA256": "72495be0215d603ea807fb1dbab4fd85eb5ce7bd5ad58e207c9742d15958a78f",
+    "Plant.cppSHA256": "9596bc875c4ccf4eb3e6eded4ebb503eed6a3a5afe2df6b3a53dbb31c417d43d",
+    "functions": [
+      "Zombie::CheckForZombieStep",
+      "Zombie::CheckSquish",
+      "Zombie::CanTargetPlant",
+      "Zombie::SquishAllInSquare",
+      "Plant::Squish"
+    ],
+    "lines": {
+      "zomboniAttackRect": [
+        387,
+        395
+      ],
+      "sharedDriveOver": [
+        4134,
+        4140
+      ],
+      "plantExclusions": [
+        6282,
+        6294
+      ],
+      "squareCrush": [
+        6389,
+        6410
+      ],
+      "squishSpecialHandling": [
+        2338,
+        2361
+      ]
+    }
+  },
+  "implemented": [
+    "Zomboni ordinary pressure uses the source prior integer attack rectangle, native20-pixel overlap, first eligible plant iteration and one contacted cell instead of a symmetric55-pixel center deletion.",
+    "Zomboni and catapult share crushVehicle, with forward10 and reverse-23 X offsets and width133 from the120-pixel object width.",
+    "Both callers explicitly supply the integer object X captured before movement; no implicit post-motion default remains.",
+    "Standalone instant plants remain excluded from drive-over targeting. A crushed base triggers awake explosives, preserves active squash, and still crushes an inactive squash; sleeping mushrooms remain crushable.",
+    "Spike tire contacts retain their separate earlier behavior and geometry; low-health departure remains."
+  ],
+  "tests": {
+    "newTests": 7,
+    "zomboniBeforeFix": {
+      "total": 6,
+      "failed": 5,
+      "passedTireControl": 1
+    },
+    "catapultSamplingBeforeFix": {
+      "total": 7,
+      "failed": 1,
+      "passedOtherCases": 6
+    },
+    "geometryCases": 56,
+    "targetedFinal": {
+      "total": 25,
+      "passed": 25
+    },
+    "clockRateSpeedCombinations": 9,
+    "savedContinuation": true,
+    "existingCorrections": [
+      "airborne-plant expected active grounded squash to die under zomboni; source CanTargetPlant/Squish protects it, so expected health is300, retaining other attack controls.",
+      "new-base protection vehicle control used center+50, which is not20 pixels of contact for a60-wide pot. It now uses center+30 (exact20 contact), retaining the health0 crushing assertion."
+    ]
+  },
+  "limits": [
+    "Spike/tire contact timing and280-tick tire death effects remain the earlier approximation.",
+    "Squished-plant flattened500-tick visual residuals, full original death effects, and bobsled/giant pressure paths remain incomplete.",
+    "Current object-anchor/spawn, native object-pool iteration ordering, and unmapped transition representations are not a complete native engine reconstruction.",
+    "Controlled reverse-direction rectangle tests do not certify all reverse vehicle movement or IZombie variants.",
+    "No new physical-phone CPU/RAM benchmark; no new assets/display objects/saved fields/tickers/dependencies, but Zomboni now performs the native-style selection and collateral plant scans."
+  ]
+}

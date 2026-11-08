@@ -1,0 +1,26 @@
+{
+  "status": "PARTIAL_NATIVE_RULE_CORRECTION",
+  "repository": "https://github.com/ruslan831/PlantsVsZombies-decompilation",
+  "commit": "325b2229a7225d73870bb69322eefcda3a45bf8d",
+  "Zombie.cppSHA256": "72495be0215d603ea807fb1dbab4fd85eb5ce7bd5ad58e207c9742d15958a78f",
+  "header": {
+    "url": "https://raw.githubusercontent.com/ruslan831/PlantsVsZombies-decompilation/325b2229a7225d73870bb69322eefcda3a45bf8d/Lawn/Zombie.h",
+    "treeBlob": "01d8e10a9ff632848e9314b38ef882d878f7fb87",
+    "observed": "mBodyHealth and mBodyMaxHealth declared int; inspected with web tool, not locally blob-verified."
+  },
+  "sourceRules": [
+    "ZombieInitialize starts ordinary bodies at270, overrides pogo to500, and divides miniature health pools separately by4 using integer division before mBodyMaxHealth is recorded.",
+    "UpdateDamageStates loses the head only below integer mBodyMaxHealth /3. A500-health body remains headed at166; a125-health miniature remains headed at41.",
+    "UpdatePlaying applies3 decay damage when body maximum>=500, otherwise1, with the pre-existing20percent decay chance.",
+    "Losing the pogo object changes its movement and equipment, not its body maximum."
+  ],
+  "implementation": [
+    "Shared zombieBodyHealth(kind,mini) in game/config.ts is used for spawn, headless threshold, decay and the renderer health denominator.",
+    "Almanac entry corrected to500; existing all-kind spawn/almanac integration check covers duplicate metadata."
+  ],
+  "bounds": [
+    "Persistent mHasHead state and complete damage/update ordering remain outside this numeric correction.",
+    "No new resources, rendering loops, dependencies or display objects.",
+    "Normal-play regressions and actual device performance remain separate acceptance gates."
+  ]
+}

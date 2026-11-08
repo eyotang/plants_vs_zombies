@@ -1,0 +1,25 @@
+<!doctype html><meta charset="utf-8"><title>经典攻击动作检查</title>
+<style>body{margin:0;background:#172719;color:#fff1c2;font:14px system-ui}header{padding:8px;display:flex;gap:8px;align-items:center;flex-wrap:wrap}button{padding:10px;min-height:44px}#host{width:min(100vw,800px);height:min(75vw,600px);margin:auto}pre{white-space:pre-wrap;margin:10px;font-size:12px}</style>
+<header><b>香蒲追踪与三线射手</b><button id="advance" disabled>推进60步</button><button id="target" disabled>加入地面目标</button><button id="vertical" disabled>检查竖直朝向</button><span id="status">加载中</span></header><div id="host"></div><pre id="result"></pre>
+<script type="module">
+import {Scene} from '../src/rendering/scene';import {Game} from '../src/game/model';
+const scene=new Scene(),game=new Game(29,1),host=document.querySelector('#host'),status=document.querySelector('#status'),result=document.querySelector('#result');
+await scene.init(host);scene.app.stop();game.seeds=['sunflower','lilypad','cattail','threepeater','squash','tanglekelp'];game.start();game.select('sunflower');game.plant(0,4);
+const add=(id,kind,column,row)=>({id,kind,column,row,health:300,actionIn:1,born:0,shotAt:-100});
+const triple=add(502,'threepeater',1,5);game.plants.push(add(500,'lilypad',1,2),add(501,'cattail',1,2),triple);
+const balloon=game.spawnZombie('balloon',0,530,0);balloon.speed=0;
+let maxSpeedDeviation=0,verticalRotation=null;const samples=[];
+await scene.prepareBoard(game,()=>{});scene.setLevel(game);
+async function draw(){
+ await scene.prepareActors(game,()=>{});scene.render(game,0,1);scene.app.render();
+ const actor=scene.actors.get('b9000');if(actor)verticalRotation=actor.art.rotation;
+ const correct=verticalRotation===null||Math.abs(verticalRotation+Math.PI/2)<1e-12;
+ status.textContent=correct?'PASS 已渲染':'FAIL 朝向异常';
+ result.textContent=JSON.stringify({ticks:game.ticks,threepeaterLastShot:triple.shotAt,balloonFlying:balloon.flying,homingShots:game.peas.filter(p=>p.homing!==undefined).length,maxSpeedDeviation,verticalRotation,verticalDirectionCorrect:correct,canvas:[scene.app.canvas.width,scene.app.canvas.height],maxFPS:scene.app.ticker.maxFPS,samples:samples.slice(-3)},null,2);
+}
+function step(count){for(let i=0;i<count;i++){scene.captureMovement();game.step();for(const e of game.drainEvents())scene.event(e);for(const p of game.peas)if(p.homing!==undefined){maxSpeedDeviation=Math.max(maxSpeedDeviation,Math.abs(Math.hypot(p.vx??2,p.vy??0)-2));if(game.ticks%30===0)samples.push({age:p.age,x:p.x,y:p.y,vx:p.vx,vy:p.vy});}}}
+document.querySelector('#advance').onclick=async()=>{step(60);await draw()};
+document.querySelector('#target').onclick=async()=>{const z=game.spawnZombie('normal',4,650,0);z.speed=0;triple.actionIn=1;step(1);await draw()};
+document.querySelector('#vertical').onclick=async()=>{game.peas.push({id:9000,row:2,x:400,y:250,vx:0,vy:-2,age:1,ice:false,puff:false,spike:true,homing:-1});await draw()};
+try{await draw();for(const b of document.querySelectorAll('button'))b.disabled=false}catch(e){status.textContent='FAIL';result.textContent=e.stack}
+</script>

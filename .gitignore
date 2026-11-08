@@ -1,0 +1,11 @@
+# Dependencies and build output
+node_modules/
+/dist/
+classic-adventure/dist/
+
+# Local reports, screenshots, archives and caches
+/output/
+**/__pycache__/
+*.pyc
+.vite/
+.DS_Store

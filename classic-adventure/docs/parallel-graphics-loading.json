@@ -1,0 +1,175 @@
+{
+  "status": "VERIFIED_LOCAL_READY_TO_PUBLISH",
+  "changes": [
+    "Scene actor preparation starts independent combat-texture, plant-motion, boss, animation and pea-art work together.",
+    "All four Assets.load image call sites (board/combat textures, motion atlases, effect pages and boss parts) share a FIFO pool of three occupied image-load slots. Atlas slots include the paired metadata/image wait and explicit GPU upload.",
+    "Nested batches wait for all started work before propagating the original failure, allowing safe release and retry.",
+    "No new images, gameplay/model changes, per-frame work, dependencies or render-resolution changes."
+  ],
+  "changedRuntimeFiles": [
+    "classic-adventure/src/platform/load-queue.ts",
+    "classic-adventure/src/rendering/boss.ts",
+    "classic-adventure/src/rendering/load-atlas.ts",
+    "classic-adventure/src/rendering/scene.ts"
+  ],
+  "tests": {
+    "total": 572,
+    "passed": 572,
+    "failed": 0,
+    "fullLog": "output/并行加载-全量测试.log",
+    "redCapableLog": "output/并行加载-修正前.log",
+    "lifecycleLog": "output/并行加载-生命周期复验.log"
+  },
+  "controlledLatency": {
+    "before": {
+      "status": "READY",
+      "scope": "Observed desktop Safari UI and saved screenshot;4 independent resource families each receive500ms artificial delay, not physical iPhone or a real-network benchmark.",
+      "simulatedDelayMsPerFamily": 500,
+      "loadMs": 2134,
+      "marks": [
+        [
+          "combat",
+          "start",
+          0
+        ],
+        [
+          "combat",
+          "end",
+          524
+        ],
+        [
+          "plants",
+          "start",
+          524
+        ],
+        [
+          "plants",
+          "end",
+          1040
+        ],
+        [
+          "zombies",
+          "start",
+          1044
+        ],
+        [
+          "zombies",
+          "end",
+          1575
+        ],
+        [
+          "pea-heads",
+          "start",
+          1575
+        ],
+        [
+          "pea-heads",
+          "end",
+          2102
+        ]
+      ],
+      "actors": 2,
+      "displayObjects": 22,
+      "canvas": [
+        798,
+        602
+      ],
+      "evidence": "output/并行加载-Safari修正前.png",
+      "screenshotSHA256": "6eac4497d05cc914f7934d0a1fd631c2db45bcd9331cf3c22273161b3d3d3915"
+    },
+    "after": {
+      "status": "READY",
+      "scope": "桌面Safari受控加载；四组资源各额外等待500ms，用来测串行等待，非真实网络或iPhone测速",
+      "simulatedDelayMsPerFamily": 500,
+      "loadMs": 558,
+      "marks": [
+        [
+          "combat",
+          "start",
+          1
+        ],
+        [
+          "plants",
+          "start",
+          1
+        ],
+        [
+          "pea-heads",
+          "start",
+          1
+        ],
+        [
+          "zombies",
+          "start",
+          6
+        ],
+        [
+          "combat",
+          "end",
+          526
+        ],
+        [
+          "plants",
+          "end",
+          526
+        ],
+        [
+          "pea-heads",
+          "end",
+          532
+        ],
+        [
+          "zombies",
+          "end",
+          558
+        ]
+      ],
+      "resourceCount": 6,
+      "encodedBytes": 0,
+      "actors": 2,
+      "displayObjects": 22,
+      "canvas": [
+        798,
+        602
+      ]
+    },
+    "scope": "Same real Scene;500ms simulated latency per family. Browser cache resource-byte counters were unavailable (0), so this is not download-size evidence and not a phone/network speed claim."
+  },
+  "realBrowserResourceLifetime": {
+    "Safari": {
+      "controlledFailure": true,
+      "peakImages": 3,
+      "activeImages": 0,
+      "imageRequests": 490,
+      "currentSources": 19,
+      "staleSources": 0,
+      "currentActors": 8,
+      "baselineRGBA": 12434920,
+      "currentRGBA": 12434920,
+      "releasedSources": 0,
+      "releasedActors": 0,
+      "releasedStale": 0
+    },
+    "Chrome": {
+      "controlledFailure": true,
+      "peakImages": 3,
+      "activeImages": 0,
+      "imageRequests": 490,
+      "currentSources": 19,
+      "staleSources": 0,
+      "currentActors": 8,
+      "baselineRGBA": 12434920,
+      "currentRGBA": 12434920,
+      "releasedSources": 0,
+      "releasedActors": 0,
+      "releasedStale": 0
+    },
+    "scope": "Controlled dev-server scenes, injected failure, retry,12 switches through all scenery and boss, release and revisit. Counts inspect owned sources, including shared blink atlas. RGBA values estimate one uncompressed copy, not process/GPU memory."
+  },
+  "remaining": [
+    "Physical iPhone Safari network, touch, sound activation, thermal/battery and total process memory acceptance.",
+    "Chrome showed535MB tab memory after the12-switch development fixture despite zero stale owned sources. This does not prove a production leak or a low total-memory budget; production-profile memory and browser-cache/GC behavior still require separate investigation.",
+    "Overall1:1 game fidelity is still partial; this change only removes loading serialization and bounds image work."
+  ],
+  "memoryFollowUp": "bitmap-memory-lifetime.json"
+}

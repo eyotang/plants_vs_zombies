@@ -1,0 +1,56 @@
+{
+  "status": "PARTIAL_NATIVE_HOUSE_EDGE_PORT",
+  "source": {
+    "repository": "ruslan831/PlantsVsZombies-decompilation",
+    "commit": "325b2229a7225d73870bb69322eefcda3a45bf8d",
+    "sha256": {
+      "Zombie.cpp": "72495be0215d603ea807fb1dbab4fd85eb5ce7bd5ad58e207c9742d15958a78f",
+      "GameConstants.h": "65fba84759c5f015f4a9a95d04cc4f19a9f376e48e7398f3539ebe7d79dbac32"
+    },
+    "functions": [
+      "Zombie::CheckForBoardEdge",
+      "Zombie::UpdatePlaying",
+      "Zombie::Update",
+      "Zombie::IsWalkingBackwards"
+    ],
+    "lines": {
+      "houseEdge": [
+        4434,
+        4473
+      ],
+      "actionGate": [
+        4543,
+        4547
+      ],
+      "integerSync": [
+        4283,
+        4284
+      ],
+      "defaultConstant": 14
+    }
+  },
+  "implemented": [
+    "Replaces universal model X<-35 defeat with species source integer-object thresholds: default-100, pole/giant-150, football/catapult/zomboni-175, dancer/backup/snorkel-130. Model anchor maps to raw object X as X-30.",
+    "Captures integer raw X before actions, because ordinary Update synchronizes mX after UpdatePlaying. Checks after the action branch, including continue branches, while retaining rising/immobilized/blown-away/kelp exclusions.",
+    "A living head triggers defeat at inclusive edge. Represented headless states receive1800 shield-bypassing damage at edge+70. Removes prior headless X<35 unconditional death.",
+    "Backward walkers leave at post-motion raw floating X>850 without kills or loot; ice/butter keep them on board until mobility resumes.",
+    "No new arrays, maps, saved fields, assets, dependencies or render loops. Existing backward filtering pass remains; per-zombie action branches share the finally check."
+  ],
+  "validation": {
+    "newTests": 5,
+    "speciesInputs": 75,
+    "headlessInputs": 42,
+    "beforeFixAllFiveFailed": true,
+    "targetedWithColdClock": {
+      "total": 8,
+      "passed": 8
+    },
+    "fixtureCorrection": "Headless test excludes four model species without represented head loss, and switches balloon/sled fixtures to their grounded/non-sled form, consistent with the existing headless predicate."
+  },
+  "limits": [
+    "Current global+30 anchor bridge and most spawn coordinates remain port assumptions rather than full original species spawn reconstruction.",
+    "Special action paths that directly synchronize native mX (such as conversions) are not fully mapped; previous integer-X capture covers ordinary walking.",
+    "House-entry cutscene, original camera/game-over visuals, IZombie variants, mower activation and full entity-update ordering remain incomplete.",
+    "No new physical-phone CPU/RAM or browser visual parity proof from model tests."
+  ]
+}

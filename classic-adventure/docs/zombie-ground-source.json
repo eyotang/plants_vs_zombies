@@ -1,0 +1,12 @@
+{
+  "repository": "https://github.com/ruslan831/PlantsVsZombies-decompilation",
+  "commit": "325b2229a7225d73870bb69322eefcda3a45bf8d",
+  "source": "SexyAppFramework/reanim/Zombie.reanim",
+  "sourceSHA256": "4b53ccfa0c000b203405a1f7666eec761935553e533e1746ec0dea517897b9cc",
+  "layer": "anim_walk",
+  "track": "_ground",
+  "start": 44,
+  "count": 47,
+  "metadataSHA256": "152334caec02d73e1721c5d196533aee5ae002bf1d61b50f23e0104ece0a11dd",
+  "metadataBytes": 245
+}

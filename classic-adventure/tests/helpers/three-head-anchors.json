@@ -1,0 +1,89 @@
+{
+  "sourceSha256": "a7ef991fb3943562b3cf54255bad49ea3cd8d0de8ce9c24e0a4fb09115ec19af",
+  "cases": [
+    {
+      "bodyTime": 0,
+      "head": 0,
+      "name": "ThreePeater_head1_leaf1",
+      "x": 42.8,
+      "y": 38.7
+    },
+    {
+      "bodyTime": 0,
+      "head": 1,
+      "name": "ThreePeater_head2_leaf2",
+      "x": 26.4,
+      "y": 24.4
+    },
+    {
+      "bodyTime": 0,
+      "head": 2,
+      "name": "ThreePeater_head3_leaf3",
+      "x": 13.4,
+      "y": 15.8
+    },
+    {
+      "bodyTime": 0.25,
+      "head": 0,
+      "name": "ThreePeater_head1_leaf1",
+      "x": 45.699999999999996,
+      "y": 38.00000000000001
+    },
+    {
+      "bodyTime": 0.25,
+      "head": 1,
+      "name": "ThreePeater_head2_leaf2",
+      "x": 21.7,
+      "y": 21.9
+    },
+    {
+      "bodyTime": 0.25,
+      "head": 2,
+      "name": "ThreePeater_head3_leaf3",
+      "x": 19.0,
+      "y": 17.1
+    },
+    {
+      "bodyTime": 0.5,
+      "head": 0,
+      "name": "ThreePeater_head1_leaf1",
+      "x": 47.0,
+      "y": 40.900000000000006
+    },
+    {
+      "bodyTime": 0.5,
+      "head": 1,
+      "name": "ThreePeater_head2_leaf2",
+      "x": 19.9,
+      "y": 26.4
+    },
+    {
+      "bodyTime": 0.5,
+      "head": 2,
+      "name": "ThreePeater_head3_leaf3",
+      "x": 13.4,
+      "y": 15.700000000000003
+    },
+    {
+      "bodyTime": 0.75,
+      "head": 0,
+      "name": "ThreePeater_head1_leaf1",
+      "x": 45.099999999999994,
+      "y": 37.7
+    },
+    {
+      "bodyTime": 0.75,
+      "head": 1,
+      "name": "ThreePeater_head2_leaf2",
+      "x": 23.200000000000003,
+      "y": 21.5
+    },
+    {
+      "bodyTime": 0.75,
+      "head": 2,
+      "name": "ThreePeater_head3_leaf3",
+      "x": 18.799999999999997,
+      "y": 17.3
+    }
+  ]
+}

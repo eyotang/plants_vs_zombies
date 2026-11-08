@@ -1,0 +1,17 @@
+<!doctype html><html lang="zh-CN"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>植物根坐标密集绘制检查</title>
+<style>body{margin:0;background:#25291d;color:white;font:14px system-ui}header{padding:6px}button{padding:8px}#host{width:min(100vw,800px);aspect-ratio:4/3}pre{white-space:pre-wrap}</style>
+<header><button id="run" disabled>检查100帧动画绘制</button></header><div id="host"></div><pre id="result">准备中</pre>
+<script type="module">
+import{denseGame}from'./helpers/performance';import{Scene}from'../src/rendering/scene';
+const g=denseGame('roof'),scene=new Scene(),result=document.querySelector('#result'),button=document.querySelector('#run');
+try{await scene.init(document.querySelector('#host'));await scene.prepareBoard(g,()=>{});scene.setLevel(g);await scene.prepareActors(g,()=>{});scene.app.stop();
+ const frame=()=>{scene.captureMovement();g.ticks+=3;for(const z of g.zombies){z.animationTime+=3;z.x-=.1;}scene.render(g,30,1);scene.app.render();scene.app.stop();};
+ const count=n=>1+(n.children??[]).reduce((sum,c)=>sum+count(c),0);
+ frame();button.disabled=false;result.textContent='准备完成：100只僵尸；检查仅测动画绘制提交，不测游戏规则、GPU完成、实时帧率或真机表现。';
+ button.onclick=()=>{button.disabled=true;try{for(let i=0;i<20;i++)frame();const before=count(scene.world),actors=scene.actors.size,times=[];
+  for(let i=0;i<100;i++){const start=performance.now();frame();times.push(performance.now()-start);}times.sort((a,b)=>a-b);
+  if(before!==count(scene.world)||actors!==scene.actors.size)throw Error('绘制循环新增了显示对象');
+  result.textContent=JSON.stringify({status:'MEASURED',plants:g.plants.length,zombies:g.zombies.length,actors,displayObjects:before,frames:100,logicSteps:0,animationTicksPerFrame:3,meanMs:times.reduce((a,b)=>a+b)/100,p95Ms:times[94],maxFPS:scene.app.ticker.maxFPS,canvas:[scene.app.canvas.width,scene.app.canvas.height],addedDisplayObjects:0});
+ }catch(e){result.textContent='FAIL '+e.stack}};
+}catch(e){result.textContent='FAIL '+e.stack}
+</script>

@@ -1,0 +1,69 @@
+{
+  "status": "PUBLISHED_VERIFIED",
+  "scope": "Ordinary dry zombie walk,walk2,eat global-frame sampling and source float transform interpolation; held-pose blend visibility.",
+  "source": {
+    "repository": "https://github.com/ruslan831/PlantsVsZombies-decompilation",
+    "commit": "325b2229a7225d73870bb69322eefcda3a45bf8d",
+    "Reanimator.cpp": "04c95039b7a8a79c354a75037792f84db4b9a522c6fa42ee34d8e4c45aa44da3",
+    "animationStarts": "docs/ordinary-frame-source.json",
+    "rules": [
+      "GetFrameTime float-rounds frameStart+animTime*(frameCount-1), then derives local indices and fraction",
+      "GetTransformAtTime interpolates float32 transform/alpha and keeps incoming image/frame",
+      "Default track setting truncates a disappearing frame at any positive fraction",
+      "Blend alpha is evaluated before visibility; an alpha0incoming frame may still display its held-pose blend",
+      "BlendTransform ignores a previous skew beyond float32 current±180degrees"
+    ]
+  },
+  "implementation": {
+    "bundledStartMapBytes": 219,
+    "newImages": 0,
+    "newTextures": 0,
+    "newAudio": 0,
+    "newExternalMetadata": 0,
+    "newDependencies": 0,
+    "newSavedFields": 0,
+    "newScratchObjectsPerRig": 1,
+    "nativeFrameScratchReused": true,
+    "gameplayChanges": false,
+    "maxFPS": 30
+  },
+  "verification": {
+    "redBeforeFix": "Two actual ActorRig checks failed before correction, output/原版取帧-修正前.log",
+    "cppOracle": "tools/actor-frame-reference.cpp; samples at1,17,100,1000,10000,100000updates for starts44,91,138",
+    "newTests": 3,
+    "fullTests": 635,
+    "passed": 635,
+    "failed": 0,
+    "frameStorageIdentityCalls": 100000,
+    "browsers": [
+      "desktop Safari800x600",
+      "desktop Safari390x293",
+      "desktop Chrome800x600"
+    ],
+    "actors": 8,
+    "parts": 160,
+    "replacedParts": 0,
+    "nativeFrameStorageReused": true,
+    "pauseAndRestoreVisiblePoseEqual": true,
+    "finalBlendHalfStep": true,
+    "renderDoesNotMutateSave": true,
+    "releasedActors": 0,
+    "releasedPool": 0,
+    "physicalIPhoneTested": false
+  },
+  "remaining": [
+    "Full Windows GPU pixel/matrix parity has not been demonstrated by numerical transform checks",
+    "Other animation families retain existing sampling paths",
+    "Headless lifecycle/layers, water and other movement families remain incomplete",
+    "Original RNG algorithm/full draw order remain unported",
+    "Extreme held-blend interruption chains still use saved descriptors",
+    "Physical iPhone loading,total CPU/RAM and heat remain unmeasured",
+    "Full1:1 completion remains unproven",
+    "Weak-network version discovery: initial root Safari refresh retained old worker; direct index update activated latest release, recorded in publication report."
+  ],
+  "publication": {
+    "worker": "sw-1da25a9ce82454ca.js",
+    "publicUrl": "https://plants-vs-zombies.apps.workbuddy.host/?sharecode=FR6B3XZMIS",
+    "report": "output/原版取帧-发布核对.json"
+  }
+}

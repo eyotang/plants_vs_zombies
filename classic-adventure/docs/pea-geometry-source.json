@@ -1,0 +1,17 @@
+{
+  "commit": "325b2229a7225d73870bb69322eefcda3a45bf8d",
+  "sources": {
+    "PeaShooterSingle.reanim": "fc1e53d9715a24ba1c665e8cb12fe98c2fdcfcaf1fa0a0120e8ac5a88f8ea87b",
+    "SnowPea.reanim": "e8f58d27df28a5ec20e7ce50f0f511ff2dd883f3f15aba7d982e7cbdabbe99fc",
+    "PeaShooter.reanim": "0fc45b74f7c1614c9b325eeb44db23087b1cceae3a49f8ce131ee4721091061f",
+    "GatlingPea.reanim": "0ff524b4c83b279c3f9eecbafcde8e4da9889d70117b329334260499b14775fc",
+    "SplitPea.reanim": "9c5215b56ebc819c0db61365da9627558d563a784f9e49fe5f27ba5cfd593ac4",
+    "ThreePeater.reanim": "a7ef991fb3943562b3cf54255bad49ea3cd8d0de8ce9c24e0a4fb09115ec19af"
+  },
+  "rules": [
+    "GetFramesForLayer uses first-to-last visible marker span, including intervening frames",
+    "GetPeaHeadOffset samples anim_stem, otherwise anim_idle, at current body frame",
+    "SetFramesForLayer resets time but preserves loop count; direct head transitions retain it"
+  ],
+  "bytes": 3913
+}

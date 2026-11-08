@@ -1,0 +1,16 @@
+{
+  "repository": "https://github.com/ruslan831/PlantsVsZombies-decompilation",
+  "commit": "325b2229a7225d73870bb69322eefcda3a45bf8d",
+  "source": "SexyAppFramework/sounds/firepea.ogg",
+  "sourceSha256": "f6c036974a031e952382926f6562b7a86d766a593e827502e37bc7dc85eec38a",
+  "file": "firepea.mp3",
+  "bytes": 5373,
+  "sha256": "ef16c86d8ebb0eed9fbf7baa58254e8a1f4321bf9295c09c58bcb760b42a3a98",
+  "conversion": "Original stereo,44100Hz,libmp3lame96kbit/s; no speed or pitch processing.",
+  "reference": [
+    "Projectile::ConvertToFireball",
+    "Projectile::ConvertToPea",
+    "TodFoley FOLEY_FIREPEA and FOLEY_THROW"
+  ],
+  "scope": "One-shot point-of-conversion recording; existing ignite recordings remain impact-only. Native pitch variation and full audio parity remain unverified."
+}

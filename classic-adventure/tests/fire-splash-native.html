@@ -1,0 +1,19 @@
+<!doctype html><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>火球原版溅射范围验证</title>
+<style>body{margin:0;background:#172719;color:#fff1c2;font:14px system-ui}header{display:flex;flex-wrap:wrap;gap:8px;padding:8px}button{min-height:44px;padding:8px}#host{width:min(100vw,800px);height:min(75vw,600px);margin:auto}textarea{width:100%}</style>
+<header><button id="run" disabled>验证正反向与密集溅射</button><button id="mobile">390像素预览</button><button id="release" disabled>释放资源</button></header><div id="host"></div><div id="result">加载中</div>
+<script>addEventListener("error",e=>document.querySelector("#result").textContent="FAIL: "+e.message);addEventListener("unhandledrejection",e=>document.querySelector("#result").textContent="FAIL: "+e.reason);</script>
+<script type="module">
+import{Game}from'../src/game/model';import{Scene}from'../src/rendering/scene';
+let g=new Game(9,23);const scene=new Scene(),host=document.querySelector('#host'),result=document.querySelector('#result');g.phase='playing';g.started=true;g.waveIn=100000;g.seeds=['torchwood'];
+for(const row of [0,1,3]){const positions=row===3?[400,460,470,480,490,494,495,350]:[400,350,490,494,495];for(const x of positions){const z=g.spawnZombie('normal',row,x,0);z.health=1000;z.speed=0;z.frozenIn=10000;}g.peas.push({id:900+row,row,x:414,originY:g.gridY(0,row)+24,age:0,ice:false,puff:false,fire:true,vx:row===1?-3.33:3.33});}
+const initial=g.snapshot(),expected=[[960,1000,987,987,1000],[960,1000,987,987,1000],[960,992,992,992,992,992,1000,1000]];
+const health=()=>[0,1,3].map(row=>g.zombies.filter(z=>z.row===row).map(z=>z.health));
+function output(data){result.replaceChildren(...Object.entries(data).map(([key,value])=>{const t=document.createElement('textarea');t.readOnly=true;t.rows=1;t.setAttribute('aria-label',key);t.value=JSON.stringify(value);return t}));}
+function draw(){scene.render(g,0,1);scene.app.render();scene.app.stop();}
+const fail=e=>output({status:'FAIL',error:e.message});
+try{output({status:"INIT"});await scene.init(host);output({status:"BOARD"});await scene.prepareBoard(g,()=>{});scene.setLevel(g);output({status:"ACTORS"});await scene.prepareActors(g,()=>{});draw();document.querySelector('#run').disabled=false;document.querySelector('#release').disabled=false;output({status:'READY',health:health(),canvas:[scene.app.canvas.width,scene.app.canvas.height]});
+document.querySelector('#run').onclick=()=>{try{g=Game.restore(structuredClone(initial));draw();scene.captureMovement();const start=performance.now();g.step();draw();const submitMs=performance.now()-start,actual=health();if(JSON.stringify(actual)!==JSON.stringify(expected))throw Error('原版溅射范围或伤害上限不一致: '+JSON.stringify(actual));const events=g.drainEvents(),hitEvents=events.filter(e=>e.kind==='hit');if(g.peas.length||hitEvents.length!==3)throw Error('火球未消失或命中音效重复');output({status:'PASS',health:actual,expected,priorRawX:400,splashRight:500,restoredSnapshot:true,hitEvents:hitEvents.length,remainingShots:g.peas.length,submitMs,canvas:[scene.app.canvas.width,scene.app.canvas.height],maxFPS:scene.app.ticker.maxFPS,scope:'桌面浏览器真实Scene与Game.step；非iPhone真机/总CPU内存基准'});}catch(e){fail(e)}};
+document.querySelector('#mobile').onclick=()=>{host.style.width='min(100vw,390px)';host.style.height='min(75vw,292.5px)';draw()};
+document.querySelector('#release').onclick=async()=>{try{await scene.clearResources();if(scene.actors.size||scene.projectilePool.length)throw Error('资源未释放');output({status:'RELEASED',actors:scene.actors.size,pool:scene.projectilePool.length});}catch(e){fail(e)}};
+}catch(e){fail(e)}
+</script>

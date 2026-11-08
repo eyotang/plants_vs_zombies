@@ -1,0 +1,64 @@
+{
+  "status": "PARTIAL_NATIVE_ORDINARY_PEA_PORT",
+  "source": {
+    "repository": "ruslan831/PlantsVsZombies-decompilation",
+    "commit": "325b2229a7225d73870bb69322eefcda3a45bf8d",
+    "sha256": {
+      "Projectile.cpp": "564019234fc90d342b30fdedf4770161c790a2568f867b756e886ea9feb7185b",
+      "Zombie.cpp": "72495be0215d603ea807fb1dbab4fd85eb5ce7bd5ad58e207c9742d15958a78f",
+      "Board.cpp": "c9751fd512f8ef0cbaab017c1a8fde36d495ddbbe838cefd1cb84716eb145387"
+    },
+    "functions": [
+      "Projectile::GetProjectileRect",
+      "Projectile::FindCollisionTarget",
+      "Projectile::UpdateNormalMotion",
+      "Projectile::UpdateMotion",
+      "Projectile::Draw",
+      "Zombie::GetZombieRect"
+    ]
+  },
+  "implemented": [
+    "Ordinary and snow peas use native prior integer projectile X against the already mapped ground body rectangles, including zero-overlap touching edges. The source projectile rectangle is mX-15 through mX+40.",
+    "Existing regular-shot X remains an image-center coordinate. Both pea images have logical size 28x28, so native mX=Math.trunc(old model X-14). No new snapshot field or alternate asset is needed.",
+    "When integer source body positions tie, the first eligible source iteration entry wins instead of using smaller fractional X.",
+    "Regular pea/snow rendering now uses the loaded native logical texture size, 28x28, instead of forcing 19x19. Image center and loaded file/resolution are unchanged.",
+    "Fire peas, puff/spike/star/homing shots and unmapped water/special bodies retain their previous collision bridge until ported coherently."
+  ],
+  "assets": {
+    "public/assets/runtime/pea.webp": {
+      "sha256": "0082baa3b26710ce07a2fd76771d638623eba2efd7abfd7754e76c9f9d4c2e63",
+      "encodedPixels": [
+        56,
+        56
+      ],
+      "loaderResolution": 2,
+      "logicalPixels": [
+        28,
+        28
+      ]
+    },
+    "public/assets/runtime/original/snow-pea.webp": {
+      "sha256": "ed2a1fd43fe2f889c9c4117ec580400d1e268f4a17ff0b6f7f52fe2fe17366a9",
+      "encodedPixels": [
+        56,
+        56
+      ],
+      "loaderResolution": 2,
+      "logicalPixels": [
+        28,
+        28
+      ]
+    }
+  },
+  "verification": [
+    "Two regressions were observed failing through actual Game.step before the fix: native edge timing and same-integer body selection.",
+    "64 edge inputs across four native body families, two orientations, two pea types, both shot directions and miss/touch controls; missed shots must hit on the next integer frame.",
+    "Controlled Scene on desktop and 390x844 viewport confirms 28x28 live projectile dimensions, one step with no hit, then one 20-damage hit and projectile removal."
+  ],
+  "remaining": [
+    "Source muzzle transforms and complete shooter plant positioning are still unported; this correction maps collision to the currently drawn shot, not a claim of native emission parity.",
+    "Other projectile types, water/mini/airborne enemy bodies, boundary expiry, torchwood ordering, terrain and full update ordering still require separate source checks.",
+    "Seven current play checks and three previous-port golden snapshots fail; no seeds, strategies or golden expectations were changed in this revision.",
+    "Full desktop/mobile gameplay, physical-device CPU/GPU/RAM and 1:1 art/audio/menu acceptance remain unproven."
+  ]
+}

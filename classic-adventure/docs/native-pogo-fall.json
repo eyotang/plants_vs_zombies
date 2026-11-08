@@ -1,0 +1,54 @@
+{
+  "status": "PARTIAL_NATIVE_POGO_BREAK_FALL_AND_COLD_PORT",
+  "supersedesScope": "native-pogo.json break/fall and16-pixel vertical-origin limitations",
+  "source": {
+    "repository": "ruslan831/PlantsVsZombies-decompilation",
+    "commit": "325b2229a7225d73870bb69322eefcda3a45bf8d",
+    "Zombie.cppSHA256": "72495be0215d603ea807fb1dbab4fd85eb5ce7bd5ad58e207c9742d15958a78f",
+    "functions": [
+      "Zombie::PogoBreak",
+      "Zombie::StartWalkAnim",
+      "Zombie::PickRandomSpeed",
+      "Zombie::UpdateZombieFalling",
+      "Zombie::GetPosYBasedOnRow",
+      "Zombie::GetDrawPos",
+      "Zombie::GetZombieRect",
+      "Zombie::GetZombieAttackRect",
+      "Zombie::DropHead",
+      "Zombie::CheckIfPreyCaught",
+      "Zombie::CanBeFrozen",
+      "Zombie::HitIceTrap",
+      "Zombie::ApplyButter"
+    ]
+  },
+  "implemented": [
+    "Retain the existing four-field pogo state after stick removal, extending phase with fall/walk. Shared break handler is used by tallnut, magnet and living head loss; it retains altitude, clears shield and restores .45 source raw walking speed for mapped pogos.",
+    "Falling loses one altitude unit per active logic step, freezes under pause/immobilization and clamps at ground0. Movement continues; chewing cannot begin while falling. Tallnut break resumes movement in the break step, falling starts next step; a prior plant-phase magnet break falls in the same step.",
+    "Native pogo world Y has an additional -16 species offset. Drawing keeps image+16; body top adds17 after stick loss. Chewing rectangle changes to offset20,width50. Native root stays enabled after landing.",
+    "HitIceTrap chills a bouncing pogo with max(existing,2000), returns before frozen state and20 damage because CanBeFrozen is false. After stick loss, existing ice trap logic remains eligible.",
+    "Butter deals40 impact damage to a bouncing pogo without immobilization. A living headed broken-stick pogo may be buttered and its altitude reset to0, as ApplyButter specifies.",
+    "Living head loss breaks the pogo immediately through damageZombie; step also catches pre-existing headless pogo state. Existing death actor effects remain outside this living-fall fix."
+  ],
+  "resourceImpact": {
+    "newImages": 0,
+    "newTextures": 0,
+    "newDisplayObjects": 0,
+    "newTickers": 0,
+    "newStateFields": 0,
+    "stateReuse": "Existing pogoState retained across fall/landing instead of discarded",
+    "browserActorParts": 19,
+    "measuredPhysicalMobilePerformance": false
+  },
+  "testEvidence": [
+    "Three initial red checks: magnet height retention, species/body offsets, immediate head-loss break.",
+    "Three intermediate red checks: falling must not chew, bouncing ice eligibility, bouncing butter eligibility. Source HitIceTrap inspection also corrected the new ice expectation: non-freezable pogo receives no20 damage.",
+    "Seventh positive control extracts actual Scene positioning method and checks60 positions on each of day and roof through break/fall/landing.",
+    "Pause/freeze, mid-fall save restore and cold/butter positive controls retain actual Game paths."
+  ],
+  "limits": [
+    "Death animation and dead body fall/particle handoff remain incomplete.",
+    "Water/mini/high-ground bridges, exact all-state walking/reanimation clocks and full native RNG sequence remain incomplete.",
+    "Other families cold/butter eligibility is not certified by this pogo-specific change.",
+    "11 current full-suite failures remain; no physical-phone acceptance or publication this turn."
+  ]
+}

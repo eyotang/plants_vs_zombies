@@ -1,0 +1,29 @@
+{
+  "repository": "https://github.com/ruslan831/PlantsVsZombies-decompilation",
+  "commit": "325b2229a7225d73870bb69322eefcda3a45bf8d",
+  "mappingReference": [
+    "Lawn/Plant.cpp:2363",
+    "Sexy.TodLib/TodFoley.cpp:31"
+  ],
+  "variants": [
+    "chomp",
+    "chomp2"
+  ],
+  "conversion": "FFmpeg 9.0; source Vorbis to 44100 Hz MP3, original channels, libmp3lame 96 kbit/s; no pitch or speed adjustment",
+  "files": [
+    {
+      "source": "SexyAppFramework/sounds/chomp.ogg",
+      "sourceSha256": "ec7c8b798bec182251011fc61c744474e7f263193ba92d2153bcb0cf8ff41c42",
+      "file": "squish.mp3",
+      "bytes": 12582,
+      "sha256": "164ffd34739e210f965ce872aeb52678089700845ce6f174daef1c64f9b0698a"
+    },
+    {
+      "source": "SexyAppFramework/sounds/chomp2.ogg",
+      "sourceSha256": "eaee0ca371c3114039f3a77bf0fd63e3725a4e02abb3577de3cffaa5cc957c50",
+      "file": "squish2.mp3",
+      "bytes": 14777,
+      "sha256": "9064bf32385b277599755c0d8d6c5bf78005ba4496fb80691ea133b1a9f08c2b"
+    }
+  ]
+}

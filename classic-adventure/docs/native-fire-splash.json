@@ -1,0 +1,75 @@
+{
+  "status": "PARTIAL_NATIVE_FIRE_SPLASH_RECTANGLE",
+  "source": {
+    "repository": "https://github.com/ruslan831/PlantsVsZombies-decompilation",
+    "commit": "325b2229a7225d73870bb69322eefcda3a45bf8d",
+    "Projectile.cpp": "564019234fc90d342b30fdedf4770161c790a2568f867b756e886ea9feb7185b",
+    "functions": [
+      "Projectile::IsZombieHitBySplash",
+      "Projectile::DoSplashDamage",
+      "Projectile::GetProjectileRect",
+      "Projectile::DoImpact",
+      "Zombie::GetZombieRect"
+    ]
+  },
+  "implemented": [
+    "Use the prior integer projectile X through X+100 inclusive against mapped integer zombie bodies, not a 50px radius around the direct victim. Backwards shots retain the same rightward splash rectangle.",
+    "Reuse native body width/offset/mirroring across normal, football, giant, digger and other mapped bodies.",
+    "Count eligible same-row, non-resistant overlaps before damage. Preserve original 40 direct /13 secondary damage and density cap, shield/body layering and direct-only cold removal.",
+    "Remove the second count-filter allocation; no added rendering, assets, textures, dependencies or per-frame visual objects."
+  ],
+  "verification": {
+    "beforeFix": "Four of five source-driven Game.step tests failed, including incorrect behind damage and missed forward body overlap; output/火球溅射-修正前.log",
+    "afterFix": {
+      "tests": 604,
+      "passed": 604,
+      "failed": 0,
+      "log": "output/火球溅射-全量测试.log",
+      "newTests": 6,
+      "bodyBoundaryCases": 32
+    },
+    "controlledBrowserFixture": "tests/fire-splash-native.html",
+    "desktopSafariAndChrome": {
+      "health": [
+        [
+          960,
+          1000,
+          987,
+          987,
+          1000
+        ],
+        [
+          960,
+          1000,
+          987,
+          987,
+          1000
+        ],
+        [
+          960,
+          992,
+          992,
+          992,
+          992,
+          992,
+          1000,
+          1000
+        ]
+      ],
+      "hitEvents": 3,
+      "remainingShots": 0,
+      "snapshotRestored": true,
+      "releaseActors": 0,
+      "releasePool": 0
+    },
+    "desktopSafariNarrowCanvas": [
+      390,
+      293
+    ],
+    "scope": "Controlled actual Scene+Game.step browser check. Submit times are not real-time FPS, GPU completion or total process CPU/RAM measurements."
+  },
+  "remaining": [
+    "Full source damage-range lifecycle/vertical/portal/boss behavior and whole-game 1:1 acceptance.",
+    "Physical iPhone Safari loading, sound, touch, sustained frame pacing, thermal, battery and total CPU/GPU/process memory acceptance."
+  ]
+}

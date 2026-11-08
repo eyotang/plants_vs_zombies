@@ -1,0 +1,26 @@
+<!doctype html><html lang="zh-CN"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>墓碑吞噬者原生动作检查</title>
+<style>body{margin:0;background:#25291d;color:white;font:14px system-ui}header{padding:6px}button{padding:6px}#host{width:min(100vw,800px);aspect-ratio:4/3}pre{white-space:pre-wrap;padding:8px}</style>
+<header>依次显示：刚种下、落地中、开始啃食、啃食100/300/399次 <button id="bench">检查重复绘制</button><b id="status">准备中</b></header><div id="host"></div><pre id="result"></pre>
+<script type="module">
+import{Game}from'../src/game/model';import{Scene}from'../src/rendering/scene';import{Assets}from'pixi.js';
+const trace=[];const record=s=>{trace.push(s);document.querySelector('#result').textContent=trace.slice(-8).join(' | ')};const load=Assets.load.bind(Assets);Assets.load=async(...args)=>{record('load '+args[0].src);try{const value=await load(...args);record('loaded '+args[0].src);return value}catch(e){record('failed '+e);throw e}};
+window.addEventListener('unhandledrejection',e=>{document.querySelector('#result').textContent=String(e.reason?.stack??e.reason)});
+const ages=[0,28,57,157,357,456],g=new Game(14,1),scene=new Scene(),plants=[];let benchmark;
+if(new URLSearchParams(location.search).has('mobile'))document.querySelector('#host').style.width='min(100vw,calc((100vh - 48px)*4/3))';
+for(const [i,age]of ages.entries()){
+ const sample=new Game(14,1);for(const k of ['gravebuster','puffshroom','sunflower','wallnut','peashooter','cherrybomb'])sample.chooseSeed(k);sample.start();sample.sun=1000;
+ sample.random=()=>.5;const grave=sample.graves[0];sample.select('gravebuster');if(!sample.plant(grave.column,grave.row))throw Error('plant failed');delete sample.random;
+ for(let t=0;t<age;t++)sample.step();const p=sample.plants[0];p.id=9000+i;p.column=1+i%3*3;p.row=i<3?1:3;plants.push(p);
+}
+g.phase='playing';g.ticks=456;g.plants=plants;g.seeds=['gravebuster'];g.graves=plants.map(p=>({id:p.id+100,row:p.row,column:p.column}));g.zombies=[];
+try{const status=document.querySelector('#status');status.textContent='初始化';await scene.init(document.querySelector('#host'));const upload=scene.app.renderer.prepare.upload.bind(scene.app.renderer.prepare);scene.app.renderer.prepare.upload=async(...args)=>{record('upload');await upload(...args);record('uploaded')};status.textContent='加载场景';await scene.prepareBoard(g,(done,total)=>status.textContent='场景 '+done+'/'+total);scene.setLevel(g);status.textContent='加载动作';await scene.prepareActors(g,(done,total)=>status.textContent='动作 '+done+'/'+total);scene.app.stop();
+ const count=()=>{let n=0;const walk=c=>{n++;for(const x of c.children??[])walk(x)};walk(scene.app.stage);return n};
+ function draw(){scene.render(g,0,0);scene.app.render();scene.app.stop();const errors=[];
+ for(const [i,p]of plants.entries()){
+  const a=scene.actors.get('p'+p.id),land=ages[i]<57,remaining=land?400:457-ages[i];
+  if(a.clip!==(land?'gravebuster-land':'gravebuster-eating')||Math.abs(a.root.y-(g.gridY(p.column,p.row)-40+(land?0:(400-remaining)*.075)))>1e-8)errors.push(i);
+ }
+ document.querySelector('#status').textContent=errors.length?'FAIL':'PASS';document.querySelector('#result').textContent=JSON.stringify({viewport:[innerWidth,innerHeight],samples:6,errors,phases:plants.map(p=>p.gravebuster.phase),remaining:plants.map(p=>p.actionIn),canvas:[scene.app.canvas.width,scene.app.canvas.height],maxFPS:scene.app.ticker.maxFPS,benchmark});}
+ document.querySelector('#bench').onclick=()=>{const before=count(),times=[];for(let i=0;i<100;i++){const t=performance.now();scene.render(g,0,0);scene.app.render();times.push(performance.now()-t)}times.sort((a,b)=>a-b);benchmark={frames:100,meanMs:times.reduce((a,b)=>a+b)/100,p95Ms:times[94],objectsAdded:count()-before};draw()};draw();
+}catch(e){document.querySelector('#status').textContent='ERROR';document.querySelector('#result').textContent=e.stack}
+</script>

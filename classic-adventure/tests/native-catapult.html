@@ -1,0 +1,21 @@
+<!doctype html><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>经典篮球弹道验证</title>
+<style>body{margin:0;background:#172719;color:#fff1c2;font:14px system-ui}header{padding:8px;display:flex;gap:8px;align-items:center}button{min-height:44px;padding:8px}#host{width:min(100vw,800px);height:min(75vw,600px);margin:auto}pre{white-space:pre-wrap;margin:8px}</style>
+<header><button id="advance">推进30步</button><b id="status">加载中</b></header><div id="host"></div><pre id="result"></pre>
+<script type="module">
+import {Game} from '../src/game/model';import {Scene} from '../src/rendering/scene';
+const g=new Game(49,23),scene=new Scene(),status=document.querySelector('#status'),result=document.querySelector('#result');let age=1;
+try{
+ for(const k of ['sunflower','cabbagepult','flowerpot','kernelpult','wallnut','umbrella'])g.chooseSeed(k);g.start();g.select('sunflower');if(!g.plant(0,4))throw new Error('未能合法启动战斗');
+ const p=g.plants.at(-1);Object.assign(p,{column:0,row:2,actionIn:100000});
+ const z=g.spawnZombie('catapult',2,650.9,0);z.speed=0;z.catapult.phase='shoot';z.catapult.remaining=231;
+ await scene.init(document.querySelector('#host'));await scene.prepareBoard(g,()=>{});scene.setLevel(g);await scene.prepareActors(g,()=>{});scene.app.stop();g.step();g.drainEvents();
+ function draw(){scene.render(g,0,1);scene.app.render();scene.app.stop();const pea=g.peas.find(p=>p.lob?.kind==='basketball');if(!pea)throw new Error('篮球丢失');
+  const actor=scene.actors.get(`b${pea.id}`),vx=-(733.9-40-20)/120,vz=(170+4)/120-7;
+  const x=733+vx*age,y=166+vz*age+.115*age*(age+1)/2;
+  if(Math.abs(pea.x-x)>1e-7||Math.abs(pea.y-y)>1e-7||Math.abs(actor.root.x-pea.x-actor.art.texture.width/2)>1e-7||Math.abs(actor.root.y-pea.y-actor.art.texture.height/2)>1e-7||Math.abs(actor.art.width/actor.art.texture.width-1.1)>1e-7)throw new Error('原生篮球轨迹或绘制位置不一致');
+  status.textContent='PASS';result.textContent=JSON.stringify({age,start:[pea.lob.startX,pea.lob.startY],velocity:[pea.lob.flight.vx,pea.lob.flight.vz],position:[pea.x,pea.y],root:[actor.root.x,actor.root.y],size:[actor.art.width,actor.art.height],canvas:[scene.app.canvas.width,scene.app.canvas.height],maxFPS:scene.app.ticker.maxFPS},null,2);
+ }
+ document.querySelector('#advance').onclick=()=>{try{if(age!==1)return;for(let i=0;i<30;i++){scene.captureMovement();g.step();g.drainEvents();}age=31;draw()}catch(e){status.textContent='FAIL';result.textContent=e.stack}};
+ draw();document.querySelector('#advance').focus();
+}catch(e){status.textContent='FAIL';result.textContent=e.stack}
+</script>

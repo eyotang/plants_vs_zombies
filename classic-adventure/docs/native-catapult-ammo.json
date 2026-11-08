@@ -1,0 +1,32 @@
+{
+  "status": "NATIVE_CATAPULT_STOCK_VISIBILITY_PORTED",
+  "source": {
+    "repository": "ruslan831/PlantsVsZombies-decompilation",
+    "commit": "325b2229a7225d73870bb69322eefcda3a45bf8d",
+    "path": "Lawn/Zombie.cpp",
+    "sha256": "72495be0215d603ea807fb1dbab4fd85eb5ce7bd5ad58e207c9742d15958a78f",
+    "function": "Zombie::UpdateZombieCatapult",
+    "lines": [
+      1534,
+      1552
+    ]
+  },
+  "rules": [
+    "The source starts with 20 rounds. Only the final four completed attacks hide stock tracks, at remaining ammo 4,3,2,1 respectively.",
+    "Render existing Zombie_catapult_basketball, basketball2, basketball3, basketball4 only above those thresholds. Animation poses retain their own image/frame/alpha visibility gates.",
+    "Pass actual catapult ammo from Scene to ActorRig and invalidate its same-pose cache when ammo changes; no game rules or model timing changed."
+  ],
+  "resourceImpact": {
+    "newImages": 0,
+    "newTextures": 0,
+    "newDisplayObjects": 0,
+    "newTickers": 0,
+    "extraScalarPerActorRig": 1,
+    "sharedThresholdEntries": 4,
+    "measuredTotalRAM": false
+  },
+  "limits": [
+    "This restores stock visibility only, not all remaining native animation blending or plant/zombie fidelity.",
+    "Browser checks are responsive desktop Chromium, not physical mobile CPU/RAM evidence."
+  ]
+}

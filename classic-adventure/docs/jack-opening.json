@@ -1,0 +1,48 @@
+{
+  "repository": "https://github.com/ruslan831/PlantsVsZombies-decompilation",
+  "commit": "325b2229a7225d73870bb69322eefcda3a45bf8d",
+  "sourceFile": "Lawn/Zombie.cpp",
+  "sourceSha256": "72495be0215d603ea807fb1dbab4fd85eb5ce7bd5ad58e207c9742d15958a78f",
+  "functions": [
+    "Zombie::UpdateZombieJackInTheBox",
+    "Zombie::UpdateDamageStates",
+    "Zombie::CanLoseBodyParts",
+    "Zombie::UpdatePlaying",
+    "Zombie::SetupReanimForLostHead",
+    "Zombie::IsFlying",
+    "Zombie::IsBobsledTeamWithSled"
+  ],
+  "rules": [
+    "mHasHead gates entry into POPPING, not the POPPING phase itself.",
+    "An already popping jack remains stationary and completes its 110-tick countdown after head loss.",
+    "Headless health decay still runs while waiting to pop.",
+    "A headless running jack never starts a new opening.",
+    "UpdatePlaying decays a headless body with a 1/5 chance: three health for maximum body health >=500, one otherwise; miniature maximum body health is scaled.",
+    "CanLoseBodyParts excludes bungees, ice machines, catapults, giants, flying/popping balloons and riding sled members.",
+    "SetupReanimForLostHead hides anim_head, anim_hair and anim_tongue, without hiding the separate box clown.",
+    "DieNoLoot on self-explosion removes the existing render rig without creating a fall-down corpse."
+  ],
+  "verification": [
+    "tests/ten-levels.test.ts",
+    "tests/headless-decay.test.ts",
+    "tests/actor-motion.test.ts",
+    "tests/resource-lifecycle.test.ts",
+    "tests/jack-opening.html"
+  ],
+  "remaining": [
+    "Full jack explosion circle/plant-rectangle geometry and native visual placement remain to verify.",
+    "No change to prices, body health, wave tables or the 110-tick opening length.",
+    "The model still infers head loss from health plus source phase immunities rather than storing the complete native persistent mHasHead state; all phase transitions remain to audit."
+  ],
+  "rendering": {
+    "newImages": 0,
+    "newTextures": 0,
+    "cache": "Head-loss flag participates in pose memoization so a same-frame head change redraws visibility.",
+    "headlessOpeningParts": 21,
+    "sameFrameVisibilityTest": true
+  },
+  "limitations": [
+    "Death clips already hide their head tracks; an initial persistence test had an invalid positive premise and was removed together with the unnecessary default-state change.",
+    "Rendering/logic source fixes are local candidates; full-run failures remain release gates."
+  ]
+}

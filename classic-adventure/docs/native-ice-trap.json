@@ -1,0 +1,61 @@
+{
+  "status": "PARTIAL_NATIVE_ICE_TRAP_RENDERING_PORT",
+  "source": {
+    "repository": "ruslan831/PlantsVsZombies-decompilation",
+    "commit": "325b2229a7225d73870bb69322eefcda3a45bf8d",
+    "Zombie.cppSHA256": "72495be0215d603ea807fb1dbab4fd85eb5ce7bd5ad58e207c9742d15958a78f",
+    "functions": [
+      "Zombie::DrawIceTrap",
+      "Zombie::Draw",
+      "GameObject::BeginDraw",
+      "TodDrawImageScaledF"
+    ]
+  },
+  "assets": [
+    {
+      "file": "ice-trap-front.png",
+      "source": "SexyAppFramework/images/icetrap.png",
+      "bytes": 4238,
+      "size": [
+        54,
+        30
+      ],
+      "sha256": "b89333d1a8085063c692d6f27002fd7e6f16f0d25202f04ac8d6f7804e90c413",
+      "sourceGitBlobSHA1": "87b77b9eb01028507d76496dc80467ac1188d18d",
+      "pixelEditing": false
+    },
+    {
+      "file": "ice-trap-back.png",
+      "source": "SexyAppFramework/images/icetrap2.png",
+      "bytes": 1380,
+      "size": [
+        54,
+        30
+      ],
+      "sha256": "888cdd1cbb7debefa597e0622e1342ee0cb02a28c41159e260da19962c88ba0b",
+      "sourceGitBlobSHA1": "17b8982bc6af78d1334fec8b4a58b2c4e34dcc07",
+      "pixelEditing": false
+    }
+  ],
+  "implemented": [
+    "Front/back source images wrap the body in source layer order. Integer world placement follows represented native ground coordinates and species offsets.",
+    "World placement cancels parent reflection and mini scale, retaining visual fill scale; gargantuar1.6, bungee1.2, others1.",
+    "Two sprites allocated once on first freeze, hidden on thaw and reused on refreeze. Actor destruction releases sprites; scene release unloads both textures.",
+    "Lazy loading for selected/imitated/dropped ice mushroom or resumed frozen zombies. Chill-only seeds and first level do not require these images."
+  ],
+  "validation": {
+    "newTests": 4,
+    "transformCombinations": 128,
+    "targetedPassed": 34,
+    "fullTotal": 506,
+    "fullPassed": 495,
+    "fullFailed": 11,
+    "desktopAndResponsiveLifecyclePassed": true,
+    "physicalPhoneTested": false
+  },
+  "limits": [
+    "Unmapped ground transitions retain bridge coordinates; pool suppression follows current bridge instead of full native InPool state.",
+    "Native thaw/break particles, full death transitions, exact phase clocks and global pixel parity are unverified.",
+    "Controlled browser fixture is not full normal-play or CPU/GPU/physical-phone measurement."
+  ]
+}

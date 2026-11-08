@@ -1,0 +1,23 @@
+{
+  "sourceRepository": "https://github.com/ruslan831/PlantsVsZombies-decompilation",
+  "commit": "325b2229a7225d73870bb69322eefcda3a45bf8d",
+  "sourceHashes": {
+    "Plant.cpp": "9596bc875c4ccf4eb3e6eded4ebb503eed6a3a5afe2df6b3a53dbb31c417d43d",
+    "Plant.h": "d5e7bd4e28e160740275f7bc49213d6b041c6ad4676287ccaaaab4f3db7186db",
+    "Zombie.cpp": "72495be0215d603ea807fb1dbab4fd85eb5ce7bd5ad58e207c9742d15958a78f",
+    "Board.cpp": "c9751fd512f8ef0cbaab017c1a8fde36d495ddbbe838cefd1cb84716eb145387"
+  },
+  "rules": {
+    "damage": "Integer plant-left +20, width45; overlap >0, football >-20; 1800 damage at falling counter5.",
+    "acquisition": "Native body overlap within70, eating110, source rear limits and running-pole restriction; retain eligible current target then greatest overlap.",
+    "target": "Plant.h mTargetX is int; truncate native object-left before retaining model center.",
+    "motion": "Both X and Y reach apex after30 rise ticks and hold20; 10 falling ticks, 120px apex; destination column from target object-left.",
+    "render": "Source grid top-left, scale1, native rig origin0; flowerpot -5 and water bob retained."
+  },
+  "limits": [
+    "Native body bridge covers mapped ground states only; unsupported water/mini/airborne/special states retain prior behavior.",
+    "Full update ordering, all plant roots and special zombie phases remain incomplete.",
+    "No new images, textures, actor parts or dependencies.",
+    "No game balance, RNG seeds, normal-play strategies or pinned golden expectations changed."
+  ]
+}

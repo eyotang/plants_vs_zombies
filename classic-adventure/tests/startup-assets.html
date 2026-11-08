@@ -1,0 +1,18 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>首屏图片审计</title></head><body><div id="app"></div><aside style="position:fixed;z-index:10000;top:0;left:0;background:#fff;color:#111;padding:6px;font:12px monospace;max-width:96vw"><button id="audit-start">检查首屏图片</button><pre id="audit-result" style="white-space:pre-wrap;max-height:40vh;overflow:auto">等待检查</pre></aside><script type="module">
+performance.setResourceTimingBufferSize(2000);
+// Use the real entry's preload declarations and production UI/CSS.
+const entry=new DOMParser().parseFromString(await(await fetch('/index.html')).text(),'text/html');
+for(const link of entry.querySelectorAll('link[rel="preload"]'))document.head.append(link.cloneNode(true));
+await import('/src/main.ts');
+const button=document.querySelector('#audit-start'),result=document.querySelector('#audit-result');
+button.onclick=async()=>{
+ const logo=document.querySelector('.game-logo');await logo.decode();const rect=logo.getBoundingClientRect();
+ const required={width:Math.ceil(rect.width*devicePixelRatio),height:Math.ceil(rect.height*devicePixelRatio)};
+ const source=new URL(logo.currentSrc).pathname,standardSufficient=required.width<=1400&&required.height<=232;
+ const menuRequests=performance.getEntriesByType('resource').filter(x=>/\/(?:hd4\/)?original\/menu\.webp$/.test(new URL(x.name).pathname)).map(x=>({path:new URL(x.name).pathname,bytes:x.encodedBodySize,duration:x.duration}));
+ const data={viewport:[innerWidth,innerHeight],dpr:devicePixelRatio,logo:{source,css:[rect.width,rect.height],required,standardSufficient,unnecessaryHD:standardSufficient&&source.includes('/hd4/'),bytes:source.includes('/hd4/')?1352008:343504,decodedRGBAEstimate:source.includes('/hd4/')?2800*464*4:1400*232*4},menuRequests,duplicateMenu:menuRequests.length>1};
+ data.pass=!data.logo.unnecessaryHD&&!data.duplicateMenu;result.replaceChildren(...JSON.stringify(data,null,2).split('\n').map(line=>Object.assign(document.createElement('div'),{textContent:line})));document.title=(data.pass?'PASS':'FAIL')+' 首屏图片审计';
+};
+if(document.readyState==='complete')void button.onclick();
+else addEventListener('load',()=>button.onclick(),{once:true});
+</script></body></html>

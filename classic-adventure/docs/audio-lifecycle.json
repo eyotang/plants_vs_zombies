@@ -1,0 +1,46 @@
+{
+  "problem": "GameAudio retained every decoded sound ever requested; menu/level boundaries did not release banks or active sources. Late responses could repopulate obsolete state.",
+  "fix": [
+    "Retain only the current sound plan; keep common cached sounds on direct plan changes.",
+    "Cancel obsolete fetches; ignore decode results for retired requests; invalidate pending activation work.",
+    "Release banks and active sources at menu and battle-mount boundaries, and suspend the existing SFX AudioContext. Reuse it on the next user activation.",
+    "Active source identities replace a decrement-only counter, so a late ended callback cannot consume a new battle voice."
+  ],
+  "tests": {
+    "before": {
+      "total": 4,
+      "passed": 0,
+      "failed": 4,
+      "log": "output/音效生命周期-修正前测试.log"
+    },
+    "final": {
+      "total": 543,
+      "passed": 543,
+      "failed": 0,
+      "log": "output/音效生命周期-全量测试.log"
+    }
+  },
+  "safariControlledReduction": {
+    "beforePCMBytes": 14693648,
+    "afterPCMBytes": 9666844,
+    "fewerHeldPCMBytes": 5026804,
+    "percent": 34.210728336489346
+  },
+  "unchangedSourceSincePriorRelease": {
+    "game/model.ts": true,
+    "rendering/scene.ts": true,
+    "rendering/squished.ts": true,
+    "rendering/plant-motion.ts": true,
+    "rendering/actor-motion.ts": true,
+    "rendering/asset-plan.ts": true,
+    "platform/audio-plan.ts": true
+  },
+  "limits": [
+    "This measures PCM sample arrays retained by the game, not total browser resident memory, GPU memory or immediate garbage collection.",
+    "The before/after comparison is one legal six-card roof loadout switching to level1 on desktop Safari. Chrome verifies the fixed lifecycle; no Chrome before-baseline was recorded.",
+    "Desktop Safari real-UI checks cover two level1 starts, legal planting, return to menu, zero retained SFX buffers and one reused context. Not physical iPhone testing or a whole campaign.",
+    "Menu release trades retained decoded buffers for re-decoding from browser-cached files at the next start; battle preparation still does not wait for all SFX.",
+    "Music uses its separate existing streaming element and remains available. Audio quality, encoded sound files, cue variants, voice caps and combat gain are unchanged.",
+    "No claim of full1:1 fidelity, sustained mobile FPS, thermal/battery results, total CPU improvement or resolution of previous menu/image/renderer memory questions."
+  ]
+}

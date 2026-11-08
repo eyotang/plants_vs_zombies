@@ -1,0 +1,13 @@
+<!doctype html><html lang="zh-CN"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>真实菜单音效释放检查</title><div id="app"></div>
+<aside style="position:fixed;z-index:10000;right:0;top:0;background:#fff;color:#111;font:12px monospace;padding:4px;max-width:45vw;pointer-events:none"><pre id="probe" style="white-space:pre-wrap">等待初始化</pre></aside>
+<script type="module">
+import {GameAudio} from '../src/platform/audio';
+const Native=window.AudioContext,stats={contexts:0,unlocks:0,releases:0,played:0,ended:0};
+class Measured extends Native{constructor(...args){super(...args);stats.contexts++;}createBufferSource(){const source=super.createBufferSource(),start=source.start.bind(source);source.start=(...args)=>{stats.played++;return start(...args)};source.addEventListener('ended',()=>{stats.ended++});return source;}}
+window.AudioContext=Measured;
+function report(audio,action){document.querySelector('#probe').textContent=JSON.stringify({...stats,action,buffers:audio.buffers.size,pcmBytes:[...audio.buffers.values()].reduce((n,b)=>n+b.length*b.numberOfChannels*4,0),voices:audio.voices,context:audio.context?.state});}
+const unlock=GameAudio.prototype.unlock,release=GameAudio.prototype.release;
+GameAudio.prototype.unlock=async function(...args){await unlock.apply(this,args);stats.unlocks++;report(this,'unlocked')};
+GameAudio.prototype.release=async function(...args){await release.apply(this,args);stats.releases++;report(this,'released')};
+await import('../src/main');
+</script>

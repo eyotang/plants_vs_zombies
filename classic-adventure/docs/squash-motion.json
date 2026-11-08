@@ -1,0 +1,37 @@
+{
+  "commit": "325b2229a7225d73870bb69322eefcda3a45bf8d",
+  "sourceSha256": "03c0689370973af3a1d527b1115f773ac5e48f455b708abccc52c89e58c414f3",
+  "metadataFile": "squash-da7ef4a61d58bdce.json",
+  "clips": {
+    "squash-look-left": {
+      "layer": "anim_lookleft",
+      "fps": 24,
+      "frames": 6,
+      "duration": 25.0,
+      "posesSha256": "26fda248fb3a4dfc091981d3312bb59161391474918a3c4ed90ec04f11a9be92"
+    },
+    "squash-look-right": {
+      "layer": "anim_lookright",
+      "fps": 24,
+      "frames": 6,
+      "duration": 25.0,
+      "posesSha256": "76c64001083aae92131e6f78a4850f08695ea25e22dbc0329d051e200ff2cca6"
+    },
+    "squash-rise": {
+      "layer": "anim_jumpup",
+      "fps": 24,
+      "frames": 15,
+      "duration": 62.5,
+      "posesSha256": "e90d24edcde3a7ae15e3a9d2ae2cc06b1c92cc1439b2085c5f1433d922c0d526"
+    },
+    "squash-attack": {
+      "layer": "anim_jumpdown",
+      "fps": 60,
+      "frames": 8,
+      "duration": 13.333333333333334,
+      "posesSha256": "09e9e847316099092df3b432111749e47fd63018ab6afa6c7e8d58fd0a0b4d28"
+    }
+  },
+  "texturesChanged": false,
+  "timingSource": "Plant::UpdateSquash: look/up 24 fps, down 60 fps; 80 look, 45 prelaunch, 50 rise, 10 fall, 100 hold."
+}

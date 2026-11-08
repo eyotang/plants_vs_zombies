@@ -1,0 +1,22 @@
+{
+  "commit": "325b2229a7225d73870bb69322eefcda3a45bf8d",
+  "sourceSHA256": "4b53ccfa0c000b203405a1f7666eec761935553e533e1746ec0dea517897b9cc",
+  "source": "SexyAppFramework/reanim/Zombie.reanim",
+  "ranges": {
+    "anim_walk": {
+      "start": 44,
+      "count": 47
+    },
+    "anim_walk2": {
+      "start": 91,
+      "count": 47
+    },
+    "anim_eat": {
+      "start": 138,
+      "count": 40
+    }
+  },
+  "metadataSHA256": "712ef6695f88ccb7fb678012651e0fe71a37f5a753618fd5566ff9b474336bb1",
+  "metadataBytes": 219,
+  "newImages": 0
+}

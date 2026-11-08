@@ -1,0 +1,29 @@
+<!doctype html><html lang="zh-CN"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>原版压扁形态检查</title>
+<style>body{margin:0;background:#25291d;color:#eee;font:14px system-ui}header{padding:8px;display:flex;gap:8px;flex-wrap:wrap}button{padding:8px}#host{width:min(100vw,800px);aspect-ratio:4/3}pre{white-space:pre-wrap;margin:8px}</style>
+<header><button id="crush">碾压</button><button id="last">停留至零</button><button id="clear">清理</button><button id="save">暂停存档再恢复</button><button id="bench">检查重复绘制</button><button id="release">释放场景</button><b id="status">加载中</b></header><div id="host"></div><pre id="result"></pre>
+<script type="module">
+import {Game} from '../src/game/model';import {Scene} from '../src/rendering/scene';
+if(location.search.includes('mobile'))document.querySelector('#host').style.width='min(100vw, calc((100vh - 56px) * 4 / 3))';
+let g=new Game(49,23);const scene=new Scene(),status=document.querySelector('#status'),result=document.querySelector('#result');let crushed=false,released=false,bakes=0,benchmark;
+const kinds=['sunflower','kernelpult','tallnut','melonpult','potatomine','coffeebean'];
+try{
+ for(const k of ['sunflower','kernelpult','tallnut','melonpult','potatomine','coffeebean'])g.chooseSeed(k);g.start();g.select('sunflower');if(!g.plant(2,4))throw Error('无法正常开始');
+ g.plants=kinds.map((kind,i)=>({id:9001+i,kind,column:i+1,row:2,health:300,actionIn:1000,born:0,shotAt:-100}));
+ await scene.init(document.querySelector('#host'));await scene.prepareBoard(g,()=>{});scene.setLevel(g);await scene.prepareActors(g,()=>{});scene.app.stop();const generate=scene.app.renderer.generateTexture.bind(scene.app.renderer);scene.app.renderer.generateTexture=(options)=>{bakes++;return generate(options)};
+ function draw(){
+  if(!released){scene.render(g,0,1);scene.app.render();scene.app.stop();}
+  const flats=[...scene.actors.entries()].filter(([k])=>k.startsWith('flat')).map(([key,a])=>({key,position:[a.root.x,a.root.y],scale:[a.art.scale.x,a.art.scale.y],texture:[a.art.texture.width,a.art.texture.height]}));
+  if(crushed&&!released){if(g.squishedPlants.length!==flats.length||scene.squishedTextures.size!==(g.squishedPlants.length?6:0)||flats.some(a=>a.scale[1]!==.25))throw Error('压扁对象、贴图或缩放不一致');}
+  if(released&&(scene.actors.size||scene.squishedTextures.size))throw Error('场景资源未释放');
+  status.textContent='PASS';result.textContent=JSON.stringify({browser:navigator.userAgent,viewport:[innerWidth,innerHeight],dpr:devicePixelRatio,ticks:g.ticks,remaining:g.squishedPlants.map(p=>p.remaining),activePlants:g.plants.length,flatActors:flats.length,cachedTextures:scene.squishedTextures.size,bakes,cachedRgbaBytes:[...scene.squishedTextures.values()].reduce((n,t)=>n+t.width*t.height*4,0),canvas:[scene.app.canvas.width,scene.app.canvas.height],released,benchmark});
+ }
+ const run=fn=>async()=>{try{await fn();draw()}catch(e){status.textContent='FAIL';result.textContent=e.stack}};
+ document.querySelector('#crush').onclick=run(()=>{if(crushed)return;for(const p of g.plants)g.squishPlant(p);g.plants=g.plants.filter(p=>p.health>0);crushed=true;});
+ document.querySelector('#last').onclick=run(()=>{if(!crushed||released)return;while(g.squishedPlants[0]?.remaining>0)g.step()});
+ document.querySelector('#clear').onclick=run(()=>{if(!released)g.step()});
+ document.querySelector('#save').onclick=run(async()=>{g.phase='paused';const before=JSON.stringify(g.squishedPlants);for(let i=0;i<100;i++)g.step();if(JSON.stringify(g.squishedPlants)!==before)throw Error('暂停仍在倒计时');g=Game.restore(JSON.parse(JSON.stringify(g.snapshot())));await scene.prepareActors(g,()=>{});g.phase='playing';});
+ document.querySelector('#bench').onclick=run(()=>{if(!crushed||released)return;const before=bakes,times=[];for(let i=0;i<100;i++){const t=performance.now();scene.render(g,0,1);scene.app.render();times.push(performance.now()-t)}if(before!==bakes)throw Error('重复绘制重新生成贴图');times.sort((a,b)=>a-b);benchmark={frames:100,meanMs:times.reduce((a,b)=>a+b)/100,p95Ms:times[94],extraBakes:bakes-before}});
+ document.querySelector('#release').onclick=run(async()=>{await scene.release();released=true});
+ draw();
+}catch(e){status.textContent='FAIL';result.textContent=e.stack}
+</script>

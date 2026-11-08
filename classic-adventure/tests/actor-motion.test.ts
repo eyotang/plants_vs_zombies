@@ -1,0 +1,117 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import { readFileSync } from 'node:fs';
+import { Texture } from 'pixi.js';
+import { ActorRig, ACTOR_MOTION, ACTOR_METADATA, type ActorDefinition } from '../src/rendering/actor-motion';
+import { hasPlantMotionClip } from '../src/rendering/plant-motion';
+import { hasGiantMotion } from '../src/rendering/giant-motion';
+import animations from '../public/assets/runtime/animations.json';
+import { PLANTS, LEVEL_IDS, SURVIVAL_SCENES } from '../src/game/config';
+import { Game } from '../src/game/model';
+import { animationNames } from '../src/rendering/asset-plan';
+const definitions = Object.fromEntries([...new Set(Object.values(ACTOR_MOTION))].map(family => [family, JSON.parse(readFileSync(new URL(`../public/assets/runtime/actor-motion/${ACTOR_METADATA[family]??family+'.json'}`,import.meta.url),'utf8')) as ActorDefinition]));
+
+test('head loss hides only native head tracks during jack opening, without cancelling the clown or allocating another rig',()=>{
+ const definition=definitions.zombie_jackbox,textures=Object.fromEntries(Object.keys(definition.frames).map(name=>[name,Texture.EMPTY]));
+ const rig=new ActorRig('zombie_jackbox',{definition,textures}),clip=definition.clips['jack-open'],time=clip.duration*.8;
+ const parts=()=>clip.groups.flatMap((g,gi)=>g.tracks.map((t,i)=>({name:t.name,sprite:rig.root.children[gi].children[i]})));
+ rig.render('jack-open',time,false);const before=parts().map(p=>p.sprite.visible),count=parts().length;
+ assert.ok(parts().some(p=>p.name.startsWith('anim_head')&&p.sprite.visible));
+ const clown=parts().find(p=>p.name==='Zombie_jackbox_clownhead')!;const clownVisible=clown.sprite.visible;
+ rig.render('jack-open',time,false,true);assert.ok(parts().filter(p=>p.name.startsWith('anim_head')).every(p=>!p.sprite.visible));
+ assert.equal(clown.sprite.visible,clownVisible);assert.equal(parts().length,count);
+ rig.render('jack-open',time,false,false);assert.deepEqual(parts().map(p=>p.sprite.visible),before);rig.root.destroy({children:true});
+});
+
+test('all migrated actor states keep existing cycle durations and resolvable source parts', () => {
+  for (const [name,family] of Object.entries(ACTOR_MOTION)) {
+    const d = definitions[family], clip = d.clips[name];
+    const baked=animations.animations[name as keyof typeof animations.animations];
+    if(name==='gravebuster-land'||name==='gravebuster-eating')assert.equal(clip.duration,clip.groups[0].length/(name==='gravebuster-land'?10:12)*100,name);
+    else if(family==='squash'&&name!=='squash')assert.equal(clip.duration,clip.groups[0].length/(name==='squash-attack'?60:24)*100,name);
+    else if(name.endsWith('-walk2')){assert.equal(clip.duration,d.clips[name.slice(0,-1)].duration,name);assert.equal(clip.groups[0].length,47,name);}
+    else if(baked)assert.equal(clip.duration,baked.durations.reduce((a,b)=>a+b,0),name);
+    else { const fps=family==='cattail'?15:family==='cobcannon'||family==='zombie_yeti'?12:family==='imitater'?26:14; assert.equal(clip.duration,clip.groups[0].length/fps*100,name); }
+    assert.ok(clip.groups.length && Number.isFinite(clip.scale) && clip.scale > 0, name);
+    for (const group of clip.groups) for (const track of group.tracks) {
+      assert.equal(track.poses.length,group.length,name);
+      for (const pose of track.poses) {
+        assert.ok(pose.slice(0,8).every(n=>Number.isFinite(n)),name);
+        if (pose[8]) assert.ok(d.frames[pose[8]],`${name}: ${pose[8]}`);
+      }
+    }
+  }
+});
+test('all plant and zombie animations use native transforms except explicit frame effects and rolling nuts', () => {
+  const frameEffects = new Set(['sun','fume-cloud','jalapeno-fire','wallnut-roll','explodenut']);
+  for (const name of Object.keys(animations.animations))
+    assert.ok(frameEffects.has(name)||hasPlantMotionClip(name)||hasGiantMotion(name)||name in ACTOR_MOTION,name);
+  for (const kind of Object.keys(PLANTS)) if(kind!=='explodenut') assert.ok(hasPlantMotionClip(kind)||kind in ACTOR_MOTION,kind);
+});
+test('native rigs survive every attack, damage and death transition without allocating new parts', () => {
+  for (const [family,definition] of Object.entries(definitions)) {
+    const textures=Object.fromEntries(Object.keys(definition.frames).map(name=>[name,Texture.WHITE]));
+    const rig=new ActorRig(family,{definition,textures});
+    const count=()=>rig.root.children.reduce((sum,g)=>sum+g.children.length,0), initial=count();
+    for(const [name,clip] of Object.entries(definition.clips)) for(const loop of [false,true]) for(const time of [0,.5,clip.duration/3,clip.duration-.001,clip.duration,clip.duration*3]) {
+      rig.render(name,time,loop);
+      assert.equal(count(),initial,name);
+      for(const g of rig.root.children) for(const part of g.children) if(part.visible){part.updateLocalTransform(); for(const value of [part.localTransform.a,part.localTransform.b,part.localTransform.c,part.localTransform.d,part.localTransform.tx,part.localTransform.ty]) assert.ok(Number.isFinite(value),name);}
+    }
+    rig.root.destroy({children:true});
+  }
+});
+test('accessory and damage states preserve their original visibility rules',()=>{
+  const tracks=(name:string)=>definitions[ACTOR_MOTION[name]].clips[name].groups[0].tracks;
+  assert.ok(!tracks('zombie-walk').some(t=>/cone|bucket|duckytube|screendoor/.test(t.name)));
+  assert.ok(tracks('cone-walk').some(t=>t.name==='anim_cone'));
+  assert.ok(tracks('bucket-eat').some(t=>t.name==='anim_bucket'));
+  assert.ok(!tracks('zombie-headless').some(t=>t.name.startsWith('anim_head')));
+  assert.ok(!tracks('football-bare-walk').some(t=>t.name.includes('helmet')));
+  assert.ok(tracks('wallnut-cracked2').some(t=>t.poses.some(p=>p[8]==='WALLNUT_CRACKED2')));
+  assert.ok(tracks('pumpkin-cracked2').some(t=>t.poses.some(p=>p[8]==='PUMPKIN_DAMAGE3')));
+});
+test('each level selects only its needed native actor families',()=>{
+  for(const game of [...LEVEL_IDS.map(l=>new Game(l,1)),...SURVIVAL_SCENES.map(s=>new Game(9,1,'endless',s))]) {
+    const names=animationNames(game,Object.keys(animations.animations));
+    for(const name of names) if(name in ACTOR_MOTION) assert.ok(definitions[ACTOR_MOTION[name]].clips[name]);
+  }
+  const first=animationNames(new Game(1,1),Object.keys(animations.animations));
+  assert.ok(!first.some(n=>ACTOR_MOTION[n]==='zombie_catapult'));
+});
+
+test('frozen actor pose is reused, then resumes and changes clips without stale parts',()=>{
+  const definition=definitions[ACTOR_MOTION['zombie-walk']];
+  const textures=Object.fromEntries(Object.keys(definition.frames).map(name=>[name,Texture.WHITE]));
+  const rig=new ActorRig('zombie',{definition,textures});
+  rig.render('zombie-walk',15,true);
+  let updates=0;
+  for(const group of rig.root.children)for(const part of group.children){
+    const set=part.position.set.bind(part.position);
+    part.position.set=(x:number,y?:number)=>{updates++;return set(x,y);};
+  }
+  rig.render('zombie-walk',15,true);assert.equal(updates,0);
+  rig.render('zombie-walk',16,true);assert.ok(updates>0);
+  updates=0;rig.render('zombie-eat',16,true);assert.ok(updates>0);
+  rig.root.destroy({children:true});
+});
+
+test('shared attachment layout keeps flag animations independent between zombies',()=>{
+  const definition=definitions.zombie;
+  const textures=Object.fromEntries(Object.keys(definition.frames).map(name=>[name,Texture.WHITE]));
+  const first=new ActorRig('zombie',{definition,textures});
+  const second=new ActorRig('zombie',{definition,textures});
+  const pose=(rig:ActorRig)=>rig.root.children.map(group=>{
+    group.updateLocalTransform();
+    const m=group.localTransform;
+    return [m.a,m.b,m.c,m.d,m.tx,m.ty];
+  });
+  first.render('flag-walk',15,true);const expected=pose(first);
+  second.render('flag-eat',60,true);
+  assert.deepEqual(pose(first),expected);
+  first.render('flag-walk',40,true);first.render('flag-walk',15,true);
+  assert.deepEqual(pose(first),expected);
+  first.root.destroy({children:true});
+  second.render('flag-walk',15,true);assert.deepEqual(pose(second),expected);
+  second.root.destroy({children:true});
+});

@@ -1,0 +1,24 @@
+.mobile-hud-break{display:none}
+
+/* Keep the same classic top seed bank on phones and desktop. */
+@media (orientation:landscape) and (max-height:600px) and (max-width:1100px) {
+  .page.in-battle{--battle-hud-height:84px}
+  .page.in-battle .game-frame{overflow:clip;--tool-width:156px;--shovel-width:44px}
+  .page.in-battle .game-frame .battle-controls{right:6px;top:4px;gap:3px}
+  .page.in-battle .game-frame .battle-controls #speed,
+  .page.in-battle .game-frame .battle-controls #pause{height:44px;min-height:44px;font-size:16px}
+  .page.in-battle .game-frame .auto-sun{height:28px;min-height:28px;font-size:11px;white-space:nowrap}
+  .page.in-battle .game-frame .auto-sun input{width:20px;height:20px;margin:0}
+  .page.in-battle .game-frame .shovel-button{top:5px;right:168px;width:44px;height:54px}
+  .page.in-battle .game-frame .action-cancel{top:calc(var(--hud-height) + 8px);right:8px;min-height:44px}
+  .page.in-battle .game-frame .advice{top:calc(var(--hud-height) + 10px);font-size:15px}
+  .page.in-battle .game-frame .level-caption{left:10px;bottom:8px;font-size:11px}
+  .page.in-battle .game-frame .wave-hud{right:10px;bottom:8px;width:140px}
+  .page.in-battle .game-frame .wave-hud>span{font-size:11px}
+  .page.in-battle .game-frame .wave-meter{height:20px}
+  .page .pause-panel{padding:4px 18px}
+  .page .pause-content h2{font-size:20px;line-height:24px;margin:0 0 4px}
+  .page .pause-content p{display:none}
+  .page .pause-content .wood-button.large{margin:3px auto}
+  .page .pause-content .pause-audio{margin-top:6px;gap:4px}
+}

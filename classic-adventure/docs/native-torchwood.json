@@ -1,0 +1,72 @@
+{
+  "status": "PARTIAL_NATIVE_TORCHWOOD_AND_FIRE_HIT_PORT",
+  "source": {
+    "repository": "https://github.com/ruslan831/PlantsVsZombies-decompilation",
+    "commit": "325b2229a7225d73870bb69322eefcda3a45bf8d",
+    "sha256": {
+      "Plant.cpp": "9596bc875c4ccf4eb3e6eded4ebb503eed6a3a5afe2df6b3a53dbb31c417d43d",
+      "Projectile.cpp": "564019234fc90d342b30fdedf4770161c790a2568f867b756e886ea9feb7185b"
+    }
+  },
+  "implemented": [
+    "Torchwood processes existing projectiles in the plant phase,before zombie and projectile motion,using the previous integer image-top-left X.",
+    "Native tree attack rectangle mX+50,width30 overlaps pea mX-15,width55 by>=10to convert. Each column converts a snow pea only once; another tree may ignite it. Reverse and curved shots can convert.",
+    "Straight ordinary/snow peas postpone zombie collision when the40px look-ahead overlaps a different live tree by strictly>10. Reverse and threepeater side shots keep native lack of deferral.",
+    "Fire peas use source mX..mX+30horizontal collision against mapped zombie bodies,with source integer position ordering and zero-overlap contact. Existing40direct/13splash damage and resistance behavior is retained.",
+    "Save/restore retains the already-used tree column. No new state or assets are added."
+  ],
+  "validation": {
+    "tests": 590,
+    "passed": 590,
+    "log": "output/火炬树桩-全量测试.log",
+    "fixture": "tests/torchwood-native.html",
+    "desktopSafariAndChrome": {
+      "ticks": 70,
+      "health": [
+        960,
+        960,
+        980
+      ],
+      "hits": [
+        {
+          "tick": 13,
+          "row": 0,
+          "damage": 40
+        },
+        {
+          "tick": 27,
+          "row": 4,
+          "damage": 20
+        },
+        {
+          "tick": 59,
+          "row": 1,
+          "damage": 40
+        }
+      ],
+      "comment": "Close reverse shot hits as an ordinary pea before the second tree; this is intentional native asymmetry."
+    },
+    "safariNarrowPreview": {
+      "canvas": [
+        390,
+        293
+      ],
+      "sameHits": true,
+      "scope": "Desktop CSS-width preview; not physical iPhone Safari."
+    },
+    "testFixtureChanges": "Existing fire-impact fixtures start at center190 rather than180 to contact the new native fire rectangle; all damage,resistance,splash and audio assertions remain intact. The first browser fixture incorrectly expected40damage for a close reverse shot; source mechanics and an independent model reproduction show20,now covered by regression checks."
+  },
+  "performance": {
+    "newImages": 0,
+    "newTextures": 0,
+    "newDependencies": 0,
+    "rendererChanges": 0,
+    "comment": "Only model.ts runtime changed; existing rendering budget and asset pages are reused. Total process/GPU memory and physical iPhone thermal acceptance remain incomplete."
+  },
+  "remaining": [
+    "Conversion recording,events and persisted ignition tick/rate now follow native-fire-conversion.json. Native pitch,source float32 animation interpolation and full RNG equivalence remain open.",
+    "Full source vertical/altitude,high-ground,portal,boss and bungee plant lifecycle parity.",
+    "Whole-scene pixel/behavior1:1 acceptance.",
+    "Physical iPhone Safari loading,touch,audio,long-play thermal,battery,total process and GPU memory acceptance."
+  ]
+}

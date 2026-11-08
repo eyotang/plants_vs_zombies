@@ -1,0 +1,49 @@
+{
+  "status": "PARTIAL_NATIVE_COLD_ELIGIBILITY_PORT",
+  "source": {
+    "repository": "ruslan831/PlantsVsZombies-decompilation",
+    "commit": "325b2229a7225d73870bb69322eefcda3a45bf8d",
+    "hashes": {
+      "Zombie.cpp": "72495be0215d603ea807fb1dbab4fd85eb5ce7bd5ad58e207c9742d15958a78f",
+      "Projectile.cpp": "564019234fc90d342b30fdedf4770161c790a2568f867b756e886ea9feb7185b"
+    },
+    "functions": [
+      "Zombie::CanBeChilled",
+      "Zombie::CanBeFrozen",
+      "Zombie::IsDeadOrDying",
+      "Zombie::IsFlying",
+      "Zombie::ApplyChill",
+      "Zombie::HitIceTrap",
+      "Zombie::ApplyButter",
+      "Projectile::DoImpact"
+    ]
+  },
+  "implemented": [
+    "Shared eligibility predicates route ice peas, ice mushroom, wintermelon chill and butter through the same represented phase rules.",
+    "Catapults are chillable, freezable and butterable; zombonis and sled teams resist chill.",
+    "Underground/rising/hypnotized/dead states reject chill. Vaulting/flying/thrown/landing/crashing/jack-opening/bouncing-pogo and non-wait bungee phases can chill but cannot freeze.",
+    "HitIceTrap records prior cold, applies max(existing,2000) chill and returns before RNG, freeze timer and20 damage for ineligible freeze states. Water freeze remains300; already-cold land300..400, new land400..600.",
+    "Ice peas and wintermelon preserve a longer chill instead of shortening it to1000. Living headless bodies remain eligible for chill/freeze, while butter requires a living head and rejects kelp targets.",
+    "No rendering, assets, game prices, damage values, seed or wave tables changed."
+  ],
+  "existingUnitCorrection": "roof-finale unit incorrectly expected catapults to ignore ice/butter. It now expects freeze/chill and400 butter, with health790 after20 ice and40 butter damage. Zomboni immunity is independently retained as a positive control.",
+  "bossStrategy": {
+    "baselineAfterRules": "Unchanged helper lost seed23 at tick63564, Boss1240 HP; row1 football crossed X-35 and row had only pots.",
+    "singleVariableProbe": "Reserve one ice card from offensive boss freezing; fireball/emergency ice conditions unchanged. Same candidate then won seeds23,1,123456.",
+    "applied": "One extra count>1 condition in test helper boss offensive-ice branch; no game-state injection or combat rule change. Original seed23 victory/sun0/planted>100 assertions retained, two additional normal-play seed checks added."
+  },
+  "resourceImpact": {
+    "newImages": 0,
+    "newTextures": 0,
+    "newDisplayObjects": 0,
+    "newTickers": 0,
+    "newStateFields": 0,
+    "newDependencies": 0,
+    "newPhysicalMobilePerformanceMeasurement": false
+  },
+  "limits": [
+    "Unrepresented transition phases, exact status/phase counter update order, and custom boss cold path are not fully ported.",
+    "Scene still only provides the current tint feedback; native ice-trap overlay graphics remain missing. Cached reference tree identifies icetrap.png and icetrap2.png as possible next source assets; neither added or loaded this turn.",
+    "11 current failures remain; no real-phone acceptance or publication this turn."
+  ]
+}

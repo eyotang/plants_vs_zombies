@@ -1,0 +1,50 @@
+{
+  "status": "PARTIAL_NATIVE_PULT_ACQUISITION_PORT",
+  "source": {
+    "repository": "ruslan831/PlantsVsZombies-decompilation",
+    "commit": "325b2229a7225d73870bb69322eefcda3a45bf8d",
+    "hashes": {
+      "Plant.cpp": "9596bc875c4ccf4eb3e6eded4ebb503eed6a3a5afe2df6b3a53dbb31c417d43d",
+      "Board.cpp": "c9751fd512f8ef0cbaab017c1a8fde36d495ddbbe838cefd1cb84716eb145387"
+    },
+    "functions": [
+      "Plant::FindTargetZombie",
+      "Plant::GetPlantAttackRect",
+      "Board::GridToPixelX",
+      "GetRectOverlap"
+    ],
+    "lines": {
+      "Plant.cpp": [
+        [
+          4817,
+          4953
+        ],
+        [
+          5203,
+          5242
+        ]
+      ],
+      "Board.cpp": [
+        [
+          9081,
+          9095
+        ],
+        [
+          9178,
+          9203
+        ]
+      ]
+    }
+  },
+  "implemented": [
+    "Mapped ground zombies are acquired by integer body rectangle intersection with default pult attack span [plant grid X+60, grid X+860], including touching edges. Model cell center is grid X+40.",
+    "Select the smallest body-rectangle left coordinate; equal integers retain iteration order. Four pult kinds and winter preparation share this selection.",
+    "Existing damage-range/row eligibility gates and boss fallback remain. Unsupported body bridges retain old center eligibility and center ranking. Mixed mapped/unsupported candidates use their respective ranking keys.",
+    "One pass through zombies replaces filter/sort temporary arrays; no new rendering, textures, actors, timers, or runtime dependency."
+  ],
+  "limits": [
+    "This ports the pult acquisition rectangle/ranking; other plant acquisition, unmapped zombie states, boss interaction and global native timing remain incomplete.",
+    "Three finite survival play checks now pass, but a new 5–4 seed 123456 play failure appeared; it remains a required investigation.",
+    "No physical mobile performance measurement was made for this candidate."
+  ]
+}

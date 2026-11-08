@@ -1,0 +1,697 @@
+[
+  {
+    "file": "original/adventure-hover.webp",
+    "source": "public/assets/original/adventure-hover.png",
+    "role": "dom",
+    "density": 2.0
+  },
+  {
+    "file": "original/blover.webp",
+    "source": "public/assets/portraits/hd4/original/blover.png",
+    "role": "dom",
+    "rendered": true
+  },
+  {
+    "file": "original/button.webp",
+    "source": "public/assets/original/button.png",
+    "role": "dom",
+    "density": 2.0
+  },
+  {
+    "file": "original/cabbagepult.webp",
+    "source": "public/assets/portraits/hd4/original/cabbagepult.png",
+    "role": "dom",
+    "rendered": true
+  },
+  {
+    "file": "original/cactus.webp",
+    "source": "public/assets/portraits/hd4/original/cactus.png",
+    "role": "dom",
+    "rendered": true
+  },
+  {
+    "file": "original/card-cherrybomb.webp",
+    "source": "public/assets/original/card-cherrybomb.png",
+    "role": "dom",
+    "density": 2.0
+  },
+  {
+    "file": "original/card-chomper.webp",
+    "source": "public/assets/original/card-chomper.png",
+    "role": "dom",
+    "density": 2.0
+  },
+  {
+    "file": "original/card-doomshroom.webp",
+    "source": "public/assets/original/card-doomshroom.png",
+    "role": "dom",
+    "density": 2.0
+  },
+  {
+    "file": "original/card-hypnoshroom.webp",
+    "source": "public/assets/original/card-hypnoshroom.png",
+    "role": "dom",
+    "density": 2.0
+  },
+  {
+    "file": "original/card-iceshroom.webp",
+    "source": "public/assets/original/card-iceshroom.png",
+    "role": "dom",
+    "density": 2.0
+  },
+  {
+    "file": "original/card-lilypad.webp",
+    "source": "public/assets/original/card-lilypad.png",
+    "role": "dom",
+    "density": 2.0
+  },
+  {
+    "file": "original/card-peashooter.webp",
+    "source": "public/assets/original/card-peashooter.png",
+    "role": "dom",
+    "density": 2.0
+  },
+  {
+    "file": "original/card-plantern.webp",
+    "source": "public/assets/original/card-plantern.png",
+    "role": "dom",
+    "density": 2.0
+  },
+  {
+    "file": "original/card-potatomine.webp",
+    "source": "public/assets/original/card-potatomine.png",
+    "role": "dom",
+    "density": 2.0
+  },
+  {
+    "file": "original/card-puffshroom.webp",
+    "source": "public/assets/original/card-puffshroom.png",
+    "role": "dom",
+    "density": 2.0
+  },
+  {
+    "file": "original/card-repeater.webp",
+    "source": "public/assets/original/card-repeater.png",
+    "role": "dom",
+    "density": 2.0
+  },
+  {
+    "file": "original/card-scaredyshroom.webp",
+    "source": "public/assets/original/card-scaredyshroom.png",
+    "role": "dom",
+    "density": 2.0
+  },
+  {
+    "file": "original/card-snowpea.webp",
+    "source": "public/assets/original/card-snowpea.png",
+    "role": "dom",
+    "density": 2.0
+  },
+  {
+    "file": "original/card-squash.webp",
+    "source": "public/assets/original/card-squash.png",
+    "role": "dom",
+    "density": 2.0
+  },
+  {
+    "file": "original/card-sunflower.webp",
+    "source": "public/assets/original/card-sunflower.png",
+    "role": "dom",
+    "density": 2.0
+  },
+  {
+    "file": "original/card-sunshroom.webp",
+    "source": "public/assets/original/card-sunshroom.png",
+    "role": "dom",
+    "density": 2.0
+  },
+  {
+    "file": "original/card-threepeater.webp",
+    "source": "public/assets/original/card-threepeater.png",
+    "role": "dom",
+    "density": 2.0
+  },
+  {
+    "file": "original/card-wallnut.webp",
+    "source": "public/assets/original/card-wallnut.png",
+    "role": "dom",
+    "density": 2.0
+  },
+  {
+    "file": "original/cattail.webp",
+    "source": "public/assets/runtime/original/cattail.webp",
+    "role": "dom",
+    "density": 4.0
+  },
+  {
+    "file": "original/cherrybomb.webp",
+    "source": "public/assets/portraits/hd4/original/cherrybomb.png",
+    "role": "dom",
+    "rendered": true
+  },
+  {
+    "file": "original/chomper.webp",
+    "source": "public/assets/portraits/hd4/original/chomper.png",
+    "role": "dom",
+    "rendered": true
+  },
+  {
+    "file": "original/cobcannon.webp",
+    "source": "public/assets/runtime/original/cobcannon.webp",
+    "role": "dom",
+    "density": 4.0
+  },
+  {
+    "file": "original/coffeebean.webp",
+    "source": "public/assets/portraits/hd4/original/coffeebean.png",
+    "role": "dom",
+    "rendered": true
+  },
+  {
+    "file": "original/conveyor-back.webp",
+    "source": "public/assets/original/conveyor-back.png",
+    "role": "dom",
+    "density": 2.0
+  },
+  {
+    "file": "original/conveyor.webp",
+    "source": "public/assets/original/conveyor.png",
+    "role": "dom",
+    "density": 2.0
+  },
+  {
+    "file": "original/crazy-dave.webp",
+    "source": "public/assets/runtime/original/crazy-dave.webp",
+    "role": "dom",
+    "density": 4.0
+  },
+  {
+    "file": "original/dave-bubble.webp",
+    "source": "public/assets/runtime/original/dave-bubble.webp",
+    "role": "dom",
+    "density": 4.0
+  },
+  {
+    "file": "original/dialog.webp",
+    "source": "public/assets/original/dialog.png",
+    "role": "dom",
+    "density": 2.0
+  },
+  {
+    "file": "original/doomshroom.webp",
+    "source": "public/assets/portraits/hd4/original/doomshroom.png",
+    "role": "dom",
+    "rendered": true
+  },
+  {
+    "file": "original/explodenut.webp",
+    "source": "public/assets/original/explodenut.png",
+    "role": "dom",
+    "density": 2.0
+  },
+  {
+    "file": "original/flowerpot.webp",
+    "source": "public/assets/portraits/hd4/original/flowerpot.png",
+    "role": "dom",
+    "rendered": true
+  },
+  {
+    "file": "original/fumeshroom.webp",
+    "source": "public/assets/portraits/hd4/original/fumeshroom.png",
+    "role": "dom",
+    "rendered": true
+  },
+  {
+    "file": "original/garlic.webp",
+    "source": "public/assets/portraits/hd4/original/garlic.png",
+    "role": "dom",
+    "rendered": true
+  },
+  {
+    "file": "original/gatlingpea.webp",
+    "source": "public/assets/portraits/hd4/original/gatlingpea.png",
+    "role": "dom",
+    "rendered": true
+  },
+  {
+    "file": "original/gloomshroom.webp",
+    "source": "public/assets/runtime/original/gloomshroom.webp",
+    "role": "dom",
+    "density": 4.0
+  },
+  {
+    "file": "original/goldmagnet.webp",
+    "source": "public/assets/runtime/original/goldmagnet.webp",
+    "role": "dom",
+    "density": 4.0
+  },
+  {
+    "file": "original/gravebuster.webp",
+    "source": "public/assets/portraits/hd4/original/gravebuster.png",
+    "role": "dom",
+    "rendered": true
+  },
+  {
+    "file": "original/hypnoshroom.webp",
+    "source": "public/assets/portraits/hd4/original/hypnoshroom.png",
+    "role": "dom",
+    "rendered": true
+  },
+  {
+    "file": "original/iceshroom.webp",
+    "source": "public/assets/portraits/hd4/original/iceshroom.png",
+    "role": "dom",
+    "rendered": true
+  },
+  {
+    "file": "original/imitater.webp",
+    "source": "public/assets/runtime/original/imitater.webp",
+    "role": "dom",
+    "density": 4.0
+  },
+  {
+    "file": "original/jalapeno.webp",
+    "source": "public/assets/portraits/hd4/original/jalapeno.png",
+    "role": "dom",
+    "rendered": true
+  },
+  {
+    "file": "original/kernelpult.webp",
+    "source": "public/assets/portraits/hd4/original/kernelpult.png",
+    "role": "dom",
+    "rendered": true
+  },
+  {
+    "file": "original/lilypad.webp",
+    "source": "public/assets/portraits/hd4/original/lilypad.png",
+    "role": "dom",
+    "rendered": true
+  },
+  {
+    "file": "original/logo.webp",
+    "source": "public/assets/original/logo.png",
+    "role": "dom",
+    "density": 2.0
+  },
+  {
+    "file": "original/magnetshroom.webp",
+    "source": "public/assets/portraits/hd4/original/magnetshroom.png",
+    "role": "dom",
+    "rendered": true
+  },
+  {
+    "file": "original/marigold.webp",
+    "source": "public/assets/portraits/hd4/original/marigold.png",
+    "role": "dom",
+    "rendered": true
+  },
+  {
+    "file": "original/melonpult.webp",
+    "source": "public/assets/portraits/hd4/original/melonpult.png",
+    "role": "dom",
+    "rendered": true
+  },
+  {
+    "file": "original/menu.webp",
+    "source": "public/assets/original/menu.png",
+    "role": "dom",
+    "density": 2.0
+  },
+  {
+    "file": "original/meter-empty.webp",
+    "source": "public/assets/original/meter-empty.png",
+    "role": "dom",
+    "density": 2.0
+  },
+  {
+    "file": "original/meter-flag.webp",
+    "source": "public/assets/original/meter-flag.png",
+    "role": "dom",
+    "density": 2.0
+  },
+  {
+    "file": "original/meter-full.webp",
+    "source": "public/assets/original/meter-full.png",
+    "role": "dom",
+    "density": 2.0
+  },
+  {
+    "file": "original/meter-head.webp",
+    "source": "public/assets/original/meter-head.png",
+    "role": "dom",
+    "density": 2.0
+  },
+  {
+    "file": "original/peashooter.webp",
+    "source": "public/assets/portraits/hd4/original/peashooter.png",
+    "role": "dom",
+    "rendered": true
+  },
+  {
+    "file": "original/plantern.webp",
+    "source": "public/assets/portraits/hd4/original/plantern.png",
+    "role": "dom",
+    "rendered": true
+  },
+  {
+    "file": "original/pool-cleaner.webp",
+    "source": "public/assets/original/pool-cleaner.png",
+    "role": "dom",
+    "density": 2.0
+  },
+  {
+    "file": "original/potatomine.webp",
+    "source": "public/assets/portraits/hd4/original/potatomine.png",
+    "role": "dom",
+    "rendered": true
+  },
+  {
+    "file": "original/puffshroom.webp",
+    "source": "public/assets/portraits/hd4/original/puffshroom.png",
+    "role": "dom",
+    "rendered": true
+  },
+  {
+    "file": "original/pumpkin.webp",
+    "source": "public/assets/portraits/hd4/original/pumpkin.png",
+    "role": "dom",
+    "rendered": true
+  },
+  {
+    "file": "original/repeater.webp",
+    "source": "public/assets/portraits/hd4/original/repeater.png",
+    "role": "dom",
+    "rendered": true
+  },
+  {
+    "file": "original/scaredyshroom.webp",
+    "source": "public/assets/portraits/hd4/original/scaredyshroom.png",
+    "role": "dom",
+    "rendered": true
+  },
+  {
+    "file": "original/seashroom.webp",
+    "source": "public/assets/portraits/hd4/original/seashroom.png",
+    "role": "dom",
+    "rendered": true
+  },
+  {
+    "file": "original/seed-packet.webp",
+    "source": "public/assets/original/seed-packet.png",
+    "role": "dom",
+    "density": 2.0
+  },
+  {
+    "file": "original/seedbank.webp",
+    "source": "public/assets/original/seedbank.png",
+    "role": "dom",
+    "density": 2.0
+  },
+  {
+    "file": "original/shop-background.webp",
+    "source": "public/assets/runtime/original/shop-background.webp",
+    "role": "dom",
+    "density": 4.0
+  },
+  {
+    "file": "original/shop-firstaid.webp",
+    "source": "public/assets/runtime/original/shop-firstaid.webp",
+    "role": "dom",
+    "density": 4.0
+  },
+  {
+    "file": "original/shop-rake.webp",
+    "source": "public/assets/runtime/original/shop-rake.webp",
+    "role": "dom",
+    "density": 4.0
+  },
+  {
+    "file": "original/shop-roof.webp",
+    "source": "public/assets/runtime/original/shop-roof.webp",
+    "role": "dom",
+    "density": 4.0
+  },
+  {
+    "file": "original/shop-slots.webp",
+    "source": "public/assets/runtime/original/shop-slots.webp",
+    "role": "dom",
+    "density": 4.0
+  },
+  {
+    "file": "original/shovel.webp",
+    "source": "public/assets/original/shovel.png",
+    "role": "dom",
+    "density": 2.0
+  },
+  {
+    "file": "original/shovelbank.webp",
+    "source": "public/assets/original/shovelbank.png",
+    "role": "dom",
+    "density": 2.0
+  },
+  {
+    "file": "original/snowpea.webp",
+    "source": "public/assets/portraits/hd4/original/snowpea.png",
+    "role": "dom",
+    "rendered": true
+  },
+  {
+    "file": "original/spikerock.webp",
+    "source": "public/assets/runtime/original/spikerock.webp",
+    "role": "dom",
+    "density": 4.0
+  },
+  {
+    "file": "original/spikeweed.webp",
+    "source": "public/assets/portraits/hd4/original/spikeweed.png",
+    "role": "dom",
+    "rendered": true
+  },
+  {
+    "file": "original/splitpea.webp",
+    "source": "public/assets/portraits/hd4/original/splitpea.png",
+    "role": "dom",
+    "rendered": true
+  },
+  {
+    "file": "original/squash.webp",
+    "source": "public/assets/portraits/hd4/original/squash.png",
+    "role": "dom",
+    "rendered": true
+  },
+  {
+    "file": "original/starfruit.webp",
+    "source": "public/assets/portraits/hd4/original/starfruit.png",
+    "role": "dom",
+    "rendered": true
+  },
+  {
+    "file": "original/sunflower.webp",
+    "source": "public/assets/portraits/hd4/original/sunflower.png",
+    "role": "dom",
+    "rendered": true
+  },
+  {
+    "file": "original/sunshroom.webp",
+    "source": "public/assets/portraits/hd4/original/sunshroom.png",
+    "role": "dom",
+    "rendered": true
+  },
+  {
+    "file": "original/tallnut.webp",
+    "source": "public/assets/portraits/hd4/original/tallnut.png",
+    "role": "dom",
+    "rendered": true
+  },
+  {
+    "file": "original/tanglekelp.webp",
+    "source": "public/assets/portraits/hd4/original/tanglekelp.png",
+    "role": "dom",
+    "rendered": true
+  },
+  {
+    "file": "original/threepeater.webp",
+    "source": "public/assets/portraits/hd4/original/threepeater.png",
+    "role": "dom",
+    "rendered": true
+  },
+  {
+    "file": "original/torchwood.webp",
+    "source": "public/assets/portraits/hd4/original/torchwood.png",
+    "role": "dom",
+    "rendered": true
+  },
+  {
+    "file": "original/trophy.webp",
+    "source": "public/assets/original/trophy.png",
+    "role": "dom",
+    "density": 2.0
+  },
+  {
+    "file": "original/twinsunflower.webp",
+    "source": "public/assets/portraits/hd4/original/twinsunflower.png",
+    "role": "dom",
+    "rendered": true
+  },
+  {
+    "file": "original/umbrella.webp",
+    "source": "public/assets/portraits/hd4/original/umbrella.png",
+    "role": "dom",
+    "rendered": true
+  },
+  {
+    "file": "original/wallnut.webp",
+    "source": "public/assets/portraits/hd4/original/wallnut.png",
+    "role": "dom",
+    "rendered": true
+  },
+  {
+    "file": "original/wintermelon.webp",
+    "source": "public/assets/portraits/hd4/original/wintermelon.png",
+    "role": "dom",
+    "rendered": true
+  },
+  {
+    "file": "ui/almanac-card.webp",
+    "source": "public/assets/runtime/ui/almanac-card.webp",
+    "role": "hud",
+    "density": 4.0
+  },
+  {
+    "file": "ui/challenge-background.webp",
+    "source": "public/assets/runtime/ui/challenge-background.webp",
+    "role": "hud",
+    "density": 4.0
+  },
+  {
+    "file": "ui/challenge-window.webp",
+    "source": "public/assets/runtime/ui/challenge-window.webp",
+    "role": "hud",
+    "density": 4.0
+  },
+  {
+    "file": "ui/checkbox-off.webp",
+    "source": "public/assets/runtime/ui/checkbox-off.webp",
+    "role": "hud",
+    "density": 4.0
+  },
+  {
+    "file": "ui/checkbox-on.webp",
+    "source": "public/assets/runtime/ui/checkbox-on.webp",
+    "role": "hud",
+    "density": 4.0
+  },
+  {
+    "file": "ui/parchment-button.webp",
+    "source": "public/assets/runtime/ui/parchment-button.webp",
+    "role": "hud",
+    "density": 4.0
+  },
+  {
+    "file": "ui/seed-chooser.webp",
+    "source": "public/assets/runtime/ui/seed-chooser.webp",
+    "role": "hud",
+    "density": 4.0
+  },
+  {
+    "file": "ui/seed-silhouette.webp",
+    "source": "public/assets/runtime/ui/seed-silhouette.webp",
+    "role": "hud",
+    "density": 4.0
+  },
+  {
+    "file": "ui/seed-start-disabled.webp",
+    "source": "public/assets/runtime/ui/seed-start-disabled.webp",
+    "role": "hud",
+    "density": 4.0
+  },
+  {
+    "file": "ui/seed-start.webp",
+    "source": "public/assets/runtime/ui/seed-start.webp",
+    "role": "hud",
+    "density": 4.0
+  },
+  {
+    "file": "ui/stone-panel.webp",
+    "source": "public/assets/runtime/ui/stone-panel.webp",
+    "role": "hud",
+    "density": 4.0
+  },
+  {
+    "file": "scenery/day.webp",
+    "source": "public/assets/yard.jpg",
+    "role": "scenery",
+    "crop": [
+      220,
+      0,
+      1020,
+      600
+    ]
+  },
+  {
+    "file": "scenery/lawn.webp",
+    "source": "public/assets/lawn.jpg",
+    "role": "scenery",
+    "crop": [
+      220,
+      0,
+      1020,
+      600
+    ]
+  },
+  {
+    "file": "scenery/night.webp",
+    "source": "public/assets/original/night.jpg",
+    "role": "scenery",
+    "crop": [
+      220,
+      0,
+      1020,
+      600
+    ]
+  },
+  {
+    "file": "scenery/pool.webp",
+    "source": "public/assets/original/pool.png",
+    "role": "scenery",
+    "crop": [
+      220,
+      0,
+      1020,
+      600
+    ]
+  },
+  {
+    "file": "scenery/fog.webp",
+    "source": "public/assets/original/fog.png",
+    "role": "scenery",
+    "crop": [
+      220,
+      0,
+      1020,
+      600
+    ]
+  },
+  {
+    "file": "scenery/roof.webp",
+    "source": "public/assets/original/roof.png",
+    "role": "scenery",
+    "crop": [
+      220,
+      0,
+      1020,
+      600
+    ]
+  },
+  {
+    "file": "scenery/boss.webp",
+    "source": "public/assets/original/boss-background.png",
+    "role": "scenery",
+    "crop": [
+      220,
+      0,
+      1020,
+      600
+    ]
+  }
+]

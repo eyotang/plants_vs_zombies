@@ -1,0 +1,49 @@
+{
+  "status": "NATIVE_HORIZONTAL_PEA_TARGET_AND_COLLISION_PORT",
+  "source": {
+    "repository": "https://github.com/ruslan831/PlantsVsZombies-decompilation",
+    "commit": "325b2229a7225d73870bb69322eefcda3a45bf8d",
+    "sha256": {
+      "Plant.cpp": "9596bc875c4ccf4eb3e6eded4ebb503eed6a3a5afe2df6b3a53dbb31c417d43d",
+      "Zombie.cpp": "72495be0215d603ea807fb1dbab4fd85eb5ce7bd5ad58e207c9742d15958a78f",
+      "Projectile.cpp": "564019234fc90d342b30fdedf4770161c790a2568f867b756e886ea9feb7185b",
+      "Board.cpp": "c9751fd512f8ef0cbaab017c1a8fde36d495ddbbe838cefd1cb84716eb145387"
+    },
+    "functions": [
+      "Plant::GetPlantAttackRect",
+      "Plant::FindTargetZombie",
+      "Zombie::GetZombieRect",
+      "Zombie::ZombieInitialize",
+      "Projectile::FindCollisionTarget",
+      "GetRectOverlap"
+    ]
+  },
+  "rules": [
+    "Five native pea families acquire targets against the source horizontal attack rectangle: front plant mX+60 through mX+860; Split Pea rear0 through plant mX+16. No separate center825 cutoff.",
+    "Zero horizontal overlap (edge contact) is valid. The model plant mX=cellX-40 and zombie mX=trunc(modelX-30).",
+    "Horizontal body rectangles are independent of altitude and water clipping. Mini draw scale does not scale Zombie::GetZombieRect.",
+    "Normal42px bodies, football57px, digger28px atoffset50, snorkel62px atoffset12, post-jump dolphin42px atoffset20, vehicle153px, giant125px, bottom bungee110px atoffset-20 and sliding sled leader275px atoffset-50. Walking-backward rectangles mirror in120px (giant180px).",
+    "Ordinary and snow peas use the previous integer projectile mX rectangle[-15,+40], touching edges and source integer mX collision-target ordering for these horizontal bodies.",
+    "Existing shared damage-range eligibility remains responsible for row, mind control, airborne, vault, underwater, emerging, bungee and sled follower exclusions. Other projectile families retain their existing paths."
+  ],
+  "validation": {
+    "redCapableLog": "output/射手边界-修正前.log",
+    "targetedLog": "output/射手边界-专项复验.log",
+    "tests": "tests/pea-target-range.test.ts",
+    "fixtureCoverage": "Five families x three columns x ten body shapes x both facing directions x four attack boundaries; Split Pea front/rear, negative integer truncation, source windup offscreen, source eligibility controls, water/special/mini ordinary/snow collision.",
+    "integrationPlayerChanges": [
+      "Reserve the ready Cherry Bomb budget before rebuilding under immediate pressure.",
+      "Use a selected Tangle Kelp card against the visible snorkel roster, without unnecessarily buying a Lily Pad for a native aquatic plant.",
+      "Allow emergency Cherry Bombs in all legal columns, including the rear production area.",
+      "Original seeds, model stats, victory assertions, and flag/stage requirements retained."
+    ]
+  },
+  "assetsAdded": 0,
+  "texturesAdded": 0,
+  "remaining": [
+    "Boss is a separate model object and portal combat is not implemented; this does not establish their original target parity.",
+    "Full GetDrawPos vertical clipping/altitude parity, complete original phase transitions and RNG sequence remain unverified.",
+    "Torchwood conversion arbitration, non-pea projectile rectangles and all-plant attack rectangles remain separate work.",
+    "Physical iPhone Safari performance/thermal/battery and full-scene pixel fidelity remain unverified."
+  ]
+}

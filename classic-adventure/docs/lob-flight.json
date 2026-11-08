@@ -1,0 +1,102 @@
+{
+  "status": "Local candidate; full release acceptance pending",
+  "repository": "https://github.com/ruslan831/PlantsVsZombies-decompilation",
+  "commit": "325b2229a7225d73870bb69322eefcda3a45bf8d",
+  "sources": {
+    "Lawn/Projectile.cpp": "564019234fc90d342b30fdedf4770161c790a2568f867b756e886ea9feb7185b",
+    "Lawn/Plant.cpp": "9596bc875c4ccf4eb3e6eded4ebb503eed6a3a5afe2df6b3a53dbb31c417d43d",
+    "Lawn/Zombie.cpp": "72495be0215d603ea807fb1dbab4fd85eb5ce7bd5ad58e207c9742d15958a78f",
+    "Lawn/Board.cpp": "c9751fd512f8ef0cbaab017c1a8fde36d495ddbbe838cefd1cb84716eb145387"
+  },
+  "sourceFunctions": [
+    "Plant::Fire",
+    "Projectile::UpdateLobMotion",
+    "Projectile::UpdateMotion",
+    "Projectile::GetProjectileRect",
+    "Projectile::FindCollisionTarget",
+    "Zombie::ZombieCatapultFire",
+    "Board::GetPosYBasedOnRow",
+    "Board::GetRectOverlap",
+    "Projectile::IsZombieHitBySplash",
+    "Projectile::FindCollisionTargetPlant",
+    "Plant::GetPlantRect",
+    "Board::GetTopPlantAt"
+  ],
+  "ported": {
+    "nominalRangeDivisor": 120,
+    "initialVerticalVelocity": "rangeY / 120 - 7",
+    "gravityPerTick": 0.115,
+    "order": "Increment vertical velocity before integrating height",
+    "aimOffset": -30,
+    "minimumHorizontalRange": 40,
+    "specialAimOffsets": {
+      "ridingDolphin": -60,
+      "armedPogo": -60,
+      "divingSnorkel": -40
+    },
+    "earlyCollisionWindow": 20,
+    "descendingHeightThresholds": {
+      "cabbage": -30,
+      "kernel": -30,
+      "butter": -32,
+      "melon": -35,
+      "wintermelon": -35,
+      "basketball": 60
+    },
+    "poolThresholdOffset": 40,
+    "divingSnorkelDirectHitHeightStrictlyAbove": 45,
+    "groundHeightStrictlyAbove": 80,
+    "roof": "Apply terrain delta to the flight plane and its negation to local height; world-space vertical position remains on the same parabola",
+    "projectileRectangles": {
+      "melonAndWintermelon": [
+        20,
+        0,
+        60,
+        40
+      ],
+      "otherLobs": [
+        0,
+        0,
+        40,
+        40
+      ]
+    },
+    "largeBodySizes": {
+      "gargantuar": [
+        125,
+        154
+      ],
+      "catapultAndZomboni": [
+        153,
+        140
+      ]
+    },
+    "saveCompatibility": "Only pre-existing saved shots without a flight field finish the legacy sine trajectory. Every newly emitted lob, including catapult basketballs, has physical flight state.",
+    "collisionSampling": "Prior integer projectile draw X, as sampled before UpdateMotion assigns mX/mY.",
+    "horizontalOverlap": "Board::GetRectOverlap ignores Y. Lob rising/falling/height rules gate direct collision; splash uses horizontal projectile/zombie overlap and row deviation only.",
+    "plantCollision": "Basketball requires strictly more than 8 horizontal pixels of overlap with Plant::GetPlantRect (regular width 60; tallnut 80; cob cannon 140).",
+    "basketballLayers": "TOPPLANT_CATAPULT_ORDER: regular plant, then pumpkin, then supporting pot/lily pad in this model; airborne exclusion retained."
+  },
+  "rendering": {
+    "newImages": 0,
+    "newTextures": 0,
+    "fpsCap": 30,
+    "pixelBudget": 480000,
+    "note": "Reuse existing projectile textures at native logical dimensions and source draw scales. No claim of measured CPU, process memory or physical-phone performance.",
+    "nativeDrawScales": {
+      "cabbage": 1,
+      "kernel": 0.95,
+      "butter": 0.8,
+      "melon": 1,
+      "wintermelon": 1,
+      "basketball": 1.1
+    },
+    "scaleCorrection": "Corrected against the complete Projectile::Draw weapon switch; earlier cabbage .8 / kernel 1 / butter 1 were inaccurate."
+  },
+  "remaining": [
+    "Full zombie rectangle offsets, body altitude, water clipping and reflection still use the model's body-center convention, not a proven complete native-coordinate mapping.",
+    "Basketball muzzle and aim coordinates still need the complete catapult native-coordinate mapping.",
+    "Full gameplay regression acceptance and browser visual verification must pass before WorkBuddy publication.",
+    "Physical iOS and Android verification remains outstanding."
+  ]
+}

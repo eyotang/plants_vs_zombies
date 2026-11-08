@@ -1,0 +1,90 @@
+{
+  "status": "PARTIAL_NATIVE_THREEPEATER_MECHANICS_AND_HEAD_PORT",
+  "source": {
+    "repository": "https://github.com/ruslan831/PlantsVsZombies-decompilation",
+    "commit": "325b2229a7225d73870bb69322eefcda3a45bf8d",
+    "sha256": {
+      "Plant.cpp": "9596bc875c4ccf4eb3e6eded4ebb503eed6a3a5afe2df6b3a53dbb31c417d43d",
+      "Projectile.cpp": "564019234fc90d342b30fdedf4770161c790a2568f867b756e886ea9feb7185b"
+    }
+  },
+  "implemented": [
+    "LaunchThreepeater uses source horizontal body-edge acquisition in its current and eligible adjacent rows; no separate825-center cutoff.",
+    "35-counter windup emits34updates later; committed volley survives target loss. Native emission order below,center,above; edges suppress unavailable rows.",
+    "All projectile origins use plant mX+45,mY+10, flowerpot offset-5; translated to existing28px image-center coordinates.",
+    "Adjacent shots keep destination rows and use float32 vertical velocity+/-3 decayed by.97 each update; shadow uses the decayed velocity and native initial+/-80 adjustment.",
+    "Pause and save/restore preserve committed windup and flight. Old saves without new optional fields remain idle until their existing next acquisition deadline.",
+    "Three independent25-frame idle/13-frame held shooting clocks use source20fps shooting rate,10-update entry blend,20-update return blend,retained loop counts,and center-head return gate.",
+    "Each head follows its own native anim_head1/2/3 attachment with source draw order1,3,2. Sprites are allocated once and reused for firing and blends.",
+    "Previous-release committed volleys migrate without changing remaining launch deadlines; exact historical head pose is unavailable and reconstructed."
+  ],
+  "validation": {
+    "unitTests": 584,
+    "passed": 584,
+    "log": "output/三头动画-全量测试.log",
+    "reference": "tools/threepeater-flight-reference.cpp",
+    "browserFixture": "tests/pea-body-head.html",
+    "desktopSafari": {
+      "plants": 40,
+      "families": 6,
+      "parts": 671,
+      "frames": 100,
+      "meanSubmitMs": 1.13,
+      "p95SubmitMs": 2,
+      "replacedPlantParts": 0,
+      "canvas": [
+        800,
+        600
+      ],
+      "releasedActors": 0,
+      "releasedDisplayObjects": 1
+    },
+    "narrowPreview": {
+      "browser": "Desktop Safari",
+      "width": 390,
+      "canvas": [
+        390,
+        293
+      ],
+      "replacedPlantParts": 0,
+      "scope": "CSS width preview; controlled rule-step and draw submission timings exclude GPU completion,actual device FPS,physical iPhone and total process memory."
+    },
+    "headSourceAnchors": "tests/helpers/three-head-anchors.json",
+    "headTests": "tests/three-head-motion.test.ts",
+    "desktopChrome": {
+      "plants": 40,
+      "families": 6,
+      "parts": 671,
+      "frames": 100,
+      "meanSubmitMs": 0.723,
+      "p95SubmitMs": 1.1,
+      "replacedPlantParts": 0,
+      "releasedActors": 0,
+      "releasedDisplayObjects": 1
+    }
+  },
+  "performance": {
+    "newLargeAtlases": 0,
+    "newDependencies": 0,
+    "perAttackSpriteAllocations": 0,
+    "existingLargeAtlasesReused": true,
+    "headMetadataBytes": 53151,
+    "replacementSmallBlinkAtlas": {
+      "base": "blink-3b29603707eb1f3c",
+      "size": [
+        204,
+        25
+      ],
+      "encodedBytes": 6500,
+      "decodedRGBA": 20400
+    },
+    "decodedRGBAIncrease": 2400,
+    "comment": "The new small atlas includes the prior6blink frames plus2source Threepeater frames. Prior URLs remain available for cached clients. CPU/GPU/device acceptance remains incomplete."
+  },
+  "remaining": [
+    "Full random blink timing,preview/cache/squished phase equivalence and whole-scene pixel goldens remain unverified.",
+    "Torchwood horizontal rectangle arbitration now follows native-torchwood.json; full vertical zombie phase/portal/boss collision parity remains unverified.",
+    "Physical iPhone Safari loading,touch,audio,long-play thermal,battery and total process/GPU memory acceptance.",
+    "Whole-game1:1 visual and behavior acceptance."
+  ]
+}

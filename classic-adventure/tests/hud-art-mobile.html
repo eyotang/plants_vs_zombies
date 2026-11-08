@@ -1,0 +1,6 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>手机横屏卡槽对照</title><link rel="icon" href="/icons/icon-16.png"><style>body{margin:12px;background:#d5ded2;color:#152018;font:14px monospace}iframe{display:block;width:844px;height:390px;border:0}pre{white-space:pre-wrap}</style></head><body>
+<p>WebKit/Chromium 手机横屏尺寸对照：844×390；不是实体手机性能测量。</p>
+<iframe title="手机横屏卡槽" src="./hud-art.html"></iframe><pre id="result"></pre>
+<script>
+const frame=document.querySelector('iframe');frame.onload=()=>{const data=JSON.parse(frame.contentDocument.querySelector('#metrics').innerText);document.querySelector('#result').textContent=JSON.stringify(data,null,2);};
+</script></body></html>

@@ -1,0 +1,64 @@
+{
+  "scope": "Integration players only; no runtime gameplay, prices, damage, seeds, or victory assertions changed.",
+  "supersedes": "车辆受压-候选验证.json (two remaining integration-player failures)",
+  "changes": [
+    {
+      "file": "tests/helpers/finite-survival.ts",
+      "rule": "While approaching heavy roof enemies exist, reserve at least75 sun even if all emergency cards recharge. This is one flowerpot25 plus Squash50.",
+      "evidence": "8/8 finite-survival scenarios passed in output/屋顶应急预算-专项.log; roof42 won tick132709 in isolated probe."
+    },
+    {
+      "file": "tests/helpers/boss-play.ts",
+      "rule": "Do not rebuild ordinary plants/pots in front of the current rolling boss ball. Use its existing35px crush radius. Ice/chili counters remain available.",
+      "diagnosis": "Trace observed flowerpot replacement on the rolling-ball row; avoiding the path alone retained seed23 loss but improved boss health to5040."
+    },
+    {
+      "file": "tests/helpers/boss-play.ts",
+      "rule": "Estimate relative direct lane damage using melon80/cabbage40/kernel expected25, instead of treating kernel as cabbage.",
+      "derivation": "Kernel20 at75%, butter40 at25% gives25/40=0.625. This ignores crowd-control and splash value; a player allocation heuristic, not combat rules."
+    }
+  ],
+  "probeResults": {
+    "avoidBallOnly": [
+      {
+        "seed": 23,
+        "phase": "lost",
+        "ticks": 42359,
+        "bossHealth": 5040
+      },
+      {
+        "seed": 1,
+        "phase": "won",
+        "ticks": 40240
+      },
+      {
+        "seed": 123456,
+        "phase": "won",
+        "ticks": 46102
+      }
+    ],
+    "avoidBallAndDamageWeight": [
+      {
+        "seed": 23,
+        "phase": "won",
+        "ticks": 40695
+      },
+      {
+        "seed": 1,
+        "phase": "won",
+        "ticks": 39893
+      },
+      {
+        "seed": 123456,
+        "phase": "won",
+        "ticks": 37844
+      }
+    ]
+  },
+  "acceptance": "Full run530/530 passed; original seeds and victory assertions retained. Log: output/应急预算与僵王防线-全量测试.log",
+  "sourceHashes": {
+    "src/game/model.ts": "42f70d74663d5eb58f0c703d89205a0b1bd6f449c64ee7db003d4ae151feffc3",
+    "tests/helpers/finite-survival.ts": "96253c1cec794d71e3ce408fcc5bfdd7ae6706ecee1fa1924194418fcd076695",
+    "tests/helpers/boss-play.ts": "558a1d4d49dcb64baa79a8b75a3285640b1d7f52f8b817ba7c35350035eb82af"
+  }
+}

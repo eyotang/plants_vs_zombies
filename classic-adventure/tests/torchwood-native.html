@@ -1,0 +1,18 @@
+<!doctype html><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>火炬树桩原生命中顺序验证</title>
+<style>body{margin:0;background:#172719;color:#fff1c2;font:14px system-ui}header{padding:8px;display:flex;gap:8px;flex-wrap:wrap;align-items:center}button{min-height:44px;padding:8px}#host{width:min(100vw,800px);height:min(75vw,600px);margin:auto}pre{white-space:pre-wrap;margin:8px}</style>
+<header><button id="step">推进10步</button><button id="mobile">390像素预览</button><button id="finish">验证到第70步</button><b id="status">加载中</b></header><div id="host"></div><pre id="result"></pre>
+<script type="module">
+import{Game}from'../src/game/model';import{Scene}from'../src/rendering/scene';import{cellX}from'../src/game/config';
+const g=new Game(29,23),scene=new Scene(),host=document.querySelector('#host'),status=document.querySelector('#status'),result=document.querySelector('#result'),transitions=[],hitTicks=[];
+g.phase='playing';g.started=true;g.waveIn=100000;g.seeds=['torchwood','snowpea'];
+for(const[row,columns]of [[0,[3]],[1,[3,5]],[4,[5,3]]])for(const column of columns)g.plants.push({id:100+row*10+column,kind:'torchwood',row,column,health:300,actionIn:0,born:0,shotAt:-100});
+const shots=[[0,261,false,false],[1,300,true,false],[4,460,true,true]].map(([row,rawX,ice,rear],i)=>({id:900+i,row,x:rawX+14,originY:g.gridY(0,row)+24,age:0,ice,puff:false,...(rear?{vx:-3.33}:{}),nativePea:{rawX,shadowY:g.gridY(0,row)+67}}));g.peas=shots;
+const targets=[[0,291],[1,515],[4,310]].map(([row,x])=>{const z=g.spawnZombie('normal',row,x,0);z.health=1000;z.speed=0;z.frozenIn=100000;return z;});
+try{
+ await scene.init(host);await scene.prepareBoard(g,()=>{});scene.setLevel(g);await scene.prepareActors(g,()=>{});scene.app.stop();
+ function draw(){scene.render(g,0,1);scene.app.render();scene.app.stop();status.textContent='PASS';const report={ticks:g.ticks,shots:shots.map(p=>({row:p.row,ice:p.ice,fire:!!p.fire,treeColumn:p.torch,active:g.peas.includes(p)})),health:targets.map(z=>z.health),transitions,hitTicks,canvas:[scene.app.canvas.width,scene.app.canvas.height],maxFPS:scene.app.ticker.maxFPS};result.replaceChildren(...Object.entries(report).map(([key,value])=>{const line=document.createElement('textarea');line.readOnly=true;line.rows=1;line.style.width='100%';line.setAttribute('aria-label',key);line.value=JSON.stringify(value);return line}));}
+ function advance(end){try{while(g.ticks<Math.min(70,end)){scene.captureMovement();const before=shots.map(p=>[p.ice,p.fire,p.torch]),health=targets.map(z=>z.health);g.step();for(let i=0;i<3;i++){if(before[i].some((v,n)=>v!==[shots[i].ice,shots[i].fire,shots[i].torch][n]))transitions.push({tick:g.ticks,row:shots[i].row,ice:shots[i].ice,fire:!!shots[i].fire,treeColumn:shots[i].torch});if(health[i]!==targets[i].health)hitTicks.push({tick:g.ticks,row:targets[i].row,damage:health[i]-targets[i].health});}g.drainEvents();if(g.ticks===1&&targets[0].health!==1000)throw Error('即将点燃的直射豌豆过早命中');}
+ if(g.ticks===70&&targets.some((z,i)=>z.health!==[960,960,980][i]))throw Error('正向应点燃后造成40伤害；贴近树桩的反向子弹先造成20伤害');draw();}catch(e){status.textContent='FAIL';result.textContent=e.message+'\n'+e.stack}}
+ document.querySelector('#step').onclick=()=>advance(g.ticks+10);document.querySelector('#finish').onclick=()=>advance(70);document.querySelector('#mobile').onclick=()=>{host.style.width='min(100vw,390px)';host.style.height='min(75vw,292.5px)';draw()};draw();
+}catch(e){status.textContent='FAIL';result.textContent=e.message+'\n'+e.stack}
+</script>

@@ -1,0 +1,14 @@
+{
+  "status": "HISTORICAL_OTHER_PORT_COMPATIBILITY_NOT_NATIVE_ACCEPTANCE",
+  "sourceCommit": "45fe1f404ff702ff37589d015aad0f62509d373e",
+  "preservedAssertions": "classic-adventure/tests/performance.upstream.ts",
+  "originalHashes": {
+    "day": "3b7b35afb0db6d3d0226086bbd57b99e2bc98641922fb6ee5aa1e07c6586acc8",
+    "pool": "00042b76a4f6e06cd1687f29381916640dc87d99137b7704ae87360d8de07aad",
+    "roof": "76f7e0c74feabfc46052df12a89ad626d7c61eb3de1d8ad6660eb14017798ae9"
+  },
+  "reason": "Exact other-port state hashes conflict with intentional source-backed native rule changes. Original hashes were not replaced with newly observed golden hashes.",
+  "replacement": "Complete state after1000 direct fixed ticks must equal nine30/60/144Hz x1/2/4-speed runs, pause and400/600 saved continuation; actual motion and damage are required. Existing unused-state guards retained.",
+  "negativeControl": "Temporarily ignoring GameClock.speed made all3 scene tests fail at the2x tick count. Exact original clock bytes restored before final full run.",
+  "scopeLimit": "Current-model determinism, not native gameplay equivalence or a performance timing budget."
+}

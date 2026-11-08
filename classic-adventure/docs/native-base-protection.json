@@ -1,0 +1,59 @@
+{
+  "status": "PARTIAL_NATIVE_NEW_BASE_BITE_PROTECTION",
+  "source": {
+    "repository": "ruslan831/PlantsVsZombies-decompilation",
+    "commit": "325b2229a7225d73870bb69322eefcda3a45bf8d",
+    "sha256": {
+      "Plant.cpp": "9596bc875c4ccf4eb3e6eded4ebb503eed6a3a5afe2df6b3a53dbb31c417d43d",
+      "Zombie.cpp": "72495be0215d603ea807fb1dbab4fd85eb5ce7bd5ad58e207c9742d15958a78f"
+    },
+    "functions": [
+      "Plant::PlantInitialize",
+      "Plant::UpdateAbilities",
+      "Plant::UpdateFlowerPot",
+      "Plant::UpdateLilypad",
+      "Zombie::EatPlant"
+    ],
+    "lines": {
+      "initialize": [
+        444,
+        456
+      ],
+      "countdown": [
+        2565,
+        2566
+      ],
+      "stateTransition": [
+        1629,
+        1640
+      ],
+      "biteProtection": [
+        6981,
+        6997
+      ]
+    }
+  },
+  "implemented": [
+    "New player-placed flower pots/lily pads initialize an optional invulnerableIn100 counter. Ordinary plant updates decrement it before the chew gate; first99 logic steps reject bite damage, step100 is edible.",
+    "Imitater transformation initializes the copied-base counter after that tick counter pass; it does not consume the base window during the imitater animation.",
+    "Initial roof pots and old saved bases without the optional field retain ordinary vulnerable behavior rather than inferring a new window from birth time.",
+    "Only the actual food target is protected: ordinary plants above a base are edible; vehicle crushing remains active.",
+    "Existing snapshot/restore carries the optional number. No new ticker, rendering object, asset, dependency or collection."
+  ],
+  "validation": {
+    "newTests": 5,
+    "beforeFixFailed": 3,
+    "positiveControlsPassedBeforeFix": 2,
+    "targetedTotal": 48,
+    "targetedPassed": 48,
+    "rateSpeedCases": 18,
+    "pauseAndRestore": true,
+    "ordinaryTopPreplacedPotAndVehicleControls": true
+  },
+  "limits": [
+    "Source uses an explicit plant state. The port uses one optional counter and does not reconstruct every plant state or bungee/ZenGarden update path.",
+    "Old saves from the former implementation do not contain enough state to reconstruct a missing partial protection window; absent fields keep former behavior.",
+    "No new browser-render or physical-device CPU/RAM proof. Logic tests are controlled, funded fixtures and do not certify normal-play completion.",
+    "Six current normal-play checks fail, including two failures reappearing after the source-backed protection change."
+  ]
+}

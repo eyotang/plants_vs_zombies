@@ -1,0 +1,11 @@
+{
+  "blink": "blink-3b29603707eb1f3c",
+  "kinds": {
+    "peashooter": "peashooter-38ed4ffe5c944f0e.json",
+    "snowpea": "snowpea-d57bf451cd46266a.json",
+    "repeater": "repeater-d864ac2986947ca6.json",
+    "gatlingpea": "gatlingpea-fe1e0fd0e28f0815.json",
+    "splitpea": "splitpea-bb1de7c9c4f4bb82.json",
+    "threepeater": "threepeater-85a120ce56c59336.json"
+  }
+}

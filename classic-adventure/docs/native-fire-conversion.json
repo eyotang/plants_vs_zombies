@@ -1,0 +1,59 @@
+{
+  "status": "PARTIAL_NATIVE_FIRE_CONVERSION_AUDIO_AND_PERSISTED_PHASE",
+  "source": {
+    "repository": "https://github.com/ruslan831/PlantsVsZombies-decompilation",
+    "commit": "325b2229a7225d73870bb69322eefcda3a45bf8d",
+    "functions": [
+      "Projectile::ConvertToFireball",
+      "Projectile::ConvertToPea",
+      "TodFoley FOLEY_FIREPEA/FOLEY_THROW"
+    ],
+    "audio": "firepea-audio.json"
+  },
+  "implemented": [
+    "Normal-pea conversion emits one pea-ignite sound event; melting emits one pea-melt event that reuses existing weighted throw recordings. Existing ignite impact recordings are unchanged.",
+    "Fire rate is chosen once in the source50–80range and ignition tick/rate are saved with each projectile. Scene recreation uses that history instead of resetting actor.since.",
+    "Legacy fire shots without ignition history derive reproducible phase from projectile age and the prior ID-based rate; exact lost ignition history cannot be recovered.",
+    "Conversion voices use existing combat volume,per-kind throttling,10voice combat cap,mute and release lifecycle. Early levels omit the new recording."
+  ],
+  "validation": {
+    "tests": 594,
+    "passed": 594,
+    "log": "output/点燃联动-全量测试.log",
+    "fixture": "tests/fire-conversion.html",
+    "desktopSafariAndChrome": {
+      "tick": 17,
+      "ignitionTick": 1,
+      "rate": 58.102210998535156,
+      "beforeFrame": 9,
+      "afterRebuildFrame": 9,
+      "events": [
+        "pea-ignite"
+      ],
+      "decoded": {
+        "sampleRate": 48000,
+        "channels": 2,
+        "duration": 0.37572916666666667,
+        "bytes": 144280
+      },
+      "releasedBuffers": 0,
+      "releasedVoices": 0,
+      "releasedActors": 0
+    },
+    "scope": "Native desktop decode/playback invocation,controlled render rebuild and cleanup. Acoustic output quality,physical iPhone,real-time frame pacing,thermal and total process/GPU memory are unverified."
+  },
+  "performance": {
+    "newAudioFileBytes": 5373,
+    "newImages": 0,
+    "newTextures": 0,
+    "newDependencies": 0,
+    "newAnimationObjectsPerFrame": 0,
+    "decodedAdditionalAudioBytesObserved": 144280,
+    "comment": "Only selected fire-capable stages load this recording; the buffer is freed when it is no longer retained."
+  },
+  "remaining": [
+    "Full native pitch variation,precise audio padding/output mix and device acoustic acceptance.",
+    "Native fire clock and interpolated source parts are now ported in native-fire-parts.json; pixel goldens, GPU sampling and full source RNG sequence equivalence remain unverified.",
+    "Whole-game1:1 fidelity and physical iPhone Safari loading,touch,audio,long-play thermal,battery,total process/GPU memory acceptance."
+  ]
+}

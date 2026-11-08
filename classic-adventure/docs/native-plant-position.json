@@ -1,0 +1,35 @@
+{
+  "status": "PARTIAL_NATIVE_COORDINATE_PORT_NOT_A_COMPLETE_FIDELITY_CLAIM",
+  "source": {
+    "repository": "ruslan831/PlantsVsZombies-decompilation",
+    "commit": "325b2229a7225d73870bb69322eefcda3a45bf8d",
+    "Board.cppSHA256": "c9751fd512f8ef0cbaab017c1a8fde36d495ddbbe838cefd1cb84716eb145387",
+    "Plant.cppSHA256": "9596bc875c4ccf4eb3e6eded4ebb503eed6a3a5afe2df6b3a53dbb31c417d43d",
+    "functions": [
+      "Board::GridToPixelY",
+      "Plant::Fire",
+      "Plant::UpdateReanim",
+      "PlantDrawHeightOffset"
+    ]
+  },
+  "implemented": [
+    "Grid Y is 80+100*row on day/night, 80+85*row on pool/fog, and 70+85*row+20*max(0,5-column) on roofs.",
+    "Cabbage, kernel, butter, melon and wintermelon emit at native grid top-left plus (5,-12), (19,-37), (12,-56), (25,-46), (25,-46), with a further -5 Y when a flowerpot is present.",
+    "All49 ordinary plant reanim families render raw source transforms at native grid roots, with species heights and source pot support; live potato/coffee use scale0.8 with their12px offsets.",
+    "Rendering in pool rows includes the source two-pixel sine bob. Projectile emission does not inherit that animation.",
+    "Actual plants and cursor previews share the same base positioning method. No bitmap or display object was added. Native cached cursor poses/scales, time-varying body offsets and several emissions remain unported."
+  ],
+  "auditCorrection": "The earlier 80-case audit stopped reading Plant::Fire before its common flowerpot branch and incorrectly described emission as having no pot adjustment. Lines after the weapon-specific origins explicitly subtract 5. The new tests cover both occupied and unoccupied pot cells and both kernel weapons. The earlier report remains historical evidence of a discrepancy, not the final source oracle.",
+  "remaining": [
+    "Zombie phases outside the currently mapped ground families still retain their previous position bridge.",
+    "Pult targets use mapped native body tops when available; unsupported phases keep the fallback. Non-pult emissions require a joint body/head-clock/native-origin port.",
+    "Dynamic plant shake, wake/stretch and gravebuster landing/sink, cached cursor art, sleep/health overlays and whole-native pixel comparison remain.",
+    "Physical iPhone/Safari touch, long-play CPU, memory, battery and thermal acceptance are not completed."
+  ],
+  "latestEvidence": "../../output/植物原生根坐标-优化验证.json",
+  "latestFullTests": {
+    "total": 544,
+    "passed": 544,
+    "failed": 0
+  }
+}

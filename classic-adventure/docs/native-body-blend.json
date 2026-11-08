@@ -1,0 +1,59 @@
+{
+  "status": "PUBLISHED_VERIFIED",
+  "scope": "Four ordinary dry families: walking/eating20-update held-transform transitions, including interruption, save reconstruction and final interpolation interval.",
+  "source": {
+    "repository": "https://github.com/ruslan831/PlantsVsZombies-decompilation",
+    "commit": "325b2229a7225d73870bb69322eefcda3a45bf8d",
+    "Zombie.cpp": "72495be0215d603ea807fb1dbab4fd85eb5ce7bd5ad58e207c9742d15958a78f",
+    "Reanimator.cpp": "04c95039b7a8a79c354a75037792f84db4b9a522c6fa42ee34d8e4c45aa44da3",
+    "rules": [
+      "StartEating and StopEating use20-update blends",
+      "StartBlend captures held current transform including active blend",
+      "BlendTransform keeps incoming image/frame and blends transforms/alpha; source skew outside180degree window is ignored",
+      "Update decrements blend counters even at zero animation rate"
+    ]
+  },
+  "implementation": {
+    "savedField": "Zombie.bodyBlend",
+    "oldPose": "Saved source clip/phase and prior held blend; discarded when transition finishes",
+    "sourceCounter": "20 then decremented to19 on first update; freezes stop clip clocks but do not stop blend counter; game pause stops both",
+    "parts": "Original ActorRig sprites retained; shared per-family track lookups and per-rig scratch poses reused",
+    "addedImages": 0,
+    "addedTextures": 0,
+    "addedDependencies": 0,
+    "maxFPS": 30
+  },
+  "verification": {
+    "newTests": 4,
+    "fullTests": 627,
+    "passed": 627,
+    "failed": 0,
+    "cppOracle": "tools/body-blend-reference.cpp; independent21weight float fixture",
+    "browsers": [
+      "desktop Safari800x600",
+      "desktop Safari390x293",
+      "desktop Chrome800x600"
+    ],
+    "actors": 8,
+    "parts": 160,
+    "partsReplacedDuringPlayback": 0,
+    "pausedAndSavedVisiblePoseEqual": true,
+    "finalHalfStep": true,
+    "renderDoesNotChangeSavedState": true,
+    "releaseActors": 0,
+    "releasePool": 0,
+    "physicalIPhoneTested": false
+  },
+  "remaining": [
+    "Full original pixel parity: imported pose metadata precision and layer visibility variants not exhaustively proven",
+    "Walk2/random spawn and source-faithful headless phases remain incomplete",
+    "Other zombie families, accessory removal and water-state blends not ported here",
+    "Highly adversarial rapid repeated interruptions retain chained held-pose descriptors until transition completes; full engine stores per-track numeric transforms",
+    "Total process CPU/RAM, physical iPhone Safari loading and heat not measured"
+  ],
+  "publication": {
+    "worker": "sw-54900cc51dadf243.js",
+    "publicUrl": "https://plants-vs-zombies.apps.workbuddy.host/?sharecode=FR6B3XZMIS",
+    "report": "output/动作衔接-发布核对.json"
+  }
+}

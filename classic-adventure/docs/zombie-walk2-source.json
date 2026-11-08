@@ -1,0 +1,37 @@
+{
+  "commit": "325b2229a7225d73870bb69322eefcda3a45bf8d",
+  "sourceSHA256": "4b53ccfa0c000b203405a1f7666eec761935553e533e1746ec0dea517897b9cc",
+  "source": "SexyAppFramework/reanim/Zombie.reanim",
+  "layer": "anim_walk2",
+  "start": 91,
+  "count": 47,
+  "metadata": "zombie-8282926a88309728.json",
+  "metadataBytes": 924788,
+  "metadataSHA256": "8282926a883097284a1532afbbf126c9ae1f281006ce869c29574cba3eee20cf",
+  "groundBytes": 246,
+  "groundSHA256": "0c55759d3ae90475bd3e6fa2333d63fa9b5a407543ea26b36c85d3d24dbc0023",
+  "clips": {
+    "zombie-walk2": {
+      "frames": 47,
+      "tracks": 18,
+      "posesSHA256": "51e62e9cbb546d6d1372bb0e28839b9a6a8f5e9e0253dd2babd2135c95b23d85"
+    },
+    "cone-walk2": {
+      "frames": 47,
+      "tracks": 18,
+      "posesSHA256": "842febd19fce39a1c5aae53e7191eb0f9d0dfa12e760c7133577e28be6b752f7"
+    },
+    "bucket-walk2": {
+      "frames": 47,
+      "tracks": 18,
+      "posesSHA256": "acffbfd3ae9f65742c0fad53f92fa117791305ba1b948fd3de8f6fee1906e716"
+    },
+    "door-walk2": {
+      "frames": 47,
+      "tracks": 16,
+      "posesSHA256": "078580446d6d9d584e532d5279d2aa27fde464d5e96d97d3ff4efc0dd4b966e1"
+    }
+  },
+  "imagesAdded": 0,
+  "atlasChanged": false
+}

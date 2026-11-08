@@ -1,0 +1,14 @@
+<!doctype html><html lang="zh-CN"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>音效内存生命周期检查</title>
+<style>body{background:#25291d;color:white;padding:16px;font:16px system-ui}button{padding:12px;font:inherit;margin:4px}pre{white-space:pre-wrap}</style>
+<p>使用真实音效加载与解码，记录应用持有的 PCM 数据量；不代表浏览器总内存或 iPhone 真机结果。</p>
+<button id="late">加载后期屋顶音效</button><button id="early">切到第一关音效</button><button id="release">退出战斗并释放</button><button id="replay">播放普通射击</button><pre id="result">等待点击</pre>
+<script type="module">
+import {Game} from '../src/game/model';import {GameAudio} from '../src/platform/audio';import {soundFiles} from '../src/platform/audio-plan';
+const audio=new GameAudio('/'),result=document.querySelector('#result');let game=new Game(1,1),stage='initial';
+function report(){const expected=Object.keys(soundFiles(game)),entries=[...audio.buffers];result.textContent=JSON.stringify({stage,actual:entries.length,expected:stage==='released'?0:expected.length,unused:stage==='released'?entries.map(([k])=>k):entries.map(([k])=>k).filter(k=>!expected.includes(k)),pcmBytes:entries.reduce((n,[,b])=>n+b.length*b.numberOfChannels*4,0),voices:audio.voices,loading:audio.loading.size,context:audio.context?.state,requests:performance.getEntriesByType('resource').filter(e=>e.name.endsWith('.mp3')).length});}
+const run=fn=>async()=>{try{await fn();report()}catch(e){result.textContent='FAIL '+e.stack}};
+document.querySelector('#late').onclick=run(async()=>{game=new Game(49,23);for(const kind of ['sunflower','kernelpult','coffeebean','chomper','iceshroom','jalapeno'])game.chooseSeed(kind);if(game.seeds.length!==6)throw Error('卡组不合法');await audio.unlock(game);stage='late';});
+document.querySelector('#early').onclick=run(async()=>{game=new Game(1,1);await audio.unlock(game);stage='early';});
+document.querySelector('#release').onclick=run(async()=>{await audio.release();stage='released';});
+document.querySelector('#replay').onclick=run(()=>{audio.play('shoot');stage='playing';});
+</script>

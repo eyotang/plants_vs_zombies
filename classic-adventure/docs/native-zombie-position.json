@@ -1,0 +1,40 @@
+{
+  "status": "PARTIAL_NATIVE_GROUND_COORDINATE_PORT",
+  "source": {
+    "repository": "ruslan831/PlantsVsZombies-decompilation",
+    "commit": "325b2229a7225d73870bb69322eefcda3a45bf8d",
+    "sha256": {
+      "Board.cpp": "c9751fd512f8ef0cbaab017c1a8fde36d495ddbbe838cefd1cb84716eb145387",
+      "Plant.cpp": "9596bc875c4ccf4eb3e6eded4ebb503eed6a3a5afe2df6b3a53dbb31c417d43d",
+      "Zombie.cpp": "72495be0215d603ea807fb1dbab4fd85eb5ce7bd5ad58e207c9742d15958a78f"
+    },
+    "functions": [
+      "Zombie::ZombieInitialize",
+      "Zombie::GetPosYBasedOnRow",
+      "Zombie::GetZombieRect",
+      "Zombie::ZombieTargetLeadX",
+      "Zombie::UpdateReanim",
+      "Zombie::GetDrawPos",
+      "Plant::Fire"
+    ]
+  },
+  "implemented": [
+    "For 15 verified zero-altitude ground families, raw object X=model X-30 and row Y=Board.GetPosYBasedOnRow(model X+10,row)-30. Pool rows, mini zombies, rises, vaults, flights and unmapped families retain their previous bridge.",
+    "Pult aim Y uses the integer native body top, including giant -38 and vehicle -13 rectangle offsets; boss aim Y uses GridToPixelY(8,row).",
+    "Lob collision and melon splash use native integer body X plus species rectangle offsets, including reversed body rectangles and giant object width 180.",
+    "Target lead uses the integer body rectangle center, matching source integer division, before fifty- or thirty-tick speed prediction. Unsupported states retain their previous prediction anchor.",
+    "Mapped ground renders use source fractional object position, species image offsets, source (15,-8) root, native scale and mirrored +90 translation.",
+    "Actor and giant pose caches include native-root mode, so same-clock root changes are applied and death clips keep the correct root without new display parts."
+  ],
+  "testFixtureChanges": [
+    "Three existing lob fixtures assumed zombie X was its body center. Their projectile/target positions were replaced with explicit native rectangle boundaries while retaining original damage, timing, wide-body and rear-exclusion assertions.",
+    "Existing lead and squash expectations now use source integer body centers; no price, cooldown, health, wave, seed or player strategy was changed."
+  ],
+  "remaining": [
+    "Water, dolphin, snorkel, pogo, balloon, digger, dance direction, mini, rising and thrown-state altitude/clipping/root mappings.",
+    "The +30 coordinate bridge is retained; species-specific original spawn positions and phase transitions are not yet fully ported.",
+    "Ordinary pea/star/bite/squash attack rectangles and other effects still use legacy approximations and must be mapped consistently.",
+    "Boss contact/collision and full stage completion still require verification; the current boss ordinary-play test fails.",
+    "Complete 1:1 art, sound, gameplay and real iOS/Android behavior remain unproven."
+  ]
+}

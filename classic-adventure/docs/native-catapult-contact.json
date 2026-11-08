@@ -1,0 +1,39 @@
+{
+  "status": "PARTIAL_NATIVE_CATAPULT_CONTACT_PORT",
+  "source": {
+    "repository": "ruslan831/PlantsVsZombies-decompilation",
+    "commit": "325b2229a7225d73870bb69322eefcda3a45bf8d",
+    "hashes": {
+      "Zombie.cpp": "72495be0215d603ea807fb1dbab4fd85eb5ce7bd5ad58e207c9742d15958a78f",
+      "Plant.cpp": "9596bc875c4ccf4eb3e6eded4ebb503eed6a3a5afe2df6b3a53dbb31c417d43d",
+      "Board.cpp": "c9751fd512f8ef0cbaab017c1a8fde36d495ddbbe838cefd1cb84716eb145387",
+      "Projectile.cpp": "564019234fc90d342b30fdedf4770161c790a2568f867b756e886ea9feb7185b"
+    },
+    "functions": [
+      "Zombie::FindCatapultTarget",
+      "Board::GetTopPlantAt(TOPPLANT_CATAPULT_ORDER)",
+      "Projectile::FindCollisionTargetPlant",
+      "Zombie::CheckSquish",
+      "Zombie::CanTargetPlant",
+      "Zombie::SquishAllInSquare",
+      "Plant::Squish",
+      "Plant::IsFlying",
+      "Plant::IsSpiky"
+    ]
+  },
+  "implemented": [
+    "Shared topCatapultPlant chooses coffee, normal, pumpkin, underplant; acquisition and physical basketball impact use it.",
+    "FindCatapultTarget skips standalone spikes when selecting a candidate. A flowerpot in that same cell can qualify, then GetTopPlantAt returns the supported spike; this source exception is preserved.",
+    "Mapped catapults check integer attack rectangle rawX+10,width133 against plant rectangle, requiring overlap>=20; the first eligible cell is processed, including while shooting/reloading.",
+    "Direct drive-over targets exclude kelp, spikes, cherry, jalapeno, blover and squash, and awake ice/doom. Sleeping ice/doom can be crushed.",
+    "Squishing a selected cell processes all on-ground layers, preserves spikes and an already-activated squash, and immediately triggers awake bombs and armed mines.",
+    "Existing special effects were moved without changing their damage, masks or RNG to doSpecial so timed activation and pressure share the same effect code."
+  ],
+  "testExpectationCorrection": "airborne-plant.test.ts previously expected a grounded prelaunch squash to be destroyed by a catapult. CanTargetPlant(DRIVE_OVER) explicitly excludes squash; the expectation now preserves it, while ordinary plant crushing and other ground/air positive controls remain. No game seeds, normal-play player strategies or pinned golden hashes were changed.",
+  "remaining": [
+    "This contact port applies to mapped catapults; zomboni, sled and giant contact paths still need separate native mapping.",
+    "Five-second flattened-plant visuals and original death/particle effects remain incomplete. The browser shows generic yellow circles rather than native Powie.",
+    "Special-plant damage masks/ranges remain the existing partial model; sharing activation code does not prove complete native DoSpecial parity.",
+    "Final-ball timing, chilled animation cycles, float32/update ordering, and physical-device performance remain incomplete."
+  ]
+}

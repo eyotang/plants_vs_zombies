@@ -1,0 +1,24 @@
+<!doctype html><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>玩偶匣开盒状态检查</title>
+<style>body{margin:0;background:#172719;color:#fff1c2;font:14px system-ui}header{padding:8px;display:flex;gap:8px;align-items:center;flex-wrap:wrap}button{padding:10px;min-height:44px}#host{width:min(100vw,800px);height:min(75vw,600px);margin:auto}pre{white-space:pre-wrap;margin:10px;font-size:13px}</style>
+<header><b>已开盒后失去头部</b><button id="head" disabled>生命降至100</button><button id="advance" disabled>推进30步</button><button id="finish" disabled>推进110步</button><span id="status">加载中</span></header><div id="host"></div><pre id="result"></pre>
+<script type="module">
+import {Scene} from '../src/rendering/scene';import {Game,headless} from '../src/game/model';
+// Controlled source-state fixture. It is excluded from production and is not a complete-run player.
+const scene=new Scene(),game=new Game(9,1),host=document.querySelector('#host'),status=document.querySelector('#status'),result=document.querySelector('#result');
+await scene.init(host);scene.app.stop();for(const k of game.config.seeds.slice(0,6))game.chooseSeed(k);game.start();game.select('sunflower');if(!game.plant(4,0))throw new Error('战斗未启动');const plant=game.plants[0];plant.actionIn=9999;
+const jack=game.spawnZombie('jack',0,460,0);jack.jackIn=1;game.step();game.drainEvents();
+await scene.prepareBoard(game,()=>{});scene.setLevel(game);let count;
+async function draw(){
+ await scene.prepareActors(game,()=>{});scene.render(game,0,1);scene.app.render();
+ const actor=scene.actors.get(`z${jack.id}`),rig=actor?.nativeRig;
+ const parts=rig?rig.loaded.definition.clips[actor.clip].groups.flatMap((g,gi)=>g.tracks.map((t,i)=>({name:t.name,visible:rig.root.children[gi].children[i].visible}))):[];
+ const heads=parts.filter(p=>p.name.startsWith('anim_head')),clown=parts.find(p=>p.name==='Zombie_jackbox_clownhead');
+ const objects=rig?rig.root.children.reduce((n,g)=>n+g.children.length,0):0;if(count===undefined)count=objects;
+ const live=jack.health>0,pass=!live||jack.x===460&&jack.jackOpening&&heads.every(p=>!headless(jack)||!p.visible)&&objects===count;
+ status.textContent=pass?'PASS':'FAIL';result.textContent=JSON.stringify({scope:'受控状态，非通关或真机验收',tick:game.ticks,health:jack.health,opening:jack.jackOpening,remaining:jack.jackIn,x:jack.x,headVisible:heads.some(p=>p.visible),clownVisible:clown?.visible,displayObjects:objects,plantAlive:game.plants.includes(plant),canvas:[scene.app.canvas.width,scene.app.canvas.height],fpsCap:scene.app.ticker.maxFPS},null,2);
+}
+document.querySelector('#head').onclick=async()=>{jack.health=100;await draw();document.querySelector('#finish').focus()};
+async function advance(n){try{for(let i=0;i<n;i++){scene.captureMovement();game.step();for(const e of game.drainEvents())scene.event(e)}await draw()}catch(e){status.textContent='FAIL';result.textContent=e.stack}}
+document.querySelector('#advance').onclick=()=>advance(30);document.querySelector('#finish').onclick=()=>advance(110);
+try{await draw();document.querySelector('#head').disabled=false;document.querySelector('#advance').disabled=false;document.querySelector('#finish').disabled=false}catch(e){status.textContent='FAIL';result.textContent=e.stack}
+</script>

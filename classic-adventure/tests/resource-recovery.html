@@ -1,0 +1,45 @@
+<!doctype html><meta charset="utf-8"><title>关卡资源释放检查</title>
+<style>body{margin:0;background:#172719;color:#fff1c2;font:14px system-ui}header{display:flex;gap:8px;align-items:center;flex-wrap:wrap;padding:8px}button{min-height:44px;padding:8px}#host{width:min(100vw,800px);height:min(75vw,600px);margin:auto}pre{white-space:pre-wrap;margin:10px;font-size:12px}</style>
+<header><b>连续切关与加载恢复</b><button id="failure" disabled>模拟一次加载失败</button><button id="retry" disabled>重试加载</button><button id="cycle" disabled>切换12次并释放</button><button id="unpin" disabled>释放诊断引用</button><button id="measure" disabled>读取当前用量</button><span id="status">准备中</span></header><div id="host"></div><pre id="summary"></pre><pre id="result"></pre>
+<script type="module">
+import {Assets} from 'pixi.js';import {Scene} from '../src/rendering/scene';import {Game} from '../src/game/model';import {PLANTS} from '../src/game/config';
+const scene=new Scene(),host=document.querySelector('#host'),status=document.querySelector('#status'),result=document.querySelector('#result');
+let activeImages=0,peakImages=0,imageRequests=0;
+const loadImage=Assets.load;Assets.load=async function(asset,...rest){activeImages++;peakImages=Math.max(peakImages,activeImages);imageRequests++;try{return await loadImage.call(this,asset,...rest)}finally{activeImages--}};
+const strongObserver=new URLSearchParams(location.search).get('observer')==='strong';
+const history=[],observed=new Set();let game,baseline,controlledFailure=false;
+await scene.init(host);scene.app.stop();
+function sources(){
+ const out=new Set(),add=t=>{if(t?.source&&!t.source.destroyed)out.add(t.source)};
+ Object.values(scene.textures).forEach(add);for(const c of Object.values(scene.clips))c.frames.forEach(add);
+ for(const motion of [scene.plantMotion,scene.actorMotion])for(const item of motion.loaded.values())Object.values(item.textures).forEach(add);
+ if(scene.peaArt.blink)Object.values(scene.peaArt.blink.textures).forEach(add);
+ if(scene.giantMotion.loaded)Object.values(scene.giantMotion.loaded.textures).forEach(add);
+ if(scene.bossArt)Object.values(scene.bossArt.textures).forEach(add);return out;
+}
+function record(label){
+ const current=sources();for(const s of current)observed.add(strongObserver?s:new WeakRef(s));
+ const snapshots=[...observed].map(ref=>strongObserver?ref:ref.deref()).filter(Boolean),bitmaps=snapshots.filter(s=>s.destroyed&&typeof ImageBitmap!=='undefined'&&s.options.resource instanceof ImageBitmap).map(s=>s.options.resource);
+ const entry={label,retainedBitmapRGBA:bitmaps.reduce((n,b)=>n+b.width*b.height*4,0),closedBitmaps:bitmaps.filter(b=>b.width===0&&b.height===0).length,ownedSources:current.size,decodedRGBAEstimate:[...current].reduce((n,s)=>n+s.pixelWidth*s.pixelHeight*4,0),staleSourcesStillAlive:[...observed].map(ref=>strongObserver?ref:ref.deref()).filter(s=>s&&!current.has(s)&&!s.destroyed).length,actors:scene.actors.size};history.push(entry);return entry;
+}
+function report(){const current=history.at(-1),released=history.findLast(e=>e.label==='released');document.querySelector('#summary').textContent=JSON.stringify({observer:strongObserver?'strong':'weak',observations:observed.size,heapUsedBytes:performance.memory?.usedJSHeapSize,controlledFailure,peakImages,activeImages,imageRequests,currentSources:current?.ownedSources,staleSources:current?.staleSourcesStillAlive,currentActors:current?.actors,baselineRGBA:baseline?.decodedRGBAEstimate,currentRGBA:current?.decodedRGBAEstimate,retainedBitmapRGBA:current?.retainedBitmapRGBA,closedBitmaps:current?.closedBitmaps,releasedSources:released?.ownedSources,releasedActors:released?.actors,releasedStale:released?.staleSourcesStillAlive});result.textContent=JSON.stringify({controlledFailure,baseline,current:history.at(-1),history,canvas:[scene.app.canvas.width,scene.app.canvas.height],maxFPS:scene.app.ticker.maxFPS,note:'Controlled scene fixtures. RGBA estimate is one uncompressed copy of owned textures, not total browser/GPU memory.'},null,2)}
+async function load(level){
+ game=new Game(level,123456);game.seeds=game.config.seeds.slice(0,6);game.start();
+ for(const [i,kind] of game.seeds.slice(0,3).entries()){const row=i,column=1;if(game.config.environment==='roof'||!game.waterRow(row))game.plants.push({id:700+i,kind,row,column,health:PLANTS[kind].health,born:0,actionIn:100,shotAt:-100});}
+ await scene.prepareBoard(game,()=>{});scene.setLevel(game);await scene.prepareActors(game,()=>{});scene.render(game,0,1);scene.app.render();record('level '+level);report();
+}
+async function run(action){status.textContent='检查中';for(const b of document.querySelectorAll('button'))b.disabled=true;try{await action();status.textContent='PASS 检查完成';}catch(e){status.textContent='FAIL';history.push({error:e.message});report();}finally{for(const b of document.querySelectorAll('button'))b.disabled=false;}}
+document.querySelector('#unpin').onclick=()=>{observed.clear();report();};
+document.querySelector('#measure').onclick=()=>report();
+document.querySelector('#failure').onclick=()=>run(async()=>{
+ const original=Assets.load;let injected=false;Assets.load=function(asset,...rest){const src=typeof asset==='string'?asset:asset.src;if(!injected&&src.endsWith('original/night.webp')){injected=true;return Promise.reject(new Error('受控加载失败'));}return original.call(this,asset,...rest)};
+ try{await load(18);throw new Error('未触发受控失败');}catch(e){if(e.message!=='受控加载失败')throw e;controlledFailure=true;record('controlled failure settled');report();}finally{Assets.load=original;}
+});
+document.querySelector('#retry').onclick=()=>run(async()=>{await load(18);if(!controlledFailure)throw new Error('请先执行受控失败');});
+document.querySelector('#cycle').onclick=()=>run(async()=>{
+ for(let round=0;round<2;round++)for(const level of [9,18,29,39,49,50])await load(level);
+ await scene.release();scene.app.render();const released=record('released');if(peakImages>3||activeImages!==0)throw new Error('图片加载未遵守三并发上限');if(released.retainedBitmapRGBA!==0)throw new Error('已销毁的贴图仍保留解码位图');if(released.ownedSources!==0||released.staleSourcesStillAlive!==0||released.actors!==0)throw new Error('战场仍有未释放资源');
+ await load(9);const revisit=history.at(-1);if(revisit.decodedRGBAEstimate!==baseline.decodedRGBAEstimate||revisit.staleSourcesStillAlive!==0)throw new Error('重访资源未回到基线');report();
+});
+await run(async()=>{await load(9);baseline=history.at(-1);report();});
+</script>

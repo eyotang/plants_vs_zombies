@@ -1,0 +1,90 @@
+{
+  "repository": "https://github.com/ruslan831/PlantsVsZombies-decompilation",
+  "commit": "325b2229a7225d73870bb69322eefcda3a45bf8d",
+  "reference": [
+    "Lawn/Projectile.cpp:374-493,764-837",
+    "Lawn/Zombie.cpp:8422-8429",
+    "Sexy.TodLib/TodFoley.cpp:42,48,53,56,68,72"
+  ],
+  "conversion": "Vorbis to 44100 Hz MP3, original channel count, libmp3lame 96 kbit/s, no speed/pitch processing",
+  "files": [
+    {
+      "source": "SexyAppFramework/sounds/shieldhit.ogg",
+      "sourceSha256": "e4a64885abec080aaa964c3a4a00e9799f78f0e29ab7eb28ea42d3ac7b84f542",
+      "file": "shieldhit.mp3",
+      "bytes": 4119,
+      "sha256": "7f2a31741a1022a0f4f4a275fba0f2ca4d94fe35dd8f61a9b5bfd8fcb46892fe"
+    },
+    {
+      "source": "SexyAppFramework/sounds/shieldhit2.ogg",
+      "sourceSha256": "ecc450a13adcab2c126c817ab83218faf60a7ad97288ee3b21673d0dcf9e5bde",
+      "file": "shieldhit2.mp3",
+      "bytes": 5373,
+      "sha256": "3211b1437816ff7fa9e870eb55001178e7d6f83de01818b5e27ea7bc57191de9"
+    },
+    {
+      "source": "SexyAppFramework/sounds/plastichit.ogg",
+      "sourceSha256": "06286767bd85b0a53ed06833827b87bb9a19eb07d30e5030046cf319615dd167",
+      "file": "plastichit.mp3",
+      "bytes": 2865,
+      "sha256": "0d52b0af61b5a79bb6653b9002fb3ed81894d24fd6d55d2684634509fe197317"
+    },
+    {
+      "source": "SexyAppFramework/sounds/plastichit2.ogg",
+      "sourceSha256": "a5d52d28ee4ae58d0cfa4e02f510da901026dca1e58c87a1211a22e59916bc63",
+      "file": "plastichit2.mp3",
+      "bytes": 2551,
+      "sha256": "29f239979e15194db189f2ea4bcb6116713dcb27a1a7b3f3eeb86711cd21a6f1"
+    },
+    {
+      "source": "SexyAppFramework/sounds/kernelpult.ogg",
+      "sourceSha256": "1c555f280b60985df802ec676c455aba2b2a82f2e8ef15754f53fc49eefd02ad",
+      "file": "kernelpult.mp3",
+      "bytes": 3178,
+      "sha256": "e66b820c8eb28f0b1c83ddc5bf4e7da8105df0529ed70917adb8b93a7846521c"
+    },
+    {
+      "source": "SexyAppFramework/sounds/kernelpult2.ogg",
+      "sourceSha256": "4f152b11ec89ec766bc728fbf36c7c64dcf0ade7ac6160c7b922519367d4fc8b",
+      "file": "kernelpult2.mp3",
+      "bytes": 4746,
+      "sha256": "c9875e4dfa6e5ff6379d68dac015f0723e8f7f6998ed75d93ae81f9785199536"
+    },
+    {
+      "source": "SexyAppFramework/sounds/butter.ogg",
+      "sourceSha256": "f55d9faf0c35247ebeb67c0c4081db95a4cc8fa4af4c63a4b07342ae7960051d",
+      "file": "butter.mp3",
+      "bytes": 7880,
+      "sha256": "dc9c2983a6aee17ab6a1c99e9fbe04f75961ddff9ae9962b21db85235a1c3c34"
+    },
+    {
+      "source": "SexyAppFramework/sounds/melonimpact.ogg",
+      "sourceSha256": "6870511fdfa38317930de4dc33f246ae86dbdf96056e2416d6dbcda7bee01018",
+      "file": "melonimpact.mp3",
+      "bytes": 5686,
+      "sha256": "336118cef8521054a74f85668bf504fa8afbd303580ff49c52a19ec7d165a492"
+    },
+    {
+      "source": "SexyAppFramework/sounds/melonimpact2.ogg",
+      "sourceSha256": "6ecf19be4f88cdf9e492fd79483574284c28d7b6c42df5f88730703495f7aac4",
+      "file": "melonimpact2.mp3",
+      "bytes": 5999,
+      "sha256": "ea8b172f18ef9ae1d17c67c331ceeb1cf2eedd45641b35d9c5f7ff14365170b9"
+    },
+    {
+      "source": "SexyAppFramework/sounds/ignite.ogg",
+      "sourceSha256": "764dd0046f8979d77cccd576bfe1cc293cf36afca8e542e95626e3d141c4860f",
+      "file": "ignite.mp3",
+      "bytes": 8507,
+      "sha256": "eaae871627f27c206e6b96bc3d658d0e7df88e20b2b9dd7e1c296d2456828e03"
+    },
+    {
+      "source": "SexyAppFramework/sounds/ignite2.ogg",
+      "sourceSha256": "91d20d67f88d7da09bf0bca853bf2cae663218a5278dc59b6dd5336f12cb24dc",
+      "file": "ignite2.mp3",
+      "bytes": 6626,
+      "sha256": "1c6c30cd649573c1fab1f396a92e549abb4a16d07b5d86da7fca10695c8579db"
+    }
+  ],
+  "scope": "Projectile impact layering and fireball damage/resistance; non-projectile crush/bowling and pitch randomization remain separate fidelity work."
+}
