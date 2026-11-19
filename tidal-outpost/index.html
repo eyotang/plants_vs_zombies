@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#091722">
+<title>潮汐前哨 · Tidal Outpost</title>
+<link rel="stylesheet" href="./style.css">
+</head>
+<body>
+<main>
+  <header>
+    <div class="brand"><span class="brand-mark" aria-hidden="true">◈</span><div><p>TIDAL OUTPOST</p><h1>潮汐前哨</h1></div></div>
+    <div class="tools"><button id="audio" aria-pressed="true">音效开</button><button id="pause">暂停</button></div>
+  </header>
+  <section class="station" aria-label="战局">
+    <div class="telemetry">
+      <div class="place"><small>防守海域</small><strong id="sector"></strong></div>
+      <div><small>能量</small><strong id="energy" class="energy"></strong></div>
+      <div><small>信标</small><strong id="health" class="health"></strong></div>
+      <div><small>波次</small><strong id="wave"></strong></div>
+    </div>
+    <div class="chart">
+      <canvas id="field" width="940" height="400" aria-label="从左到右七个泊位，从上到下四条航道"></canvas>
+      <div id="pads" class="pads" aria-label="部署泊位"></div>
+      <div id="overlay" class="overlay" hidden><div><p class="eyebrow">TIDAL OUTPOST</p><h2 id="overlay-title"></h2><p id="overlay-message"></p><button id="overlay-action" class="primary"></button></div></div>
+    </div>
+    <div class="orders"><p id="status" role="status"></p><button class="primary" id="launch">迎击下一波</button></div>
+  </section>
+  <section class="loadout" aria-label="防御设施" id="cards"></section>
+  <footer><span>选择设施，再点航道泊位。</span><span class="keys">1–3 选设施 · 方向键选泊位 · Enter 部署</span><button id="recycle" aria-pressed="false">拆除模式</button></footer>
+</main>
+<script type="module" src="./app.mjs"></script>
+</body>
+</html>
